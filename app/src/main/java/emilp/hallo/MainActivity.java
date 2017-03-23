@@ -10,5 +10,7 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ((GlobalApplication)getApplication()).getSpotifyService().playSong("spotify:track:3rOSwuTsUlJp0Pu0MkN8r8");
     }
 }
