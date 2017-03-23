@@ -9,15 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
-import com.spotify.sdk.android.player.Spotify;
+import com.spotify.sdk.android.player.ConnectionStateCallback;
+import com.spotify.sdk.android.player.Error;
 
 /**
  * Created by jonas on 2017-03-23.
  */
 
-public class WelcomeActivity extends Activity{
+public class WelcomeActivity extends Activity implements ConnectionStateCallback {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +64,27 @@ public class WelcomeActivity extends Activity{
         super.onActivityResult(requestCode, resultCode, intent);
 
         ((GlobalApplication) getApplication()).getSpotifyService().initiate(requestCode, resultCode, intent, this);
+    }
 
+    @Override
+    public void onLoggedIn() {
         startMainActivityAndReturn();
+    }
+
+    @Override
+    public void onLoggedOut() {
+    }
+
+    @Override
+    public void onLoginFailed(Error error) {
+    }
+
+    @Override
+    public void onTemporaryError() {
+    }
+
+    @Override
+    public void onConnectionMessage(String s) {
+
     }
 }

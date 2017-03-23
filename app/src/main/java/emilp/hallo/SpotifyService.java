@@ -30,6 +30,10 @@ public class SpotifyService extends Activity implements
 
     private Player mPlayer;
 
+    public Player getmPlayer() {
+        return mPlayer;
+    }
+
     public static final int REQUEST_CODE = 1337;
 
     @Override
@@ -71,7 +75,7 @@ public class SpotifyService extends Activity implements
         }
     }
 
-    public void initiate(int requestCode, int resultCode, Intent intent, final Activity activity) {
+    public void initiate(int requestCode, int resultCode, Intent intent, final WelcomeActivity activity) {
         // Check if result comes from the correct activity
         if (requestCode == SpotifyService.REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
@@ -82,7 +86,7 @@ public class SpotifyService extends Activity implements
                     @Override
                     public void onInitialized(SpotifyPlayer spotifyPlayer) {
                         mPlayer = spotifyPlayer;
-                        mPlayer.addConnectionStateCallback(SpotifyService.this);
+                        mPlayer.addConnectionStateCallback(activity);
                         mPlayer.addNotificationCallback(SpotifyService.this);
                         Toast.makeText(activity.getApplicationContext(), "Initiated everything and we're logged in(?)", Toast.LENGTH_SHORT).show();
                     }
