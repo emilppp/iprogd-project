@@ -9,7 +9,7 @@ import android.content.Context;
 
 public class GlobalApplication extends Application {
 
-    SpotifyService spotifyService = new SpotifyService();
+    private SpotifyService spotifyService = new SpotifyService();
 
     public SpotifyService getSpotifyService() {
         return spotifyService;
