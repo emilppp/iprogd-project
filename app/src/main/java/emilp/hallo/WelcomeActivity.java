@@ -4,17 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
+import com.spotify.sdk.android.player.Spotify;
+
 /**
  * Created by jonas on 2017-03-23.
  */
 
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends Activity{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,5 +58,14 @@ public class WelcomeActivity extends Activity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         startActivity(intent);
         this.finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        ((GlobalApplication) getApplication()).getSpotifyService().initiate(requestCode, resultCode, intent, this);
+
+        startMainActivityAndReturn();
     }
 }

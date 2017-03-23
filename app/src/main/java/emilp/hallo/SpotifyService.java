@@ -3,6 +3,7 @@ package emilp.hallo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,48 +30,12 @@ public class SpotifyService extends Activity implements
 
     private Player mPlayer;
 
-    private static final int REQUEST_CODE = 1337;
+    public static final int REQUEST_CODE = 1337;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        authSpotify();
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
-            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
-                Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
-                Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
-                    @Override
-                    public void onInitialized(SpotifyPlayer spotifyPlayer) {
-                        mPlayer = spotifyPlayer;
-                        mPlayer.addConnectionStateCallback(SpotifyService.this);
-                        mPlayer.addNotificationCallback(SpotifyService.this);
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
-                    }
-                });
-            }
-        }
-    }
-
-    public void authSpotify() {
-        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-        builder.setScopes(new String[]{"user-read-private", "streaming"});
-        AuthenticationRequest request = builder.build();
-        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
 
     public void authSpotify(Activity activity) {
@@ -106,14 +71,29 @@ public class SpotifyService extends Activity implements
         }
     }
 
-    @Override
-    public void onLoggedIn() {
-        Log.d("MainActivity", "User logged in");
-        Toast.makeText(getApplicationContext(), "Logged in", Toast.LENGTH_SHORT).show();
-        playSong("spotify:track:36BZWKRzjmdpA6FiQ4Sbw8");
+    public void initiate(int requestCode, int resultCode, Intent intent, final Activity activity) {
+        // Check if result comes from the correct activity
+        if (requestCode == SpotifyService.REQUEST_CODE) {
+            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
+            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
+                // Logged in
+                Config playerConfig = new Config(activity.getApplicationContext(), response.getAccessToken(), CLIENT_ID);
+                Spotify.getPlayer(playerConfig, activity.getApplicationContext(), new SpotifyPlayer.InitializationObserver() {
+                    @Override
+                    public void onInitialized(SpotifyPlayer spotifyPlayer) {
+                        mPlayer = spotifyPlayer;
+                        mPlayer.addConnectionStateCallback(SpotifyService.this);
+                        mPlayer.addNotificationCallback(SpotifyService.this);
+                        Toast.makeText(activity.getApplicationContext(), "Initiated everything and we're logged in(?)", Toast.LENGTH_SHORT).show();
+                    }
 
-        //System.out.println(mPlayer.getMetadata().currentTrack.artistName);
-
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
+                    }
+                });
+            }
+        }
     }
 
     public void playSong(String spotifyUri) {
@@ -122,6 +102,10 @@ public class SpotifyService extends Activity implements
 
     public void stop() {
         mPlayer.destroy();
+    }
+
+    @Override
+    public void onLoggedIn() {
     }
 
     @Override
