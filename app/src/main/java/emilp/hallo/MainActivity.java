@@ -1,10 +1,12 @@
 package emilp.hallo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -12,6 +14,7 @@ import com.spotify.sdk.android.authentication.AuthenticationResponse;
 import com.spotify.sdk.android.player.Config;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Error;
+import com.spotify.sdk.android.player.Metadata;
 import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
@@ -35,14 +38,10 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
-                AuthenticationResponse.Type.TOKEN,
-                REDIRECT_URI);
-        builder.setScopes(new String[]{"user-read-private", "streaming"});
-        AuthenticationRequest request = builder.build();
+        authSpotify();
 
-        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -69,10 +68,16 @@ public class MainActivity extends Activity implements
         }
     }
 
+    public void authSpotify() {
+        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+        builder.setScopes(new String[]{"user-read-private", "streaming"});
+        AuthenticationRequest request = builder.build();
+        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+    }
+
     @Override
     protected void onDestroy() {
         Spotify.destroyPlayer(this);
-
         super.onDestroy();
     }
 
@@ -99,9 +104,16 @@ public class MainActivity extends Activity implements
     @Override
     public void onLoggedIn() {
         Log.d("MainActivity", "User logged in");
+        playSong("spotify:track:36BZWKRzjmdpA6FiQ4Sbw8");
 
+    }
 
-        mPlayer.playUri(null, "spotify:track:4x4lOjUzUZe34XVd08A6Kf", 0, 0);
+    public void playSong(String spotifyUri) {
+        mPlayer.playUri(null, spotifyUri, 0, 0);
+    }
+
+    public void stop() {
+        mPlayer.destroy();
     }
 
     @Override
