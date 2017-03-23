@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
@@ -72,6 +73,13 @@ public class SpotifyService extends Activity implements
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
 
+    public void authSpotify(Activity activity) {
+        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+        builder.setScopes(new String[]{"user-read-private", "streaming"});
+        AuthenticationRequest request = builder.build();
+        AuthenticationClient.openLoginActivity(activity, REQUEST_CODE, request);
+    }
+
     @Override
     protected void onDestroy() {
         Spotify.destroyPlayer(this);
@@ -101,6 +109,7 @@ public class SpotifyService extends Activity implements
     @Override
     public void onLoggedIn() {
         Log.d("MainActivity", "User logged in");
+        Toast.makeText(getApplicationContext(), "Logged in", Toast.LENGTH_SHORT).show();
         playSong("spotify:track:36BZWKRzjmdpA6FiQ4Sbw8");
 
         //System.out.println(mPlayer.getMetadata().currentTrack.artistName);
