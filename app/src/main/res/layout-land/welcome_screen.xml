@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:contentDescription="@string/app_name"
+        android:layout_height="200dp"
+        android:id="@+id/logo"
+        android:src="@drawable/icon_naked" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="30dp"
+        android:layout_toEndOf="@id/logo">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="75dp"
+            android:orientation="horizontal"
+            android:paddingStart="33dip"
+            android:paddingEnd="33dip"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btn_with_spotify"
+            android:background="@drawable/roundedbutton">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/spotify"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/spotify_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                style="@style/text_big"
+                android:text="@string/sign_in_spotify"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btn_without_spotify"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/btn_with_spotify"
+            android:text="@string/continue_without_spotify"
+            style="@style/text" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

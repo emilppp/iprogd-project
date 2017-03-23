@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Hallo</string>
+    <string name="sign_in_spotify">Sign in with Spotify</string>
+    <string name="spotify">Spotify</string>
+    <string name="continue_without_spotify"><u>Continue without Spotify</u></string>
+    <string name="placeholder_song_title">Title</string>
+    <string name="char_bullet">&#8226;</string>
+    <string name="placeholder_song_information">Artist - Album &#8226; 3:59</string>
+    <string name="char_vertical_ellipsis">&#8942;</string>
+    <string name="placeholder_song_cover_contentdesc">Album cover</string>
 </resources>
