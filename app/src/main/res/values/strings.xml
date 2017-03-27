@@ -13,4 +13,5 @@
     <string name="search_hint">Search...</string>
     <string name="song_history">Song history</string>
     <string name="placeholder_song_artist">Artist</string>
+    <string name="search">Search</string>
 </resources>

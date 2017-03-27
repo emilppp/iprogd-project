@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 public class MainActivity extends ActionBarActivity {
@@ -20,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initActionbar();
+       // initActionbar();
 
         loadSongHistory();
 
@@ -36,6 +38,18 @@ public class MainActivity extends ActionBarActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int menuItemThatWasSelected = item.getItemId();
+        return true;
+    }
+/*
     private void initActionbar() {
         ActionBar mActionBar = getSupportActionBar();
         if (mActionBar != null) {
@@ -74,4 +88,5 @@ public class MainActivity extends ActionBarActivity {
             mActionBar.setDisplayShowCustomEnabled(true);
         }
     }
+    */
 }
