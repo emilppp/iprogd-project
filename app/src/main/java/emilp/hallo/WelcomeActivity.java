@@ -1,9 +1,11 @@
 package emilp.hallo;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,13 +44,11 @@ public class WelcomeActivity extends Activity implements ConnectionStateCallback
     }
 
     private void loginWithSpotify() {
-        Toast.makeText(getApplicationContext(), "Login with Spotify", Toast.LENGTH_SHORT).show();
         SpotifyService spotifyService = ((GlobalApplication) getApplication()).getSpotifyService();
         spotifyService.authSpotify(this);
     }
 
     private void continueWithoutSpotify() {
-        Toast.makeText(getApplicationContext(), "Continue without Spotify", Toast.LENGTH_SHORT).show();
         startMainActivityAndReturn();
     }
 
@@ -77,6 +77,17 @@ public class WelcomeActivity extends Activity implements ConnectionStateCallback
 
     @Override
     public void onLoginFailed(Error error) {
+        // TODO: Log error?
+        AlertDialog alertDialog = new AlertDialog.Builder(WelcomeActivity.this).create();
+        alertDialog.setTitle("Whoops!");
+        alertDialog.setMessage("An error occured when signing in to Spotify");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     @Override
