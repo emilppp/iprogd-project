@@ -8,4 +8,7 @@
     <string name="placeholder_song_information">Artist - Album &#8226; 3:59</string>
     <string name="char_vertical_ellipsis">&#8942;</string>
     <string name="placeholder_song_cover_contentdesc">Album cover</string>
+    <string name="close_content_desc">Close drawer</string>
+    <string name="open_content_desc">Open drawer</string>
+    <string name="search_hint">Search...</string>
 </resources>
