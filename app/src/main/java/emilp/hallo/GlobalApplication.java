@@ -14,4 +14,8 @@ public class GlobalApplication extends Application {
     public SpotifyService getSpotifyService() {
         return spotifyService;
     }
+
+    public Object[] getSongHistory() {
+        return spotifyService.getSongHistory().toArray();
+    }
 }

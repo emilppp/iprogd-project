@@ -18,6 +18,8 @@ import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 
+import java.util.ArrayList;
+
 public class SpotifyService extends Activity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback
 {
@@ -130,5 +132,23 @@ public class SpotifyService extends Activity implements
     @Override
     public void onConnectionMessage(String message) {
         Log.d("MainActivity", "Received connection message: " + message);
+    }
+
+    public ArrayList<Song> getSongHistory() {
+        ArrayList<Song> arr = new ArrayList<>();
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        arr.add(new Song());
+        return arr;
     }
 }

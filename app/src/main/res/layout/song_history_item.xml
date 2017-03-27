@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/history_item_cover"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/fallback_album" />
+
+    <TextView
+        android:id="@+id/history_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/placeholder_song_title"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        style="@style/text_fat"/>
+    <TextView
+        android:id="@+id/history_item_artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:text="@string/placeholder_song_artist"
+        style="@style/text"/>
+
+</LinearLayout>
