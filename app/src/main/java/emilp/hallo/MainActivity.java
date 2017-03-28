@@ -14,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -26,12 +29,39 @@ public class MainActivity extends ActionBarActivity {
 
         loadSongHistory();
 
+        loadRecommended();
+
         //((GlobalApplication) getApplication()).getSpotifyService().playSong("spotify:track:2MxcYeVuWGzFP7ybXcMRJH");
 
     }
 
+    private void loadRecommended() {
+        loadRecommendedAlbums();
+        loadRecommenedeSongs();
+    }
+
+    private void loadRecommenedeSongs() {
+        TextView textView = (TextView) findViewById(R.id.song_recommendations).findViewById(R.id.list_horizontal_title);
+        textView.setText(R.string.recommendations_songs);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.song_recommendations).findViewById(R.id.song_history_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        final MenuAdapter adapter = new MenuAdapter(this, ((GlobalApplication) getApplication()).getRecommendedAlbums());
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void loadRecommendedAlbums() {
+        TextView textView = (TextView) findViewById(R.id.album_recommendations).findViewById(R.id.list_horizontal_title);
+        textView.setText(R.string.recommendations_albums);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.album_recommendations).findViewById(R.id.song_history_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        final MenuAdapter adapter = new MenuAdapter(this, ((GlobalApplication) getApplication()).getRecommendedAlbums());
+        recyclerView.setAdapter(adapter);
+    }
+
     private void loadSongHistory() {
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.song_history_list);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.song_history).findViewById(R.id.song_history_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         final MenuAdapter adapter = new MenuAdapter(this, ((GlobalApplication) getApplication()).getSongHistory());

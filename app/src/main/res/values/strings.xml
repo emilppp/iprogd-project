@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hallo</string>
+    <string name="app_name">Genspot</string>
     <string name="sign_in_spotify">Sign in with Spotify</string>
     <string name="spotify">Spotify</string>
     <string name="continue_without_spotify"><u>Continue without Spotify</u></string>
@@ -14,4 +14,7 @@
     <string name="song_history">Song history</string>
     <string name="placeholder_song_artist">Artist</string>
     <string name="search">Search</string>
+    <string name="recommendations_artists">Recommended artists</string>
+    <string name="recommendations_albums">Recommended albums</string>
+    <string name="recommendations_songs">Recommended songs</string>
 </resources>
