@@ -109,6 +109,16 @@ public class SpotifyService extends Activity implements
         mPlayer.destroy();
     }
 
+    public String getCurrentSongTitle() {
+        return mPlayer.getMetadata().currentTrack.name;
+    }
+
+    public String getCurrentSongArtist() {
+        return mPlayer.getMetadata().currentTrack.artistName;
+    }
+
+
+
     @Override
     public void onLoggedIn() {
     }
@@ -134,9 +144,10 @@ public class SpotifyService extends Activity implements
         Log.d("MainActivity", "Received connection message: " + message);
     }
 
+    Artist[] arre;
     public ArrayList<Song> getSongHistory() {
         ArrayList<Song> arr = new ArrayList<>();
-        arr.add(new Song());
+        arr.add(new Song("Kebab", new Album(), new Artist(), arre , 13));
         arr.add(new Song());
         arr.add(new Song());
         arr.add(new Song());
