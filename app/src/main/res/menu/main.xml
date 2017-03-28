@@ -5,11 +5,7 @@
         android:title="@string/search"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"/>
-    <item
-        android:title="apa"
-        android:orderInCategory="2">
 
-    </item>
         <!-- android:id="+@id/action_search" -->
 
 </menu>

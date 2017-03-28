@@ -52,7 +52,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        holder.getArtistTextView().setText("Artist");
+        holder.getArtistTextView().setText(((Song) dataset[position]).getTitle());
         holder.getTitleTextView().setText("Title");
         holder.getCoverImageView().setImageResource(R.drawable.fallback_album);
     }
