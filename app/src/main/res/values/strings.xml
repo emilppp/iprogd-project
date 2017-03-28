@@ -17,4 +17,6 @@
     <string name="recommendations_artists">Recommended artists</string>
     <string name="recommendations_albums">Recommended albums</string>
     <string name="recommendations_songs">Recommended songs</string>
+    <string name="placeholder_button">Button</string>
+    <string name="create_playlist">Create playlist</string>
 </resources>

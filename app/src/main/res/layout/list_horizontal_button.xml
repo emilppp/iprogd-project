@@ -12,12 +12,21 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         style="@style/text_big"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin"
+        android:layout_gravity="center"
+        style="@style/buttonStyle"
+        android:layout_marginTop="@dimen/activity_vertical_margin_half"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:text="@string/create_playlist"
+        android:background="@color/colorLogo"
+        android:textColor="@color/colorWhiteish" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
         android:id="@+id/song_history_list"
-        android:clipToPadding="false"
-
         android:layout_height="wrap_content">
     </android.support.v7.widget.RecyclerView>
 

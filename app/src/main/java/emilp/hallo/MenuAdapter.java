@@ -40,8 +40,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         this.activity = activity;
     }
 
+    protected int getLayoutId() {
+        return R.layout.song_history_item;
+    }
+
     public MenuAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.song_history_item, parent, false);
+        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(getLayoutId(), parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
@@ -52,9 +56,17 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        holder.getArtistTextView().setText(((Song) dataset[position]).getTitle());
-        holder.getTitleTextView().setText("Title");
+        holder.getArtistTextView().setText(getArtistText());
+        holder.getTitleTextView().setText(((Song) dataset[position]).getTitle());
         holder.getCoverImageView().setImageResource(R.drawable.fallback_album);
+    }
+
+    protected String getArtistText() {
+        return "Artist";
+    }
+
+    protected String getInformationText() {
+        return activity.getResources().getString(R.string.placeholder_song_information);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

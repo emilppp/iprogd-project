@@ -37,16 +37,25 @@ public class MainActivity extends ActionBarActivity {
 
     private void loadRecommended() {
         loadRecommendedAlbums();
-        loadRecommenedeSongs();
+        loadRecommendedSongs();
     }
 
-    private void loadRecommenedeSongs() {
+    private void loadRecommendedSongs() {
         TextView textView = (TextView) findViewById(R.id.song_recommendations).findViewById(R.id.list_horizontal_title);
         textView.setText(R.string.recommendations_songs);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.song_recommendations).findViewById(R.id.song_history_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        final MenuAdapter adapter = new MenuAdapter(this, ((GlobalApplication) getApplication()).getRecommendedAlbums());
+        final MenuAdapter adapter = new MenuAdapter(this, ((GlobalApplication) getApplication()).getRecommendedAlbums()) {
+            @Override
+            protected int getLayoutId() {
+                return R.layout.list_item_song;
+            }
+            @Override
+            protected String getArtistText() {
+                return getInformationText();
+            }
+        };
         recyclerView.setAdapter(adapter);
     }
 
