@@ -4,7 +4,13 @@
     <item
         android:title="@string/search"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+
+
+        />
 
         <!-- android:id="+@id/action_search" -->
 
