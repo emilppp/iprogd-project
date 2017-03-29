@@ -32,9 +32,7 @@ public class Artist {
     }
 
     public void setGenres(String[] genres) {
-        for(int i = 0; i < genres.length; i++) {
-            this.genres[i] = genres[i];
-        }
+        this.genres = genres;
     }
 
     public String[] getGenres() {

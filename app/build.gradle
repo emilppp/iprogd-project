@@ -25,6 +25,7 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+
 }
 
 dependencies {
@@ -40,4 +41,7 @@ dependencies {
 
     // All other dependencies for your app should also be here:
     compile 'com.android.support:appcompat-v7:23.2.1'
+
+
 }
+

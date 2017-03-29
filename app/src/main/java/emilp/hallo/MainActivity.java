@@ -40,6 +40,7 @@ public class MainActivity extends ActionBarActivity {
     private void loadRecommended() {
         loadRecommendedAlbums();
         loadRecommendedSongs();
+
     }
 
     private void loadRecommendedSongs() {
