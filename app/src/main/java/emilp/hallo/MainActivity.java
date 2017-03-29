@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,6 +61,29 @@ public class MainActivity extends ActionBarActivity {
             }
         };
         recyclerView.setAdapter(adapter);
+
+        ((GlobalApplication) getApplication()).getSpotifyService().playSong("spotify:track:3WTz4svCL6ouAD7E9AEWXL");
+        try {
+            Thread.sleep(1000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        ((GlobalApplication) getApplication()).getSpotifyService().pauseSong();
+
+        try {
+            Thread.sleep(1000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        ((GlobalApplication) getApplication()).getSpotifyService().resumeSong();
+        try {
+            Thread.sleep(2000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+
     }
 
     private void loadRecommendedAlbums() {

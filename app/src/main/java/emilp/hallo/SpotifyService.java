@@ -129,6 +129,10 @@ public class SpotifyService extends Activity implements
         mPlayer.pause(mOperationCallback);
     }
 
+    public void resumeSong() {
+        mPlayer.resume(mOperationCallback);
+    }
+
     public void stop() {
         mPlayer.destroy();
     }
@@ -146,7 +150,7 @@ public class SpotifyService extends Activity implements
 
     @Override
     public void onLoggedIn() {
-    }
+   }
 
     @Override
     public void onLoggedOut() {
