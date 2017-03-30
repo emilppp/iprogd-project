@@ -10,9 +10,11 @@ import android.widget.Toast;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
+import com.spotify.sdk.android.authentication.SpotifyAuthActivity;
 import com.spotify.sdk.android.player.Config;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Error;
+import com.spotify.sdk.android.player.Metadata;
 import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
@@ -36,6 +38,18 @@ public class SpotifyService extends Activity implements
     }
 
     public static final int REQUEST_CODE = 1337;
+
+    private final Player.OperationCallback mOperationCallback = new Player.OperationCallback() {
+        @Override
+        public void onSuccess() {
+            Log.d("SpotidyService", "OK!");
+        }
+
+        @Override
+        public void onError(Error error) {
+            Log.d("SpotifyService", "ERROR:" + error);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,26 +116,41 @@ public class SpotifyService extends Activity implements
     }
 
     public void playSong(String spotifyUri) {
-        mPlayer.playUri(null, spotifyUri, 0, 0);
+        mPlayer.playUri(mOperationCallback, spotifyUri, 0, 0);
+    }
+
+    public void queueSong(String spotifyUri) {
+        mPlayer.queue(mOperationCallback, spotifyUri);
+        Toast toast = Toast.makeText(this, "Queued track", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    public void pauseSong() {
+        mPlayer.pause(mOperationCallback);
+    }
+
+    public void resumeSong() {
+        mPlayer.resume(mOperationCallback);
     }
 
     public void stop() {
         mPlayer.destroy();
     }
 
-    public String getCurrentSongTitle() {
-        return mPlayer.getMetadata().currentTrack.name;
+    public Metadata.Track getCurrentTrack() {
+        return mPlayer.getMetadata().currentTrack;
     }
 
-    public String getCurrentSongArtist() {
-        return mPlayer.getMetadata().currentTrack.artistName;
+    public void logOut() {
+        mPlayer.logout();
     }
+
 
 
 
     @Override
     public void onLoggedIn() {
-    }
+   }
 
     @Override
     public void onLoggedOut() {
