@@ -34,7 +34,8 @@ public class MainActivity extends ActionBarActivity {
 
         loadRecommended();
 
-        //((GlobalApplication) getApplication()).getSpotifyService().playSong("spotify:track:2MxcYeVuWGzFP7ybXcMRJH");
+        ((GlobalApplication) getApplication()).getSpotifyService().makeSearchQuery("lean", "artist");
+
 
     }
 
@@ -62,8 +63,9 @@ public class MainActivity extends ActionBarActivity {
         };
         recyclerView.setAdapter(adapter);
 
-        ((GlobalApplication) getApplication()).getSpotifyService().playSong("spotify:track:3WTz4svCL6ouAD7E9AEWXL");
-        try {
+        // ((GlobalApplication) getApplication()).getSpotifyService().playSong("spotify:track:3WTz4svCL6ouAD7E9AEWXL");
+
+      /*  try {
             Thread.sleep(1000);
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
@@ -82,7 +84,7 @@ public class MainActivity extends ActionBarActivity {
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-
+*/
 
     }
 
@@ -102,6 +104,8 @@ public class MainActivity extends ActionBarActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         final MenuAdapter adapter = new MenuAdapter(this, ((GlobalApplication) getApplication()).getSongHistory());
         recyclerView.setAdapter(adapter);
+
+
     }
 
     @Override

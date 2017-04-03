@@ -2,8 +2,11 @@ package emilp.hallo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 
@@ -20,6 +23,8 @@ import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class SpotifyService extends Activity implements
@@ -150,6 +155,7 @@ public class SpotifyService extends Activity implements
 
     @Override
     public void onLoggedIn() {
+
    }
 
     @Override
@@ -191,4 +197,16 @@ public class SpotifyService extends Activity implements
         arr.add(new Song());
         return arr;
     }
+
+
+    // Type kan vara album, track, artist, playlist
+    public void makeSearchQuery(String query, String type) {
+        URL githubSearchUrl = NetworkUtils.buildUrl(query, type);
+        new SpotifyQueryTask().execute(githubSearchUrl);
+    }
+
+
+
+
+
 }
