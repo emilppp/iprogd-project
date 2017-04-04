@@ -3,6 +3,7 @@ package emilp.hallo;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +31,10 @@ import org.w3c.dom.Text;
 
 import emilp.hallo.view.ContentList;
 
-public class MainActivity extends ActionBarActivity {
+
+public class MainActivity extends AppCompatActivity {
+    ActionBarDrawerToggle mDrawerToggle;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,10 +42,42 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
        // initActionbar();
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null)
+        {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, myToolbar, R.string.open_content_desc, R.string.close_content_desc)
+            {
+
+                public void onDrawerClosed(View view)
+                {
+                    supportInvalidateOptionsMenu();
+                    //drawerOpened = false;
+                }
+
+                public void onDrawerOpened(View drawerView)
+                {
+                    supportInvalidateOptionsMenu();
+                    //drawerOpened = true;
+                }
+            };
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+            drawerLayout.addDrawerListener(mDrawerToggle);
+            mDrawerToggle.syncState();
+        }
 
         loadSongHistory();
 
         loadRecommended();
+
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setLogo(R.drawable.icon_naked);
 
         Button btnCreatePlaylist = (Button) findViewById(R.id.btn_create_playlist);
         btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +93,18 @@ public class MainActivity extends ActionBarActivity {
         loadRecommendedAlbums();
         loadRecommendedSongs();
 
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     private void loadRecommendedSongs() {
@@ -76,7 +125,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /* SEARCH SHIT ICON SHIT STUFF */
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -91,20 +140,38 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    /*
-    public static boolean searchResultsOpenWeLikeBugsThatRequireUsToUseThis = false;
+*/
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int menuItemThatWasSelected = item.getItemId();
-        if(menuItemThatWasSelected == R.id.action_search && searchResultsOpenWeLikeBugsThatRequireUsToUseThis) {
-            Context context = MainActivity.this;
-            String message = "Search clicked";
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.main, menu);
+
+    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+    SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+    // Assumes current activity is the searchable activity
+    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+    searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+
+    return true;
+}
+
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle action bar item clicks here. The action bar will
+    // automatically handle clicks on the Home/Up button, so long
+    // as you specify a parent activity in AndroidManifest.xml.
+    int id = item.getItemId();
+
+    //noinspection SimplifiableIfStatement
+    if (id == R.id.action_search) {
+        return true;
+    }
+    if(id == R.id.logo) {
+        return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+}
 }

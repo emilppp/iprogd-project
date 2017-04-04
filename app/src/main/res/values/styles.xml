@@ -2,13 +2,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:textColorSecondary">@color/colorWhiteish</item>
         <item name="android:textColorPrimary">@color/colorWhiteish</item>
+        <item name="android:textColorHint">@color/colorWhiteish</item>
+
     </style>
 
     <style name="WelcomeTheme" parent="Theme.AppCompat.Light.DarkActionBar">
