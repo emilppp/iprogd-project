@@ -1,8 +1,9 @@
 package emilp.hallo;
 
+import android.graphics.Bitmap;
 import android.text.Html;
 
-class Song {
+class Song implements Content {
     private String title;
     private Artist artist;
     private Album album;
@@ -32,8 +33,24 @@ class Song {
         artist = art;
     }
 
+    @Override
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public String getBread() {
+        return "Bread";
+    }
+
+    @Override
+    public Bitmap getImage() {
+        return null;
+    }
+
+    @Override
+    public int fallbackImage() {
+        return R.drawable.fallback_album;
     }
 
     public void setTitle(String tit) {

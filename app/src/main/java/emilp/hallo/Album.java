@@ -1,10 +1,12 @@
 package emilp.hallo;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by emil on 2017-03-28.
  */
 
-public class Album {
+public class Album implements Content {
     private String type;
     private Artist[] artists;
     private Song[] songs;
@@ -61,4 +63,26 @@ public class Album {
     public void setGenres(String[] genres) {
         this.genres = genres;
     }
+
+    @Override
+    public String getTitle() {
+        return getName();
+    }
+
+    @Override
+    public String getBread() {
+        return "Bread";
+    }
+
+    @Override
+    public Bitmap getImage() {
+        return null;
+    }
+
+    @Override
+    public int fallbackImage() {
+        return R.drawable.fallback_album;
+    }
+
+
 }

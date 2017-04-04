@@ -19,6 +19,10 @@ import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -200,8 +204,39 @@ public class SpotifyService extends Activity implements
         new SpotifyQueryTask(act).execute(githubSearchUrl);
     }
 
+    public static void parseSearchJSON(JSONObject obj, GlobalApplication global) {
+        try {
+            obj = obj.getJSONObject("artists");
+            JSONArray arr = obj.getJSONArray("items");
 
+            for(int i=0; i<arr.length(); i++) {
+                obj = arr.getJSONObject(i);
+                String id = obj.getString("id");
 
+                Artist artist = global.getArtistFromId(id);
+                if(artist == null) {
+                    String name = obj.getString("name");
+                    JSONArray genreArr = obj.getJSONArray("genres");
+                    String[] genres = new String[genreArr.length()];
+                    for(int k=0; k<genreArr.length(); k++)
+                        genres[k] = genreArr.getString(k);
 
+                    int popularity = obj.getInt("popularity");
 
+                    if(obj.has("images") && obj.getJSONArray("images").length() > 0) {
+                        JSONArray img = obj.getJSONArray("images");
+                        String imageUrl = img.getJSONObject(0).getString("url");
+                        artist = new Artist(name, genres, id, popularity, imageUrl);
+                    }
+                    else
+                        artist = new Artist(name, genres, id, popularity);
+
+                    global.addArtist(artist);
+                }
+                global.addSearchRes(artist);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

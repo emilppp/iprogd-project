@@ -6,8 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import emilp.hallo.ListTypeHorizontal;
-import emilp.hallo.ListTypeVertical;
 import emilp.hallo.MenuAdapter;
 import emilp.hallo.R;
 
@@ -21,6 +19,17 @@ public class ContentList {
     private MenuAdapter adapter;
     private View view;
 
+    /**
+     * Creates a list in the given direction with the provided data
+     * @param activity
+     *  Activity that contains the list
+     * @param container
+     * The view that is the correct layout
+     * @param direction
+     * The direction of the list
+     * @param data
+     * The data to be displayed
+     */
     public ContentList(Activity activity, int container, int direction, Object[] data) {
         this.activity = activity;
         this.view = activity.findViewById(container);
@@ -30,9 +39,9 @@ public class ContentList {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         if(direction == LinearLayoutManager.HORIZONTAL)
-            adapter = new MenuAdapter(activity, new ListTypeHorizontal(activity, data));
+            adapter = new MenuAdapter(activity, R.layout.song_history_item, data);
         else
-            adapter = new MenuAdapter(activity, new ListTypeVertical(activity, data));
+            adapter = new MenuAdapter(activity, R.layout.list_item_song, data);
 
         recyclerView.setAdapter(adapter);
     }

@@ -11,6 +11,9 @@ import java.util.ArrayList;
 
 public class GlobalApplication extends Application {
 
+    private ArrayList<Artist> artist = new ArrayList<>();
+    private ArrayList<Artist> searchRes = new ArrayList<>();
+
     private SpotifyService spotifyService = new SpotifyService();
 
     public SpotifyService getSpotifyService() {
@@ -37,5 +40,42 @@ public class GlobalApplication extends Application {
         arr.add(new Song());
         arr.add(new Song());
         return arr.toArray();
+    }
+
+    public void addArtist(Artist artist) {
+        this.artist.add(artist);
+    }
+
+    public boolean containsArtist(String id) {
+        return getArtistFromId(id) != null;
+    }
+
+    public Artist getArtistFromId(String id) {
+        for(Artist a : artist) {
+            if(a.getSpotifyID().equals(id))
+                return a;
+        }
+        return null;
+    }
+
+    public ArrayList<Artist> getSearchRes() {
+        return searchRes;
+    }
+
+    public void addSearchRes(Artist artist) {
+        if(!searchContainsArtist(artist.getSpotifyID()))
+            this.searchRes.add(artist);
+    }
+
+    public boolean searchContainsArtist(String id) {
+        return getSearchArtistFromId(id) != null;
+    }
+
+    public Artist getSearchArtistFromId(String id) {
+        for(Artist a : searchRes) {
+            if(a.getSpotifyID().equals(id))
+                return a;
+        }
+        return null;
     }
 }
