@@ -1,8 +1,10 @@
 package  emilp.hallo;
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -13,6 +15,10 @@ import java.net.URL;
 import emilp.hallo.NetworkUtils;
 
 public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
+    Activity act;
+    public SpotifyQueryTask(Activity activity) {
+        act = activity;
+    }
 
     @Override
     protected JSONObject doInBackground(URL... params) {
@@ -32,6 +38,8 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
             Log.d("SpotifyQueryTask", "Fann" + githubSearchResults);
         }
 
+        TextView test = (TextView) act.findViewById(R.id.test_text_view);
+        test.setText(githubSearchResults.toString());
 
     }
 }

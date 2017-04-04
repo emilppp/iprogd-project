@@ -24,7 +24,7 @@ public class SearchResultsActivity extends Activity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d("SearchResultsActivity", query);
-            ((GlobalApplication) getApplication()).getSpotifyService().makeSearchQuery(query, "artist");
+            ((GlobalApplication) getApplication()).getSpotifyService().makeSearchQuery(query, "artist", this);
             mTestTextView.setText(query);
         }
     }

@@ -41,4 +41,5 @@ public class ContentList {
         TextView textView = (TextView) view.findViewById(R.id.list_horizontal_title);
         textView.setText(res);
     }
+
 }

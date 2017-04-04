@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package emilp.hallo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 import org.json.JSONException;
@@ -86,5 +88,22 @@ public class NetworkUtils {
         } finally {
             urlConnection.disconnect();
         }
+    }
+
+
+    /**
+     *
+     * @param url
+     * @return The bitmap of the url's image
+     */
+    public Bitmap getBitmapFromUrl(String url) {
+        Bitmap image = null;
+        try {
+            URL u = new URL(url);
+            image = BitmapFactory.decodeStream(u.openStream());
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 }

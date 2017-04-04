@@ -2,18 +2,14 @@ package emilp.hallo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
-import com.spotify.sdk.android.authentication.SpotifyAuthActivity;
 import com.spotify.sdk.android.player.Config;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Error;
@@ -23,7 +19,6 @@ import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -200,9 +195,9 @@ public class SpotifyService extends Activity implements
 
 
     // Type kan vara album, track, artist, playlist
-    public void makeSearchQuery(String query, String type) {
+    public void makeSearchQuery(String query, String type, Activity act) {
         URL githubSearchUrl = NetworkUtils.buildUrl(query, type);
-        new SpotifyQueryTask().execute(githubSearchUrl);
+        new SpotifyQueryTask(act).execute(githubSearchUrl);
     }
 
 
