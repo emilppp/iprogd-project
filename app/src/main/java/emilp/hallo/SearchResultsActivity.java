@@ -9,15 +9,13 @@ import android.widget.TextView;
 
 
 public class SearchResultsActivity extends Activity {
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
+        this.setContentView(R.layout.activity_search_results);
 
         TextView mTestTextView = (TextView) findViewById(R.id.test_text_view);
-
 
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -25,10 +23,6 @@ public class SearchResultsActivity extends Activity {
             Log.d("SearchResultsActivity", query);
             ((GlobalApplication) getApplication()).getSpotifyService().makeSearchQuery(query, "artist");
             mTestTextView.setText(query);
-
         }
-
     }
-
-
 }

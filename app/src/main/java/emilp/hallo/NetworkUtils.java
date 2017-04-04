@@ -16,6 +16,9 @@
 package emilp.hallo;
 import android.net.Uri;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -62,7 +65,7 @@ public class NetworkUtils {
      * @return The contents of the HTTP response.
      * @throws IOException Related to network and stream reading
      */
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    public static JSONObject getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
@@ -72,7 +75,11 @@ public class NetworkUtils {
 
             boolean hasInput = scanner.hasNext();
             if (hasInput) {
-                return scanner.next();
+                try {
+                    return new JSONObject(scanner.next());
+                } catch (JSONException e) {
+                    return null;
+                }
             } else {
                 return null;
             }

@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import emilp.hallo.view.ContentList;
+
 public class MainActivity extends ActionBarActivity {
 
     @Override
@@ -40,7 +42,6 @@ public class MainActivity extends ActionBarActivity {
 
         ((GlobalApplication) getApplication()).getSpotifyService().makeSearchQuery("lean", "artist");
 
-
     }
 
     private void loadRecommended() {
@@ -50,66 +51,20 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void loadRecommendedSongs() {
-        TextView textView = (TextView) findViewById(R.id.song_recommendations).findViewById(R.id.list_horizontal_title);
-        textView.setText(R.string.recommendations_songs);
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.song_recommendations).findViewById(R.id.song_history_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        final MenuAdapter adapter = new MenuAdapter(this, ((GlobalApplication) getApplication()).getRecommendedAlbums()) {
-            @Override
-            protected int getLayoutId() {
-                return R.layout.list_item_song;
-            }
-            @Override
-            protected String getArtistText() {
-                return getInformationText();
-            }
-        };
-        recyclerView.setAdapter(adapter);
-
-        // ((GlobalApplication) getApplication()).getSpotifyService().playSong("spotify:track:3WTz4svCL6ouAD7E9AEWXL");
-
-      /*  try {
-            Thread.sleep(1000);
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-
-        ((GlobalApplication) getApplication()).getSpotifyService().pauseSong();
-
-        try {
-            Thread.sleep(1000);
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-        ((GlobalApplication) getApplication()).getSpotifyService().resumeSong();
-        try {
-            Thread.sleep(2000);
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-*/
-
+        Object[] data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
+        ContentList contentList = new ContentList(this, R.id.song_recommendations, LinearLayoutManager.VERTICAL, data);
+        contentList.setTitle(R.string.recommendations_songs);
     }
 
     private void loadRecommendedAlbums() {
-        TextView textView = (TextView) findViewById(R.id.album_recommendations).findViewById(R.id.list_horizontal_title);
-        textView.setText(R.string.recommendations_albums);
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.album_recommendations).findViewById(R.id.song_history_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        final MenuAdapter adapter = new MenuAdapter(this, ((GlobalApplication) getApplication()).getRecommendedAlbums());
-        recyclerView.setAdapter(adapter);
+        Object[] data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
+        ContentList contentList = new ContentList(this, R.id.album_recommendations, LinearLayoutManager.HORIZONTAL, data);
+        contentList.setTitle(R.string.recommendations_albums);
     }
 
     private void loadSongHistory() {
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.song_history).findViewById(R.id.song_history_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        final MenuAdapter adapter = new MenuAdapter(this, ((GlobalApplication) getApplication()).getSongHistory());
-        recyclerView.setAdapter(adapter);
-
-
+        Object[] data = ((GlobalApplication) getApplication()).getSongHistory();
+        ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL, data);
     }
 
     /* SEARCH SHIT ICON SHIT STUFF */
@@ -126,9 +81,6 @@ public class MainActivity extends ActionBarActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         return true;
-
-
-
     }
 
     @Override
@@ -143,46 +95,5 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
-/*
-    private void initActionbar() {
-        ActionBar mActionBar = getSupportActionBar();
-        if (mActionBar != null) {
-
-            mActionBar.setDisplayShowHomeEnabled(false);
-            mActionBar.setDisplayShowTitleEnabled(false);
-            LayoutInflater mInflater = LayoutInflater.from(this);
-
-            View mCustomView = mInflater.inflate(R.layout.actionbar, null);
-
-            mActionBar.setDisplayHomeAsUpEnabled(false);
-            Toolbar toolbar = (Toolbar) mCustomView.findViewById(R.id.toolbar);
-            SearchView searchView = (SearchView) mCustomView.findViewById(R.id.toolbar_search);
-
-            DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-            ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_content_desc, R.string.close_content_desc) {
-
-                public void onDrawerClosed(View view)
-                {
-                    supportInvalidateOptionsMenu();
-                    //drawerOpened = false;
-                }
-
-                public void onDrawerOpened(View drawerView)
-                {
-                    supportInvalidateOptionsMenu();
-                    //drawerOpened = true;
-                }
-            };
-
-            mDrawerToggle.setDrawerIndicatorEnabled(true);
-            drawerLayout.setDrawerListener(mDrawerToggle);
-            mDrawerToggle.syncState();
-
-            mActionBar.setCustomView(mCustomView);
-            mActionBar.setDisplayShowCustomEnabled(true);
-        }
-    }
-    */
 }

@@ -29,7 +29,7 @@
             android:id="@+id/song_recommendations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/list_horizontal_button"/>
+            layout="@layout/list_horizontal"/>
 
         <TextView
             android:layout_width="wrap_content"

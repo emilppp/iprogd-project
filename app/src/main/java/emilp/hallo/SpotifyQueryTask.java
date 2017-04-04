@@ -5,17 +5,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URL;
 
 import emilp.hallo.NetworkUtils;
 
-public class SpotifyQueryTask extends AsyncTask<URL, Void, String> {
+public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
 
     @Override
-    protected String doInBackground(URL... params) {
+    protected JSONObject doInBackground(URL... params) {
         URL searchUrl = params[0];
-        String githubSearchResults = null;
+        JSONObject githubSearchResults = null;
         try {
             githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
         } catch (IOException e) {
@@ -25,9 +27,11 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String githubSearchResults) {
+    protected void onPostExecute(JSONObject githubSearchResults) {
         if (githubSearchResults != null && !githubSearchResults.equals("")) {
             Log.d("SpotifyQueryTask", "Fann" + githubSearchResults);
         }
+
+
     }
 }
