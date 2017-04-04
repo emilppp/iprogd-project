@@ -1,11 +1,9 @@
 package emilp.hallo;
 
-/**
- * Created by jonas on 2017-03-27.
- */
+import android.text.Html;
 
 class Song {
-    private String title = "Title";
+    private String title;
     private Artist artist;
     private Album album;
     private Artist[] artists;
@@ -20,6 +18,10 @@ class Song {
     }
 
     public Song() {
+        this.title = "Title";
+        this.artist = new Artist();
+        this.album = new Album();
+        this.duration = 10;
     }
 
     public Artist getArtist() {
@@ -62,4 +64,7 @@ class Song {
         return album;
     }
 
+    public String getInformation() {
+        return getArtist().getName() + " - " + getAlbum().getName() + " " + Html.fromHtml("&#8226;").toString() + " " + getDuration();
+    }
 }

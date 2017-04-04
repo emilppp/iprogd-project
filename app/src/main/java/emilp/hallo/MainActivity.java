@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,8 +42,14 @@ public class MainActivity extends ActionBarActivity {
 
         loadRecommended();
 
-        ((GlobalApplication) getApplication()).getSpotifyService().makeSearchQuery("lean", "artist");
-
+        Button btnCreatePlaylist = (Button) findViewById(R.id.btn_create_playlist);
+        btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PlayList.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadRecommended() {
@@ -83,10 +91,13 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
+    /*
+    public static boolean searchResultsOpenWeLikeBugsThatRequireUsToUseThis = false;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemThatWasSelected = item.getItemId();
-        if(menuItemThatWasSelected == R.id.action_search) {
+        if(menuItemThatWasSelected == R.id.action_search && searchResultsOpenWeLikeBugsThatRequireUsToUseThis) {
             Context context = MainActivity.this;
             String message = "Search clicked";
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
@@ -95,5 +106,5 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }

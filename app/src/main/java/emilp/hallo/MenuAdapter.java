@@ -1,53 +1,22 @@
 package emilp.hallo;
 
+import emilp.hallo.ListType.ViewHolder;
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import emilp.hallo.R;
+public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-/**
- * Created by Jonas on 2017-02-02.
- */
-public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
-
-    private Object[] dataset;
     public Activity activity;
+    private ListType list;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout item;
-        public ViewHolder(LinearLayout v) {
-            super(v);
-            item = v;
-        }
-        public TextView getArtistTextView() {
-            return (TextView) item.findViewById(R.id.history_item_artist);
-        }
-        public TextView getTitleTextView() {
-            return (TextView) item.findViewById(R.id.history_item_title);
-        }
-        public ImageView getCoverImageView() {
-            return (ImageView) item.findViewById(R.id.history_item_cover);
-        }
-    }
-
-    public MenuAdapter(Activity activity, Object[] dataset) {
-        this.dataset = dataset;
+    public MenuAdapter(Activity activity, ListType list) {
         this.activity = activity;
+        this.list = list;
     }
 
-    protected int getLayoutId() {
-        return R.layout.song_history_item;
-    }
-
-    public MenuAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(getLayoutId(), parent, false);
-        ViewHolder viewHolder = new ViewHolder(v);
-        return viewHolder;
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return list.onCreateViewHolder(parent, viewType);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -55,23 +24,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-
-        holder.getArtistTextView().setText(getArtistText());
-        holder.getTitleTextView().setText(((Song) dataset[position]).getTitle());
-        holder.getCoverImageView().setImageResource(R.drawable.fallback_album);
-    }
-
-    protected String getArtistText() {
-        return "Artist";
-    }
-
-    protected String getInformationText() {
-        return activity.getResources().getString(R.string.placeholder_song_information);
+        list.onBindViewHolder(holder, position);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return dataset.length;
+        return list.getData().length;
     }
 }

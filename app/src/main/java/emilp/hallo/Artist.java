@@ -20,7 +20,7 @@ public class Artist {
     }
 
     public Artist() {
-
+        name = "Artist";
     }
 
     public String getName() {

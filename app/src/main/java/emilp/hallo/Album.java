@@ -19,7 +19,7 @@ public class Album {
         this.genres = genres;
     }
     public Album() {
-
+        this.name = "Album";
     }
 
     public void setType(String typ) {
