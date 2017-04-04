@@ -63,11 +63,10 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
                 protected void onPostExecute(Void aVoid) {
                     super.onPostExecute(aVoid);
 
-                    Toast.makeText(act, "Images done", Toast.LENGTH_SHORT).show();
                     ContentList contentList = new ContentList(act, R.id.search_results, LinearLayoutManager.VERTICAL, global.getSearchRes().toArray());
+                    contentList.setTitle(R.string.artists);
                 }
             }.execute(artists);
-            Toast.makeText(act, "Images going", Toast.LENGTH_SHORT).show();
         }
     }
 }
