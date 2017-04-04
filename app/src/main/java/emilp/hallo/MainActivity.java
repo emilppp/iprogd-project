@@ -1,6 +1,8 @@
 package emilp.hallo;
 
 import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
@@ -10,14 +12,16 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -108,20 +112,38 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    /* SEARCH SHIT ICON SHIT STUFF */
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
 
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         return true;
+
+
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemThatWasSelected = item.getItemId();
-        return true;
+        if(menuItemThatWasSelected == R.id.action_search) {
+            Context context = MainActivity.this;
+            String message = "Search clicked";
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 /*
     private void initActionbar() {

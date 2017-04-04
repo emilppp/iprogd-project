@@ -8,7 +8,7 @@
     android:id="@+id/drawerLayout"
     tools:context="emilp.hallo.MainActivity">
 
-    <!-- The main content view -->
+    <!-- The options_menu content view -->
     <include
         android:id="@+id/mainContent"
         layout="@layout/activity_main_content"
