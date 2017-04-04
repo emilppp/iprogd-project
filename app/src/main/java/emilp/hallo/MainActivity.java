@@ -40,7 +40,6 @@ public class MainActivity extends ActionBarActivity {
 
         loadRecommended();
 
-        ((GlobalApplication) getApplication()).getSpotifyService().makeSearchQuery("lean", "artist");
 
     }
 
