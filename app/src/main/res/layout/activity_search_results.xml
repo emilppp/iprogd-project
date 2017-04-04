@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/search_results_wrapper"
     tools:context="emilp.hallo.SearchResultsActivity">
 
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="I love kebab"
-        android:id="@+id/test_text_view"/>
-</LinearLayout>
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/search_results"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            layout="@layout/list_horizontal" />
+
+    </LinearLayout>
+
+</ScrollView>

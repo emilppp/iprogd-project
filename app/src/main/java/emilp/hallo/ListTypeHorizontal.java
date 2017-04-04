@@ -27,11 +27,14 @@ public class ListTypeHorizontal implements ListType {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Song song = (Song) data[position];
+        Content content = (Content) data[position];
 
-        holder.getArtistTextView().setText(song.getArtist().getName());
-        holder.getTitleTextView().setText(song.getTitle());
-        holder.getCoverImageView().setImageResource(R.drawable.fallback_album);
+        holder.getArtistTextView().setText(content.getBread());
+        holder.getTitleTextView().setText(content.getTitle());
+        if(content.getImage() != null)
+            holder.getCoverImageView().setImageBitmap(content.getImage());
+        else
+            holder.getCoverImageView().setImageResource(content.fallbackImage());
     }
 
     @Override

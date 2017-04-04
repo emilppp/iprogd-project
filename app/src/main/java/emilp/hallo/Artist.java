@@ -1,26 +1,38 @@
 package emilp.hallo;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by emil on 2017-03-28.
  */
 
-public class Artist {
+public class Artist implements Content {
 
-    String name;
-    String[] genres;
-    String spotifyID;
-    int popularity;
+    private String name;
+    private String[] genres;
+    private String imageUrl;
+    private Bitmap image;
+    private String spotifyID;
+    private int popularity;
 
     public Artist(String name, String[] genres, String spotifyID, int popularity) {
         this.name = name;
         this.genres = genres;
         this.spotifyID = spotifyID;
         this.popularity = popularity;
+    }
 
+    public Artist(String name, String[] genres, String spotifyID, int popularity, String imageUrl) {
+        this.name = name;
+        this.genres = genres;
+        this.spotifyID = spotifyID;
+        this.popularity = popularity;
+        this.imageUrl = imageUrl;
     }
 
     public Artist() {
         name = "Artist";
+        spotifyID = "opsasdasdpiahsdopiahsd12";
     }
 
     public String getName() {
@@ -55,4 +67,28 @@ public class Artist {
         return spotifyID;
     }
 
+    public void downloadImage() {
+        if(image == null && imageUrl != null && !imageUrl.equals(""))
+            image = NetworkUtils.getBitmapFromUrl(imageUrl);
+    }
+
+    @Override
+    public String getTitle() {
+        return getName();
+    }
+
+    @Override
+    public String getBread() {
+        return "Bread";
+    }
+
+    @Override
+    public Bitmap getImage() {
+        return image;
+    }
+
+    @Override
+    public int fallbackImage() {
+        return R.drawable.fallback_album;
+    }
 }

@@ -21,6 +21,17 @@ public class ContentList {
     private MenuAdapter adapter;
     private View view;
 
+    /**
+     * Creates a list in the given direction with the provided data
+     * @param activity
+     *  Activity that contains the list
+     * @param container
+     * The view that is the correct layout
+     * @param direction
+     * The direction of the list
+     * @param data
+     * The data to be displayed
+     */
     public ContentList(Activity activity, int container, int direction, Object[] data) {
         this.activity = activity;
         this.view = activity.findViewById(container);

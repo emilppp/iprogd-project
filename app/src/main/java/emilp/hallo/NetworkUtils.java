@@ -78,7 +78,8 @@ public class NetworkUtils {
             boolean hasInput = scanner.hasNext();
             if (hasInput) {
                 try {
-                    return new JSONObject(scanner.next());
+                    String res = scanner.next();
+                    return new JSONObject(res);
                 } catch (JSONException e) {
                     return null;
                 }
@@ -96,7 +97,7 @@ public class NetworkUtils {
      * @param url
      * @return The bitmap of the url's image
      */
-    public Bitmap getBitmapFromUrl(String url) {
+    public static Bitmap getBitmapFromUrl(String url) {
         Bitmap image = null;
         try {
             URL u = new URL(url);
