@@ -11,7 +11,7 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         style="@style/text_big"/>
 
-    <ImageView
+    <ImageButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -19,7 +19,8 @@
         android:scaleType="fitXY"
         android:id="@+id/artist_1_bg"
         android:layout_below="@id/r_a_title"
-        android:src="@drawable/placeholder_pink" />
+        android:src="@drawable/placeholder_pink"
+        android:background="?android:attr/selectableItemBackground"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +34,7 @@
         android:background="@color/colorPrimaryDarkTransparent"
         />
 
-    <ImageView
+    <ImageButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -41,7 +42,8 @@
         android:scaleType="fitXY"
         android:id="@+id/artist_2_bg"
         android:layout_below="@id/artist_1_bg"
-        android:src="@drawable/placeholder_bowie" />
+        android:src="@drawable/placeholder_bowie"
+        android:background="?android:attr/selectableItemBackground"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,7 +57,7 @@
         android:background="@color/colorPrimaryDarkTransparent"
         />
 
-    <ImageView
+    <ImageButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -63,7 +65,8 @@
         android:scaleType="fitXY"
         android:id="@+id/artist_3_bg"
         android:layout_below="@id/artist_2_bg"
-        android:src="@drawable/placeholder_band_of_horses" />
+        android:src="@drawable/placeholder_band_of_horses"
+        android:background="?android:attr/selectableItemBackground"/>
 
     <TextView
         android:layout_width="wrap_content"

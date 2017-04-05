@@ -5,29 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import emilp.hallo.view.ContentList;
 
@@ -77,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setLogo(R.drawable.icon_naked);
+        getSupportActionBar().setLogo(R.drawable.icon_naked2);
 
         Button btnCreatePlaylist = (Button) findViewById(R.id.btn_create_playlist);
         btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +78,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ImageButton artistPage = (ImageButton) findViewById(R.id.artist_1_bg);
+        artistPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(getApplicationContext(), ArtistPage.class);
+                startActivity(intent2);
+            }
+        });
+
     }
 
     private void loadRecommended() {

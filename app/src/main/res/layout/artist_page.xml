@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@+id/artist_page_toolbar"
+        layout="@layout/toolbar"
+        xmlns:android="http://schemas.android.com/apk/res/android" />
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/artist_page"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+
