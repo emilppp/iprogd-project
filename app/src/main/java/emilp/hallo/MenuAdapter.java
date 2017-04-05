@@ -4,6 +4,7 @@ import emilp.hallo.MenuAdapter.ViewHolder;
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,7 +29,7 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Content content = (Content) data[position];
+        final Content content = (Content) data[position];
 
         holder.getArtistTextView().setText(content.getBread());
         holder.getTitleTextView().setText(content.getTitle());
@@ -36,6 +37,26 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
             holder.getCoverImageView().setImageBitmap(content.getImage());
         else
             holder.getCoverImageView().setImageResource(content.fallbackImage());
+
+        holder.getMainClick().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickListener(view, content);
+            }
+        });
+        if(holder.hasSecondClick()) {
+            holder.getSecondClick().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onSecondClickListener(view, content);
+                }
+            });
+        }
+    }
+
+    protected void onClickListener(View view, Content content) {
+    }
+    protected void onSecondClickListener(View view, Content content) {
     }
 
     @Override
@@ -49,6 +70,23 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
             super(v);
             item = v;
         }
+
+        public View getItem() {
+            return item;
+        }
+
+        public boolean hasSecondClick() {
+            return item.findViewById(R.id.item_more_options) != null;
+        }
+
+        public View getSecondClick() {
+            return item.findViewById(R.id.item_more_options);
+        }
+
+        public View getMainClick() {
+            return item.findViewById(R.id.main_click);
+        }
+
         public TextView getArtistTextView() {
             return (TextView) item.findViewById(R.id.history_item_artist);
         }

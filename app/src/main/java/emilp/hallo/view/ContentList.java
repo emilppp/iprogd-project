@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import emilp.hallo.Content;
 import emilp.hallo.MenuAdapter;
 import emilp.hallo.R;
 
@@ -38,12 +39,30 @@ public class ContentList {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity, direction, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        int layout = R.layout.list_item_song;
         if(direction == LinearLayoutManager.HORIZONTAL)
-            adapter = new MenuAdapter(activity, R.layout.song_history_item, data);
-        else
-            adapter = new MenuAdapter(activity, R.layout.list_item_song, data);
+            layout = R.layout.song_history_item;
+
+        adapter = new MenuAdapter(activity, layout, data) {
+            @Override
+            public void onClickListener(View view, Content content) {
+                super.onClickListener(view, content);
+                onItemClick(view, content);
+            }
+
+            @Override
+            protected void onSecondClickListener(View view, Content content) {
+                super.onSecondClickListener(view, content);
+                onSecondItemClick(view, content);
+            }
+        };
 
         recyclerView.setAdapter(adapter);
+    }
+
+    protected void onItemClick(View view, Content content) {
+    }
+    protected void onSecondItemClick(View view, Content content) {
     }
 
     public void setTitle(int res) {
