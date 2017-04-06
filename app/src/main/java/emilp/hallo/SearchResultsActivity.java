@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ public class SearchResultsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_search_results);
+
+        ((GlobalApplication) getApplication()).clearResList();
 
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -59,7 +62,20 @@ public class SearchResultsActivity extends Activity {
                             protected void onPostExecute(Void aVoid) {
                                 super.onPostExecute(aVoid);
 
-                                ContentList contentList = new ContentList(act, R.id.search_results, LinearLayoutManager.VERTICAL, global.getSearchRes().toArray());
+                                ContentList contentList = new ContentList(act, R.id.search_results, LinearLayoutManager.VERTICAL, global.getSearchRes().toArray()){
+                                    @Override
+                                    protected void onItemClick(View view, Content content) {
+                                        Artist art = (Artist) content;
+                                        ((GlobalApplication) getApplication()).setCurrentArtist(art);
+                                        Intent intent = new Intent(SearchResultsActivity.this, ArtistPage.class);
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    protected void onSecondItemClick(View view, Content content) {
+
+                                    }
+                                };
                                 contentList.setTitle(R.string.artists);
                             }
                         }.execute(artists);
