@@ -39,7 +39,6 @@ public class GlobalApplication extends Application {
 
     public void addSongHistory(Song song) {
         songHistory.add(song);
-        System.out.println(songHistory.size());
         historyAdapter.notifyDataSetChanged();
     }
 

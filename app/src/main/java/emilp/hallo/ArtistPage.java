@@ -33,25 +33,23 @@ public class ArtistPage extends AppCompatActivity {
 
         currentArtist = ((GlobalApplication) getApplication()).getCurrentArtist();
 
-
-         Toolbar myToolbar = (Toolbar) findViewById(R.id.artist_page_toolbar);
-         setSupportActionBar(myToolbar);
-         ActionBar actionBar = getSupportActionBar();
-         if (actionBar != null)
-         {
-             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-             getSupportActionBar().setDisplayShowHomeEnabled(true);
-             myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View view) {
-                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                     startActivity(intent);
-                 }
-             });
-             //getSupportActionBar().setDisplayShowTitleEnabled(true);
-             //getSupportActionBar().setLogo(R.drawable.icon_naked2);
-         }
-
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.artist_page_toolbar);
+        setSupportActionBar(myToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+            //getSupportActionBar().setDisplayShowTitleEnabled(true);
+            //getSupportActionBar().setLogo(R.drawable.icon_naked2);
+        }
     }
 
     @Override
@@ -72,11 +70,12 @@ public class ArtistPage extends AppCompatActivity {
                 ImageView ivArtistBanner = (ImageView) findViewById(R.id.artist_banner);
 
                 tvArtistName.setText(currentArtist.getName());
-                ivArtistBanner.setImageBitmap(currentArtist.getImage());
-
+                if(currentArtist.getImage() != null)
+                    ivArtistBanner.setImageBitmap(currentArtist.getImage());
+                else
+                    ivArtistBanner.setImageResource(currentArtist.fallbackImage());
             }
         }.execute(url);
         return true;
     }
-
 }

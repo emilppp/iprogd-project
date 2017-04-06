@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
         loadRecommended();
 
-
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
         //getSupportActionBar().setLogo(R.drawable.icon_naked2);
 
@@ -89,34 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-/*
-        ImageButton artistPage = (ImageButton) findViewById(R.id.artist_1_bg);
-        artistPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent2 = new Intent(getApplicationContext(), ArtistPage.class);
-                startActivity(intent2);
-            }
-        });
-
-        ImageButton artistPage2 = (ImageButton) findViewById(R.id.artist_2_bg);
-        artistPage2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent3 = new Intent(getApplicationContext(), ArtistPage.class);
-                startActivity(intent3);
-            }
-        });
-
-        ImageButton artistPage3 = (ImageButton) findViewById(R.id.artist_3_bg);
-        artistPage3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent4 = new Intent(getApplicationContext(), ArtistPage.class);
-                startActivity(intent4);
-            }
-        });*/
-
     }
 
     private void loadRecommended() {
@@ -164,7 +135,14 @@ public class MainActivity extends AppCompatActivity {
         data.add(new Artist());
         data.add(new Artist());
         data.add(new Artist());
-        ContentList contentList = new ContentList(this, R.id.recommended_artists_list, LinearLayoutManager.VERTICAL, R.layout.list_item_big);
+        ContentList contentList = new ContentList(this, R.id.recommended_artists_list, LinearLayoutManager.VERTICAL, R.layout.list_item_big) {
+            @Override
+            protected void onItemClick(View view, Content content) {
+                ((GlobalApplication) getApplication()).setCurrentArtist((Artist) content);
+                Intent intent = new Intent(getApplicationContext(), ArtistPage.class);
+                startActivity(intent);
+            }
+        };
         contentList.setTitle(R.string.recommendations_albums);
         contentList.init(data);
     }
