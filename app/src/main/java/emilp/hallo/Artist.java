@@ -89,6 +89,6 @@ public class Artist implements Content {
 
     @Override
     public int fallbackImage() {
-        return R.drawable.fallback_album;
+        return R.drawable.placeholder_pink;
     }
 }

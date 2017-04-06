@@ -34,7 +34,8 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
         final Content content = (Content) data.get(position);
 
         holder.getArtistTextView().setText(content.getBread());
-        holder.getTitleTextView().setText(content.getTitle());
+        if(holder.getTitleTextView() != null)
+           holder.getTitleTextView().setText(content.getTitle());
         if(content.getImage() != null)
             holder.getCoverImageView().setImageBitmap(content.getImage());
         else

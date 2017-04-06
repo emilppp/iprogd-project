@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+/*
         ImageButton artistPage = (ImageButton) findViewById(R.id.artist_1_bg);
         artistPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,14 +115,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent4 = new Intent(getApplicationContext(), ArtistPage.class);
                 startActivity(intent4);
             }
-        });
+        });*/
 
     }
 
     private void loadRecommended() {
         loadRecommendedAlbums();
         loadRecommendedSongs();
-
+        loadRecommendedArtists();
     }
 
     @Override
@@ -156,6 +156,16 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         contentList.setTitle(R.string.recommendations_songs);
+        contentList.init(data);
+    }
+
+    private void loadRecommendedArtists() {
+        ArrayList<Content> data = new ArrayList<>();
+        data.add(new Artist());
+        data.add(new Artist());
+        data.add(new Artist());
+        ContentList contentList = new ContentList(this, R.id.recommended_artists_list, LinearLayoutManager.VERTICAL, R.layout.list_item_big);
+        contentList.setTitle(R.string.recommendations_albums);
         contentList.init(data);
     }
 

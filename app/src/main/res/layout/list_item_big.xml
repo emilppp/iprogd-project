@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/main_click"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <emilp.hallo.view.AspectRatioImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            android:id="@+id/history_item_cover"
+            android:src="@drawable/fallback_album"
+            android:background="?android:attr/selectableItemBackground"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/history_item_artist"
+            android:layout_alignBottom="@id/history_item_cover"
+            android:text="@string/placeholder_song_artist"
+            style="@style/text_big"
+            android:textColor="@color/colorWhiteish"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:background="@color/colorPrimaryDarkTransparent"
+            />
+    </RelativeLayout>
+</LinearLayout>

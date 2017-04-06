@@ -1,94 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/r_a_title"
-        android:text="@string/recommendations_artists"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        style="@style/text_big"/>
-
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
-        android:id="@+id/artist_1_bg"
-        android:layout_below="@id/r_a_title"
-        android:src="@drawable/placeholder_pink"
-        android:background="?android:attr/selectableItemBackground"/>
+    <include
+        android:id="@+id/recommended_artists_list"
+        layout="@layout/list_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/artist_1_artist"
-        android:layout_alignBottom="@id/artist_1_bg"
-        android:text="@string/placeholder_song_artist"
-        style="@style/text_big"
-        android:textColor="@color/colorWhiteish"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:background="@color/colorPrimaryDarkTransparent"
-        />
-
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
-        android:id="@+id/artist_2_bg"
-        android:layout_below="@id/artist_1_bg"
-        android:src="@drawable/placeholder_bowie"
-        android:background="?android:attr/selectableItemBackground"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/artist_2_artist"
-        android:layout_alignBottom="@id/artist_2_bg"
-        android:text="@string/placeholder_song_artist"
-        style="@style/text_big"
-        android:textColor="@color/colorWhiteish"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:background="@color/colorPrimaryDarkTransparent"
-        />
-
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
-        android:id="@+id/artist_3_bg"
-        android:layout_below="@id/artist_2_bg"
-        android:src="@drawable/placeholder_band_of_horses"
-        android:background="?android:attr/selectableItemBackground"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/artist_3_artist"
-        android:layout_alignBottom="@id/artist_3_bg"
-        android:text="@string/placeholder_song_artist"
-        style="@style/text_big"
-        android:textColor="@color/colorWhiteish"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:background="@color/colorPrimaryDarkTransparent"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_gravity="end"
         android:id="@+id/show_more"
         android:textColor="@color/colorLogo"
+        android:layout_margin="@dimen/activity_vertical_margin_half"
         style="@style/text_big"
         android:text="@string/show_more"
-        android:layout_below="@id/artist_3_bg"
         android:gravity="end"
         android:padding="5dp"/>
 
-</RelativeLayout>
+</LinearLayout>

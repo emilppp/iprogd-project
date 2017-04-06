@@ -36,16 +36,23 @@ public class ContentList {
      * The data to be displayed
      */
     public ContentList(Activity activity, int container, int direction) {
-        this.activity = activity;
-        this.view = activity.findViewById(container);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.song_history_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity, direction, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
+        constructorHelp(activity, container, direction);
         layout = R.layout.list_item_song;
         if(direction == LinearLayoutManager.HORIZONTAL)
             layout = R.layout.song_history_item;
+    }
+
+    public ContentList(Activity activity, int container, int direction, int customLayout) {
+        constructorHelp(activity, container, direction);
+        layout = customLayout;
+    }
+
+    private void constructorHelp(Activity activity, int container, int direction) {
+        this.activity = activity;
+        this.view = activity.findViewById(container);
+        recyclerView = (RecyclerView) view.findViewById(R.id.song_history_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity, direction, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
     }
 
     public void init(ArrayList<Content> data) {
