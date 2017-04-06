@@ -131,10 +131,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRecommendedArtists() {
-        ArrayList<Content> data = new ArrayList<>();
-        data.add(new Artist());
-        data.add(new Artist());
-        data.add(new Artist());
+        ArrayList<Content> data = ((GlobalApplication) getApplication()).getRecommendedArtists();
         ContentList contentList = new ContentList(this, R.id.recommended_artists_list, LinearLayoutManager.VERTICAL, R.layout.list_item_big) {
             @Override
             protected void onItemClick(View view, Content content) {

@@ -60,6 +60,14 @@ public class GlobalApplication extends Application {
         return arr;
     }
 
+    public ArrayList<Content> getRecommendedArtists() {
+        ArrayList<Content> data = new ArrayList<>();
+        data.add(new Artist());
+        data.add(new Artist());
+        data.add(new Artist());
+        return data;
+    }
+
     public void addArtist(Artist artist) {
         this.artist.add(artist);
     }
