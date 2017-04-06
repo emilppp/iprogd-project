@@ -17,6 +17,7 @@ package emilp.hallo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.renderscript.ScriptGroup;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +39,8 @@ public class NetworkUtils {
 
     final static String SPOTIFY_ARTIST_URL = "https://api.spotify.com/v1/artists/";
 
+    final static String SPOTIFY_HISTORY_URL = "https://api.spotify.com/v1/me/player/recently-played";
+
     final static String PARAM_QUERY = "q";
     final static String PARAM_TYPE = "type";
 
@@ -58,6 +61,15 @@ public class NetworkUtils {
         return url;
     }
 
+    public static URL buildUrlHistory() {
+        try {
+            return new URL(SPOTIFY_HISTORY_URL);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static URL buildUrlArtist(String artistId) {
         Uri builtUri = Uri.parse(SPOTIFY_ARTIST_URL).buildUpon().appendPath(artistId).build();
         URL url = null;
@@ -70,6 +82,11 @@ public class NetworkUtils {
         return url;
     }
 
+
+    public static JSONObject getResponseFromHttpUrl(URL url) throws IOException {
+        return getResponseFromHttpUrl(url, null);
+    }
+
     /**
      * This method returns the entire result from the HTTP response.
      *
@@ -77,10 +94,18 @@ public class NetworkUtils {
      * @return The contents of the HTTP response.
      * @throws IOException Related to network and stream reading
      */
-    public static JSONObject getResponseFromHttpUrl(URL url) throws IOException {
+    public static JSONObject getResponseFromHttpUrl(URL url, String token) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod("GET");
+        if(token != null)
+           urlConnection.setRequestProperty("Authorization", "Bearer " + token);
         try {
-            InputStream in = urlConnection.getInputStream();
+            InputStream in;
+            if(urlConnection.getResponseCode() == 401) {
+                //in = urlConnection.getErrorStream();
+            }
+            //else
+            in = urlConnection.getInputStream();
 
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
@@ -96,9 +121,12 @@ public class NetworkUtils {
             } else {
                 return null;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             urlConnection.disconnect();
         }
+        return null;
     }
 
 

@@ -10,13 +10,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private Activity activity;
     private int layout;
-    private Object[] data;
+    private ArrayList<Content> data;
 
-    public MenuAdapter(Activity activity, int layout, Object[] data) {
+    public MenuAdapter(Activity activity, int layout, ArrayList<Content> data) {
         this.activity = activity;
         this.layout = layout;
         this.data = data;
@@ -29,7 +31,7 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final Content content = (Content) data[position];
+        final Content content = (Content) data.get(position);
 
         holder.getArtistTextView().setText(content.getBread());
         holder.getTitleTextView().setText(content.getTitle());
@@ -61,7 +63,7 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return data.length;
+        return data.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

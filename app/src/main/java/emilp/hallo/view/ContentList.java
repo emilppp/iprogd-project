@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import emilp.hallo.Content;
 import emilp.hallo.MenuAdapter;
 import emilp.hallo.R;
@@ -16,9 +18,11 @@ import emilp.hallo.R;
 
 public class ContentList {
 
+    private RecyclerView recyclerView;
     private Activity activity;
     private MenuAdapter adapter;
     private View view;
+    private int layout;
 
     /**
      * Creates a list in the given direction with the provided data
@@ -31,17 +35,20 @@ public class ContentList {
      * @param data
      * The data to be displayed
      */
-    public ContentList(Activity activity, int container, int direction, Object[] data) {
+    public ContentList(Activity activity, int container, int direction) {
         this.activity = activity;
         this.view = activity.findViewById(container);
 
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.song_history_list);
+        recyclerView = (RecyclerView) view.findViewById(R.id.song_history_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity, direction, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        int layout = R.layout.list_item_song;
+        layout = R.layout.list_item_song;
         if(direction == LinearLayoutManager.HORIZONTAL)
             layout = R.layout.song_history_item;
+    }
+
+    public void init(ArrayList<Content> data) {
 
         adapter = new MenuAdapter(activity, layout, data) {
             @Override
@@ -58,6 +65,10 @@ public class ContentList {
         };
 
         recyclerView.setAdapter(adapter);
+    }
+
+    public void notifyDataSetChanged() {
+        adapter.notifyDataSetChanged();
     }
 
     protected void onItemClick(View view, Content content) {

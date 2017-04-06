@@ -20,10 +20,16 @@ import emilp.hallo.NetworkUtils;
 import emilp.hallo.view.ContentList;
 
 public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
-    Activity act;
+    private Activity act;
+    private String token = null;
 
     public SpotifyQueryTask(Activity activity) {
         act = activity;
+    }
+
+    public SpotifyQueryTask(Activity activity, String token) {
+        act = activity;
+        this.token = token;
     }
 
     @Override
@@ -31,7 +37,7 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
         URL searchUrl = params[0];
         JSONObject githubSearchResults = null;
         try {
-            githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl, token);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,6 +45,6 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
     }
 
     @Override
-    protected void onPostExecute(JSONObject githubSearchResults) {
+    protected void onPostExecute(JSONObject res) {
     }
 }

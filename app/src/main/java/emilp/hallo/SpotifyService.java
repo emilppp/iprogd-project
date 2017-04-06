@@ -35,6 +35,8 @@ public class SpotifyService extends Activity implements
     // TODO: Replace with your redirect URI
     private static final String REDIRECT_URI = "emilp://callback";
 
+    private String accessToken;
+
     private Player mPlayer;
 
     public Player getmPlayer() {
@@ -63,7 +65,7 @@ public class SpotifyService extends Activity implements
 
     public void authSpotify(Activity activity) {
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-        builder.setScopes(new String[]{"user-read-private", "streaming"});
+        builder.setScopes(new String[]{"user-read-private", "streaming", "user-read-recently-played", "playlist-modify-private"});
         AuthenticationRequest request = builder.build();
         AuthenticationClient.openLoginActivity(activity, REQUEST_CODE, request);
     }
@@ -100,6 +102,7 @@ public class SpotifyService extends Activity implements
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
                 // Logged in
+                accessToken = response.getAccessToken();
                 Config playerConfig = new Config(activity.getApplicationContext(), response.getAccessToken(), CLIENT_ID);
                 Spotify.getPlayer(playerConfig, activity.getApplicationContext(), new SpotifyPlayer.InitializationObserver() {
                     @Override
@@ -179,24 +182,40 @@ public class SpotifyService extends Activity implements
     }
 
     Artist[] arre;
-    public ArrayList<Song> getSongHistory() {
-        ArrayList<Song> arr = new ArrayList<>();
+    public ArrayList<Content> getSongHistory(final GlobalApplication global) {
+        ArrayList<Content> arr = new ArrayList<>();
+
+        URL url = NetworkUtils.buildUrlHistory();
+        new SpotifyQueryTask(this, getAccessToken()){
+            @Override
+            protected void onPostExecute(JSONObject res) {
+                if(res != null) {
+                    parseHistoryJSON(res, global);
+                }
+            }
+        }.execute(url);
+
         arr.add(new Song("Kebab", new Album(), new Artist(), arre , 13));
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
         return arr;
     }
 
+    private void parseHistoryJSON(JSONObject res, GlobalApplication global) {
+        try {
+            JSONArray arr = res.getJSONArray("items");
+            for(int i=0; i<arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i).getJSONObject("track");
+                String name = obj.getString("name");
+                String id = obj.getString("id");
+                int duration = obj.getInt("duration_ms") / 1000;
+                Song song = new Song(name, new Album(), new Artist(), new Artist[0], duration);
+
+                global.addSongHistory(song);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     // Type kan vara album, track, artist, playlist
 
@@ -234,5 +253,9 @@ public class SpotifyService extends Activity implements
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getAccessToken() {
+        return accessToken;
     }
 }

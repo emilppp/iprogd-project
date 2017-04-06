@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 
+import java.util.ArrayList;
+
 import emilp.hallo.view.ContentList;
 
 /**
@@ -17,8 +19,9 @@ public class PlayList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playlist);
 
-        Object[] data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
-        ContentList contentList = new ContentList(this, R.id.playlist, LinearLayoutManager.VERTICAL, data);
+        ArrayList<Content> data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
+        ContentList contentList = new ContentList(this, R.id.playlist, LinearLayoutManager.VERTICAL);
         contentList.setTitle(R.string.recommendations_songs);
+        contentList.init(data);
     }
 }

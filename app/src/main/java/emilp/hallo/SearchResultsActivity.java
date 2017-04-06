@@ -18,7 +18,6 @@ import java.net.URL;
 
 import emilp.hallo.view.ContentList;
 
-
 public class SearchResultsActivity extends Activity {
 
     @Override
@@ -38,10 +37,7 @@ public class SearchResultsActivity extends Activity {
                     if (githubSearchResults != null && !githubSearchResults.equals("")) {
                         Log.d("SpotifyQueryTask", "Fann" + githubSearchResults);
 
-                        //TextView test = (TextView) act.findViewById(R.id.test_text_view);
-                        //test.setText(githubSearchResults.toString());
-
-                        final GlobalApplication global = (GlobalApplication) act.getApplication();
+                        final GlobalApplication global = (GlobalApplication) getApplication();
                         SpotifyService.parseSearchJSON(githubSearchResults, global);
 
                         Object[] artists = global.getSearchRes().toArray();
@@ -51,7 +47,6 @@ public class SearchResultsActivity extends Activity {
                             protected Void doInBackground(Object[] params) {
                                 for (Object o : params)
                                     ((Artist) o).downloadImage();
-                                System.out.println(((Artist) params[0]).getImage());
                                 return null;
                             }
 
@@ -59,8 +54,9 @@ public class SearchResultsActivity extends Activity {
                             protected void onPostExecute(Void aVoid) {
                                 super.onPostExecute(aVoid);
 
-                                ContentList contentList = new ContentList(act, R.id.search_results, LinearLayoutManager.VERTICAL, global.getSearchRes().toArray());
+                                ContentList contentList = new ContentList(SearchResultsActivity.this, R.id.search_results, LinearLayoutManager.VERTICAL);
                                 contentList.setTitle(R.string.artists);
+                                contentList.init(global.getSearchRes());
                             }
                         }.execute(artists);
                     }

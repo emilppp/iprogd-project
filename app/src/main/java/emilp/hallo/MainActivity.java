@@ -27,6 +27,8 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import emilp.hallo.view.ContentList;
 
 
@@ -136,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRecommendedSongs() {
-        Object[] data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
-        ContentList contentList = new ContentList(this, R.id.song_recommendations, LinearLayoutManager.VERTICAL, data) {
+        ArrayList<Content> data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
+        ContentList contentList = new ContentList(this, R.id.song_recommendations, LinearLayoutManager.VERTICAL) {
             @Override
             protected void onItemClick(View view, Content content) {
                 Song song = (Song) content;
@@ -154,17 +156,20 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         contentList.setTitle(R.string.recommendations_songs);
+        contentList.init(data);
     }
 
     private void loadRecommendedAlbums() {
-        Object[] data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
-        ContentList contentList = new ContentList(this, R.id.album_recommendations, LinearLayoutManager.HORIZONTAL, data);
+        ArrayList<Content> data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
+        ContentList contentList = new ContentList(this, R.id.album_recommendations, LinearLayoutManager.HORIZONTAL);
         contentList.setTitle(R.string.recommendations_albums);
+        contentList.init(data);
     }
 
     private void loadSongHistory() {
-        Object[] data = ((GlobalApplication) getApplication()).getSongHistory();
-        ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL, data);
+        ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL);
+        ArrayList<Content> data = ((GlobalApplication) getApplication()).getSongHistory(contentList);
+        contentList.init(data);
     }
 
     /* SEARCH SHIT ICON SHIT STUFF */

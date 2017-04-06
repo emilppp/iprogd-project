@@ -5,14 +5,18 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import emilp.hallo.view.ContentList;
+
 /**
  * Created by jonas on 2017-03-23.
  */
 
 public class GlobalApplication extends Application {
 
-    private ArrayList<Artist> artist = new ArrayList<>();
-    private ArrayList<Artist> searchRes = new ArrayList<>();
+    private ArrayList<Content> artist = new ArrayList<>();
+    private ArrayList<Content> searchRes = new ArrayList<>();
+    private ArrayList<Content> songHistory = new ArrayList<>();
+    private ContentList historyAdapter;
 
     private SpotifyService spotifyService = new SpotifyService();
 
@@ -20,12 +24,25 @@ public class GlobalApplication extends Application {
         return spotifyService;
     }
 
-    public Object[] getSongHistory() {
-        return spotifyService.getSongHistory().toArray();
+    public ArrayList<Content> getSongHistory(ContentList contentList) {
+        historyAdapter = contentList;
+        return getSongHistory();
     }
 
-    public Object[] getRecommendedAlbums() {
-        ArrayList<Song> arr = new ArrayList<>();
+    public ArrayList<Content> getSongHistory() {
+        if(songHistory.size() == 0)
+            songHistory = spotifyService.getSongHistory(this);
+        return songHistory;
+    }
+
+    public void addSongHistory(Song song) {
+        songHistory.add(song);
+        System.out.println(songHistory.size());
+        historyAdapter.notifyDataSetChanged();
+    }
+
+    public ArrayList<Content> getRecommendedAlbums() {
+        ArrayList<Content> arr = new ArrayList<>();
         arr.add(new Song());
         arr.add(new Song());
         arr.add(new Song());
@@ -39,7 +56,7 @@ public class GlobalApplication extends Application {
         arr.add(new Song());
         arr.add(new Song());
         arr.add(new Song());
-        return arr.toArray();
+        return arr;
     }
 
     public void addArtist(Artist artist) {
@@ -51,14 +68,15 @@ public class GlobalApplication extends Application {
     }
 
     public Artist getArtistFromId(String id) {
-        for(Artist a : artist) {
+        for(Content c : artist) {
+            Artist a = (Artist) c;
             if(a.getSpotifyID().equals(id))
                 return a;
         }
         return null;
     }
 
-    public ArrayList<Artist> getSearchRes() {
+    public ArrayList<Content> getSearchRes() {
         return searchRes;
     }
 
@@ -72,7 +90,8 @@ public class GlobalApplication extends Application {
     }
 
     public Artist getSearchArtistFromId(String id) {
-        for(Artist a : searchRes) {
+        for(Content c : searchRes) {
+            Artist a = (Artist) c;
             if(a.getSpotifyID().equals(id))
                 return a;
         }
