@@ -31,7 +31,7 @@ public class SearchResultsActivity extends Activity {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d("SearchResultsActivity", query);
 
-            URL searchUrl = NetworkUtils.buildUrl(query, "artist");
+            URL searchUrl = NetworkUtils.buildUrlSearch(query, "artist");
             new SpotifyQueryTask(this){
                 @Override
                 protected void onPostExecute(JSONObject githubSearchResults) {

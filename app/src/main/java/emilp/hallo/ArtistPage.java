@@ -17,12 +17,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
+
+import org.json.JSONObject;
+
+import java.net.URL;
 
 /**
  * Created by kenneth on 4/5/17.
  */
 
 public class ArtistPage extends AppCompatActivity {
+
+    String testId = "0OdUWJ0sBjDrqHygGUXeCF";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +53,16 @@ public class ArtistPage extends AppCompatActivity {
              //getSupportActionBar().setDisplayShowTitleEnabled(true);
              //getSupportActionBar().setLogo(R.drawable.icon_naked2);
          }
+
+
+        URL url =  NetworkUtils.buildUrlArtist(testId);
+        new SpotifyQueryTask(this){
+            @Override
+            protected void onPostExecute(JSONObject githubSearchResults) {
+                TextView tvArtistName = (TextView) findViewById(R.id.artist_name);
+            }
+        }.execute(url);
+
 
 
 

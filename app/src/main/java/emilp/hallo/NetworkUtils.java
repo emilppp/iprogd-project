@@ -36,20 +36,30 @@ public class NetworkUtils {
     final static String SPOTIFY_BASE_URL =
             "https://api.spotify.com/v1/search";
 
+    final static String SPOTIFY_ARTIST_URL = "https://api.spotify.com/v1/artists/";
+
     final static String PARAM_QUERY = "q";
     final static String PARAM_TYPE = "type";
 
-    /*
-     * The sort field. One of stars, forks, or updated.
-     * Default: results are sorted by best match if no field is specified.
-     */
 
 
-    public static URL buildUrl(String githubSearchQuery, String type) {
+    public static URL buildUrlSearch(String githubSearchQuery, String type) {
         Uri builtUri = Uri.parse(SPOTIFY_BASE_URL).buildUpon()
                 .appendQueryParameter(PARAM_QUERY, githubSearchQuery)
                 .appendQueryParameter(PARAM_TYPE, type).build();
 
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildUrlArtist(String artistId) {
+        Uri builtUri = Uri.parse(SPOTIFY_ARTIST_URL).buildUpon().appendPath(artistId).build();
         URL url = null;
         try {
             url = new URL(builtUri.toString());
