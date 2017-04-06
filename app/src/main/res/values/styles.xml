@@ -17,6 +17,8 @@
     </style>
 
     <style name="toolbarStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
     </style>
 
     <!-- http://stackoverflow.com/questions/12128331/how-to-change-fontfamily-of-textview-in-android -->

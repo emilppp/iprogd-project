@@ -18,6 +18,8 @@ public class GlobalApplication extends Application {
     private ArrayList<Content> songHistory = new ArrayList<>();
     private ContentList historyAdapter;
 
+    private Artist currentArtist;
+
     private SpotifyService spotifyService = new SpotifyService();
 
     public SpotifyService getSpotifyService() {
@@ -80,6 +82,10 @@ public class GlobalApplication extends Application {
         return searchRes;
     }
 
+    public void clearResList() {
+        this.searchRes.clear();
+    }
+
     public void addSearchRes(Artist artist) {
         if(!searchContainsArtist(artist.getSpotifyID()))
             this.searchRes.add(artist);
@@ -96,5 +102,13 @@ public class GlobalApplication extends Application {
                 return a;
         }
         return null;
+    }
+
+    public Artist getCurrentArtist() {
+        return currentArtist;
+    }
+
+    public void setCurrentArtist(Artist currentArtist) {
+        this.currentArtist = currentArtist;
     }
 }
