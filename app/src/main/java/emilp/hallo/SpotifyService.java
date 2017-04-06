@@ -199,10 +199,6 @@ public class SpotifyService extends Activity implements
 
 
     // Type kan vara album, track, artist, playlist
-    public void makeSearchQuery(String query, String type, Activity act) {
-        URL githubSearchUrl = NetworkUtils.buildUrl(query, type);
-        new SpotifyQueryTask(act).execute(githubSearchUrl);
-    }
 
     public static void parseSearchJSON(JSONObject obj, GlobalApplication global) {
         try {
