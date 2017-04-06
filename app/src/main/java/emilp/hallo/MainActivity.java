@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (actionBar != null)
         {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            //actionBar.setDisplayHomeAsUpEnabled(true);
             mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, myToolbar, R.string.open_content_desc, R.string.close_content_desc)
             {
 
@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
         loadRecommended();
 
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setLogo(R.drawable.icon_naked2);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setLogo(R.drawable.icon_naked2);
 
         Button btnCreatePlaylist = (Button) findViewById(R.id.btn_create_playlist);
         btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +94,24 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent2 = new Intent(getApplicationContext(), ArtistPage.class);
                 startActivity(intent2);
+            }
+        });
+
+        ImageButton artistPage2 = (ImageButton) findViewById(R.id.artist_2_bg);
+        artistPage2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent3 = new Intent(getApplicationContext(), ArtistPage.class);
+                startActivity(intent3);
+            }
+        });
+
+        ImageButton artistPage3 = (ImageButton) findViewById(R.id.artist_3_bg);
+        artistPage3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent4 = new Intent(getApplicationContext(), ArtistPage.class);
+                startActivity(intent4);
             }
         });
 
