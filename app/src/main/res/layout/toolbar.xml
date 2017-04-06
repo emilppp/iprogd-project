@@ -7,5 +7,16 @@
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_naked2"
+            android:contentDescription="@string/app_name"
+            />
+    </RelativeLayout>
 
 </android.support.v7.widget.Toolbar>
