@@ -37,9 +37,12 @@ public class NetworkUtils {
     final static String SPOTIFY_BASE_URL =
             "https://api.spotify.com/v1/search";
 
+    final static String SPOTIFY_GET_USER_URL = "https://api.spotify.com/v1/me";
     final static String SPOTIFY_ARTIST_URL = "https://api.spotify.com/v1/artists/";
 
     final static String SPOTIFY_HISTORY_URL = "https://api.spotify.com/v1/me/player/recently-played";
+
+    final static String SPOTIFY_CREATE_PLAYLIST_URL = "https://api.spotify.com/v1/users/";
 
     final static String PARAM_QUERY = "q";
     final static String PARAM_TYPE = "type";
@@ -70,6 +73,15 @@ public class NetworkUtils {
         return null;
     }
 
+    public static URL buildUrlCreatePlaylist() {
+        try {
+            return new URL(SPOTIFY_CREATE_PLAYLIST_URL);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static URL buildUrlArtist(String artistId) {
         Uri builtUri = Uri.parse(SPOTIFY_ARTIST_URL).buildUpon().appendPath(artistId).build();
         URL url = null;
@@ -82,9 +94,52 @@ public class NetworkUtils {
         return url;
     }
 
+    public static URL buildUrlGetSpotifyProfile() {
+        try {
+            return new URL(SPOTIFY_GET_USER_URL);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public static JSONObject getResponseFromHttpUrl(URL url) throws IOException {
         return getResponseFromHttpUrl(url, null);
+    }
+
+    public static JSONObject getResponseFromPostHttpUrl(URL url, String token) throws IOException {
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod("POST");
+        if(token != null) {
+            urlConnection.setRequestProperty("Authorization", "Bearer " + token);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("name", "Playlist from apperino");
+            urlConnection.setRequestProperty("public", "false");
+        } try {
+            InputStream in;
+            in = urlConnection.getInputStream();
+            Scanner scanner = new Scanner(in);
+            scanner.useDelimiter("\\A");
+
+            boolean hasInput = scanner.hasNext();
+            if (hasInput) {
+                try {
+                    String res = scanner.next();
+                    return new JSONObject(res);
+                } catch (JSONException e) {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            urlConnection.disconnect();
+        }
+        return null;
     }
 
     /**
@@ -128,6 +183,7 @@ public class NetworkUtils {
         }
         return null;
     }
+
 
 
     /**
