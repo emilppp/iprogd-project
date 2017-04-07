@@ -195,7 +195,6 @@ public class SpotifyService extends Activity implements
             }
         }.execute(url);
 
-        arr.add(new Song("Kebab", new Album(), new Artist(), arre , 13));
         return arr;
     }
 
