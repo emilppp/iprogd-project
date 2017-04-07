@@ -2,6 +2,7 @@ package emilp.hallo;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,10 @@ public class GlobalApplication extends Application {
     private ArrayList<Content> songHistory = new ArrayList<>();
     private ContentList historyAdapter;
 
+    private String clientID;
+
+    private String displayName;
+
     private Artist currentArtist;
 
     private SpotifyService spotifyService = new SpotifyService();
@@ -30,6 +35,7 @@ public class GlobalApplication extends Application {
         historyAdapter = contentList;
         return getSongHistory();
     }
+
 
     public ArrayList<Content> getSongHistory() {
         if(songHistory.size() == 0)
@@ -117,5 +123,27 @@ public class GlobalApplication extends Application {
 
     public void setCurrentArtist(Artist currentArtist) {
         this.currentArtist = currentArtist;
+    }
+
+    public void fetchClientID() {
+        if(clientID == null && displayName == null) {
+            spotifyService.getClientId(this);
+        }
+    }
+
+    public String getClientID() {
+        return clientID;
+    }
+
+    public void setClientID(String clientID) {
+        this.clientID = clientID;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

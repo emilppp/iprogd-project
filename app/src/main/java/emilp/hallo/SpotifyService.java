@@ -2,6 +2,7 @@ package emilp.hallo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -197,6 +198,37 @@ public class SpotifyService extends Activity implements
 
         return arr;
     }
+
+    public void getClientId(final GlobalApplication global) {
+
+        URL url = NetworkUtils.buildUrlGetSpotifyProfile();
+        new SpotifyQueryTask(this, getAccessToken()) {
+            @Override
+            protected void onPostExecute(JSONObject res) {
+                if(res != null) {
+                    parseProfileJSON(res, global);
+
+                    System.out.println(global.getClientID());
+                    System.out.println(global.getDisplayName());
+                }
+            }
+        }.execute(url);
+
+    }
+
+    public static void parseProfileJSON(JSONObject res, GlobalApplication global) {
+        // TODO fixa.
+        try {
+            global.setClientID(res.getString("id"));
+            global.setDisplayName(res.getString("display_name"));
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     private void parseHistoryJSON(JSONObject res, GlobalApplication global) {
         try {
