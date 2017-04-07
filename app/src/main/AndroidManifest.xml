@@ -45,6 +45,12 @@
 
         </activity>
 
+        <activity
+            android:name=".AlbumPage"
+            android:theme="@style/AppTheme">
+
+        </activity>
+
 
         <activity
             android:name=".PlayList"

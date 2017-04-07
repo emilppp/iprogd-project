@@ -25,4 +25,8 @@
     <string name="show_more">Show More</string>
     <string name="artist_banner">Banner for artist</string>
     <string name="artist_name_placeholder">Artist</string>
+    <string name="album_cover">Album Cover Art</string>
+    <string name="album_title_placeholder">Album Title</string>
+    <string name="albums">Albums</string>
+    <string name="popular_songs">Popular Songs</string>
 </resources>

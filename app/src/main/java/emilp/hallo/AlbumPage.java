@@ -1,9 +1,7 @@
 package emilp.hallo;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -25,20 +23,25 @@ import java.util.ArrayList;
 import emilp.hallo.view.ContentList;
 
 /**
- * Created by jonas on 2017-04-04.
+ * Created by kenneth on 4/7/17.
  */
 
-public class PlayList extends AppCompatActivity{
+public class AlbumPage extends AppCompatActivity {
+
+    String testId = "0OdUWJ0sBjDrqHygGUXeCF";
+    Artist currentAlbum;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.playlist);
+        setContentView(R.layout.album_page);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.playlist_page_toolbar);
+        currentAlbum = ((GlobalApplication) getApplication()).getCurrentArtist();
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.album_page_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-        {
+        if (actionBar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -48,11 +51,26 @@ public class PlayList extends AppCompatActivity{
                 }
             });
         }
+        ArrayList<Content> data = new ArrayList<>();
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
 
-        ArrayList<Content> data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
-        ContentList contentList = new ContentList(this, R.id.playlist, LinearLayoutManager.VERTICAL);
-        contentList.setTitle(R.string.recommendations_songs);
-        contentList.init(data);
+        ContentList c = new ContentList(this, R.id.album_songs, LinearLayoutManager.VERTICAL) {
+            @Override
+            protected void onItemClick(View view, Content content) {
+                super.onItemClick(view, content);
+            }
+        };
+        c.init(data);
+        c.hideTitle();
     }
 
     @Override
@@ -65,6 +83,20 @@ public class PlayList extends AppCompatActivity{
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        URL url = NetworkUtils.buildUrlArtist(testId);
+        new SpotifyQueryTask(this) {
+            @Override
+            protected void onPostExecute(JSONObject githubSearchResults) {
+                TextView tvAlbumName = (TextView) findViewById(R.id.album_name);
+                ImageView ivAlbumCover = (ImageView) findViewById(R.id.album_cover);
+
+                tvAlbumName.setText(currentAlbum.getName());
+                if (currentAlbum.getImage() != null)
+                    ivAlbumCover.setImageBitmap(currentAlbum.getImage());
+                else
+                    ivAlbumCover.setImageResource(currentAlbum.fallbackImage());
+            }
+        }.execute(url);
         return true;
     }
 }

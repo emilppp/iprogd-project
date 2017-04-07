@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.util.ArrayList;
+
+import emilp.hallo.view.ContentList;
 
 /**
  * Created by kenneth on 4/5/17.
@@ -43,13 +47,43 @@ public class ArtistPage extends AppCompatActivity {
             myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    finish();
                 }
             });
             //getSupportActionBar().setDisplayShowTitleEnabled(true);
             //getSupportActionBar().setLogo(R.drawable.icon_naked2);
         }
+        ArrayList<Content> data = new ArrayList<>();
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
+        data.add(new Song());
+
+        ContentList c = new ContentList(this, R.id.popular_songs, LinearLayoutManager.VERTICAL){
+            @Override
+            protected void onItemClick(View view, Content content) {
+                super.onItemClick(view, content);
+            }
+        };
+        c.init(data);
+        c.setTitle(R.string.popular_songs);
+
+        ArrayList<Content> data2 = new ArrayList<>();
+        data2.add(new Album());
+        data2.add(new Album());
+        data2.add(new Album());
+
+        ContentList c2 = new ContentList(this, R.id.album_list, LinearLayoutManager.VERTICAL, R.layout.list_item_album){
+            @Override
+            protected void onItemClick(View view, Content content) {
+                super.onItemClick(view, content);
+                Intent intent = new Intent(getApplicationContext(), AlbumPage.class);
+                startActivity(intent);
+            }
+        };
+        c2.init(data2);
+        c2.setTitle(R.string.albums);
     }
 
     @Override

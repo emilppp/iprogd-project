@@ -88,4 +88,9 @@ public class ContentList {
         textView.setText(res);
     }
 
+    public void hideTitle(){
+        TextView textView = (TextView) view.findViewById(R.id.list_horizontal_title);
+        textView.setVisibility(View.GONE);
+    }
+
 }
