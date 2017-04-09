@@ -12,13 +12,14 @@ import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
 
-public class ApiSongHistory {
+public class ApiRecommendedSongs {
 
     private ContentList contentList;
     private GlobalApplication global;
     private ArrayList<Content> songs = new ArrayList<>();
 
-    public ApiSongHistory(ContentList contentList, GlobalApplication global) {
+
+    public ApiRecommendedSongs(ContentList contentList, GlobalApplication global) {
         this.contentList = contentList;
         this.global = global;
 
@@ -28,12 +29,10 @@ public class ApiSongHistory {
 
     private void addSongToResult(Song song) {
         songs.add(song);
-        // Has to be done on main thread, lol
-        //contentList.notifyDataSetChanged();
     }
 
     private void getSongHistory() {
-        URL url = NetworkUtils.buildUrlHistory();
+        URL url = NetworkUtils.buildRandom("track", 10);
         final String token = global.getSpotifyService().getAccessToken();
         new AsyncTask<URL, Void, Void>(){
             @Override
@@ -41,12 +40,8 @@ public class ApiSongHistory {
                 URL searchUrl = params[0];
                 JSONObject res = null;
                 try {
-                    res = NetworkUtils.getResponseFromHttpUrl(searchUrl, token);
-                    if(res != null) {
-                        String tracks = parseHistoryJSON(res);
-                        res = NetworkUtils.getTracks(tracks);
-                        parseTracksJSON(res);
-                    }
+                    res = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+                    parseTracksJSON(res);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -62,7 +57,7 @@ public class ApiSongHistory {
 
     private void parseTracksJSON(JSONObject obj) {
         try {
-            JSONArray arr = obj.getJSONArray("tracks");
+            JSONArray arr = obj.getJSONObject("tracks").getJSONArray("items");
             for(int i=0; i<arr.length(); i++) {
                 obj = arr.getJSONObject(i);
                 JSONObject a = obj.getJSONObject("album");
@@ -84,27 +79,5 @@ public class ApiSongHistory {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private String parseHistoryJSON(JSONObject res) {
-        String songUrl = "";
-        try {
-            JSONArray arr = res.getJSONArray("items");
-            for(int i=0; i<arr.length(); i++) {
-                JSONObject obj = arr.getJSONObject(i).getJSONObject("track");
-                String name = obj.getString("name");
-                String id = obj.getString("id");
-                int duration = obj.getInt("duration_ms") / 1000;
-
-                if(i < arr.length()-1)
-                    songUrl += id + ",";
-                else
-                    songUrl += id;
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return songUrl;
     }
 }

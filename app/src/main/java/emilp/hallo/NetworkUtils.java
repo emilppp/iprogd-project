@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -49,6 +50,27 @@ public class NetworkUtils {
     final static String PARAM_QUERY = "q";
     final static String PARAM_TYPE = "type";
 
+
+    public static URL buildRandom(String type, int limit) {
+        String[] randomArray = new String[]{"%25a%25", "a%25", "%25e%25", "e%25", "%25i%25", "i%25", "%25o%25", "o%25"};
+
+        Random rand = new Random();
+        //This will get a random result out of the array above
+        String rString = randomArray[ rand.nextInt(randomArray.length) ];
+
+        //This will get a random offset number between 1 and 1000. So you get a random track. (you can change the numbers btw)
+        int rOffset = rand.nextInt(1000) + 1;
+
+        //This is the url that gets the results out of the Spotify API. You have to put in the variables you created above.
+        String urlString = "https://api.spotify.com/v1/search?query="+rString+"&offset="+rOffset+"&limit="+limit+"&type="+type;
+        URL url = null;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
 
     public static JSONObject getTracks(String tracks) {
         try {

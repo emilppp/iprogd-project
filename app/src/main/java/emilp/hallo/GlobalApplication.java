@@ -35,6 +35,10 @@ public class GlobalApplication extends Application {
         new ApiSongHistory(contentList, this);
     }
 
+    public void getRecommendedSongs(ContentList contentList) {
+        new ApiRecommendedSongs(contentList, this);
+    }
+
     public ArrayList<Content> getSongHistory() {
         if(songHistory.size() == 0)
             songHistory = spotifyService.getSongHistory(this);

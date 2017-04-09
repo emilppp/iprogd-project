@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRecommendedSongs() {
-        ArrayList<Content> data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
         ContentList contentList = new ContentList(this, R.id.song_recommendations, LinearLayoutManager.VERTICAL) {
             @Override
             protected void onItemClick(View view, Content content) {
@@ -131,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         };
+        ((GlobalApplication) getApplication()).getRecommendedSongs(contentList);
         contentList.setTitle(R.string.recommendations_songs);
-        contentList.init(data);
     }
 
     private void loadRecommendedArtists() {
