@@ -32,7 +32,7 @@ public class ApiRecommendedArtists {
     }
 
     private void getSongHistory() {
-        URL url = NetworkUtils.buildRandom("artist", 10);
+        URL url = NetworkUtils.buildRandom("artist", 3);
         new AsyncTask<URL, Void, Void>(){
             @Override
             protected Void doInBackground(URL... params) {
@@ -61,7 +61,9 @@ public class ApiRecommendedArtists {
                 obj = arr.getJSONObject(i);
                 String aName = obj.getString("name");
                 String aId = obj.getString("id");
-                String aUrl = obj.getJSONArray("images").getJSONObject(0).getString("url");
+                String aUrl = null;
+                if(obj.getJSONArray("images").length() > 0)
+                    aUrl = obj.getJSONArray("images").getJSONObject(0).getString("url");
 
                 Artist artist = new Artist(aName, aId, aUrl);
                 artist.downloadImage();

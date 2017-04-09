@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/artist_page">
 
-            <ImageView
+            <emilp.hallo.view.AspectRatioImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
