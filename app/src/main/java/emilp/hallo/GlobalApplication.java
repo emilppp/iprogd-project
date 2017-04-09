@@ -72,6 +72,10 @@ public class GlobalApplication extends Application {
         return arr;
     }
 
+    public void getRecommendedArtists(ContentList contentList) {
+        new ApiRecommendedArtists(contentList, this);
+    }
+
     public ArrayList<Content> getRecommendedArtists() {
         ArrayList<Content> data = new ArrayList<>();
         data.add(new Artist());

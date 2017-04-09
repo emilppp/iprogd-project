@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRecommendedArtists() {
-        ArrayList<Content> data = ((GlobalApplication) getApplication()).getRecommendedArtists();
         ContentList contentList = new ContentList(this, R.id.recommended_artists_list, LinearLayoutManager.VERTICAL, R.layout.list_item_big) {
             @Override
             protected void onItemClick(View view, Content content) {
@@ -144,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
+        ((GlobalApplication) getApplication()).getRecommendedArtists(contentList);
         contentList.setTitle(R.string.recommendations_albums);
-        contentList.init(data);
     }
 
     private void loadRecommendedAlbums() {
