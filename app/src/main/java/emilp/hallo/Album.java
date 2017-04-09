@@ -56,6 +56,19 @@ public class Album implements Content {
         return artists;
     }
 
+    private String getArtistsName() {
+        String res = "";
+        ArrayList<Artist> artists = getArtists();
+        for(int i=0; i<artists.size(); i++) {
+            res += artists.get(i).getName();
+            if(i < artists.size() - 2)
+                res += ", ";
+            if(i == artists.size() - 2)
+                res += " & ";
+        }
+        return res;
+    }
+
     public void addArtists(Artist art) {
         artists.add(art);
     }
@@ -83,7 +96,7 @@ public class Album implements Content {
 
     @Override
     public String getBread() {
-        return "Bread";
+        return getArtistsName();
     }
 
     @Override

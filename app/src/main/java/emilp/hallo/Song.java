@@ -3,18 +3,20 @@ package emilp.hallo;
 import android.graphics.Bitmap;
 import android.text.Html;
 
+import java.util.ArrayList;
+
 class Song implements Content {
     private String title;
     private Artist artist;
     private Album album;
-    private Artist[] artists;
+    private ArrayList<Artist> artists = new ArrayList<>();
     private int duration;
     private String id;
 
     public Song(String title, Album album, Artist artist, Artist[] artists, int duration) {
         this.title = title;
         this.artist = artist;
-        this.artists = artists;
+        this.artists.add(artist);
         this.duration = duration;
         this.album = album;
     }
@@ -47,7 +49,7 @@ class Song implements Content {
 
     @Override
     public String getBread() {
-        return "Bread";
+        return getInformation();
     }
 
     @Override
@@ -64,12 +66,12 @@ class Song implements Content {
         title = tit;
     }
 
-    public Artist[] getArtists() {
+    public ArrayList<Artist> getArtists() {
         return artists;
     }
 
-    public void setArtists(Artist[] artists) {
-        this.artists = artists;
+    public void addArtist(Artist artists) {
+        this.artists.add(artists);
     }
 
     public void setDuration(int d) {
@@ -78,6 +80,34 @@ class Song implements Content {
 
     public int getDuration() {
         return duration;
+    }
+
+    public String getDurationString() {
+        int h = 0, m = 0, s = getDuration();
+        while(s > 59) {
+            m++;
+            if(m == 60) {
+                h++;
+                m = 0;
+            }
+            s -= 60;
+        }
+        if(h != 0) return h + ":" + m + ":" + s;
+        else if(m != 0) return m + ":" + s;
+        return ""+s;
+    }
+
+    private String getArtistsName() {
+        String res = "";
+        ArrayList<Artist> artists = getArtists();
+        for(int i=0; i<artists.size(); i++) {
+            res += artists.get(i).getName();
+            if(i < artists.size() - 2)
+                res += ", ";
+            if(i == artists.size() - 2)
+                res += " & ";
+        }
+        return res;
     }
 
     public void setAlbum(Album alb) {
@@ -89,6 +119,6 @@ class Song implements Content {
     }
 
     public String getInformation() {
-        return getArtist().getName() + " - " + getAlbum().getName() + " " + Html.fromHtml("&#8226;").toString() + " " + getDuration();
+        return getArtistsName() + " - " + getAlbum().getName() + " " + Html.fromHtml("&#8226;").toString() + " " + getDurationString();
     }
 }

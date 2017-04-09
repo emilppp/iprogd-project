@@ -75,6 +75,15 @@ public class ApiSongHistory {
                 String songName = obj.getString("name");
                 String songId = obj.getString("id");
                 Song song = new Song(songName, songId, duration);
+                
+                JSONArray artists = obj.getJSONArray("artists");
+                for(int k=0; k<artists.length(); k++) {
+                    JSONObject bb = artists.getJSONObject(k);
+                    String bbName = bb.getString("name");
+                    String bbId = bb.getString("id");
+                    Artist artist = new Artist(bbName, bbId);
+                    song.addArtist(artist);
+                }
 
                 song.setAlbum(album);
                 album.downloadImage();
