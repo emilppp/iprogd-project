@@ -9,6 +9,7 @@ class Song implements Content {
     private Album album;
     private Artist[] artists;
     private int duration;
+    private String id;
 
     public Song(String title, Album album, Artist artist, Artist[] artists, int duration) {
         this.title = title;
@@ -16,6 +17,12 @@ class Song implements Content {
         this.artists = artists;
         this.duration = duration;
         this.album = album;
+    }
+
+    public Song(String title, String id, int duration) {
+        this.title = title;
+        this.id = id;
+        this.duration = duration;
     }
 
     public Song() {
@@ -45,12 +52,12 @@ class Song implements Content {
 
     @Override
     public Bitmap getImage() {
-        return null;
+        return getAlbum().getImage();
     }
 
     @Override
     public int fallbackImage() {
-        return R.drawable.fallback_album;
+        return getAlbum().fallbackImage();
     }
 
     public void setTitle(String tit) {

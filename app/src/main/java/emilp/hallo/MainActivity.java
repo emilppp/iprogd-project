@@ -158,8 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadSongHistory() {
         ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL);
-        ArrayList<Content> data = ((GlobalApplication) getApplication()).getSongHistory(contentList);
-        contentList.init(data);
+        ((GlobalApplication) getApplication()).getSongHistory(contentList);
     }
 
     /* SEARCH SHIT ICON SHIT STUFF */

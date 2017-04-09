@@ -44,10 +44,23 @@ public class NetworkUtils {
 
     final static String SPOTIFY_CREATE_PLAYLIST_URL = "https://api.spotify.com/v1/users/";
 
+    final static String SPOTIFY_TRACKS_URL = "https://api.spotify.com/v1/tracks/?ids=";
+
     final static String PARAM_QUERY = "q";
     final static String PARAM_TYPE = "type";
 
 
+    public static JSONObject getTracks(String tracks) {
+        try {
+            URL url = new URL(SPOTIFY_TRACKS_URL + tracks);
+            return NetworkUtils.getResponseFromHttpUrl(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static URL buildUrlSearch(String githubSearchQuery, String type) {
         Uri builtUri = Uri.parse(SPOTIFY_BASE_URL).buildUpon()

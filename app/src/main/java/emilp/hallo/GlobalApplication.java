@@ -31,11 +31,9 @@ public class GlobalApplication extends Application {
         return spotifyService;
     }
 
-    public ArrayList<Content> getSongHistory(ContentList contentList) {
-        historyAdapter = contentList;
-        return getSongHistory();
+    public void getSongHistory(ContentList contentList) {
+        new ApiSongHistory(contentList, this);
     }
-
 
     public ArrayList<Content> getSongHistory() {
         if(songHistory.size() == 0)

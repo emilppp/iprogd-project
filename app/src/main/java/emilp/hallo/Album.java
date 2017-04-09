@@ -12,6 +12,9 @@ public class Album implements Content {
     private Song[] songs;
     private String name;
     private String[] genres;
+    private String imageUrl;
+    private Bitmap image;
+    private String id;
 
     public Album(String name, String type, Artist[] artists, Song[] songs, String[] genres) {
         this.name = name;
@@ -20,6 +23,13 @@ public class Album implements Content {
         this.songs = songs;
         this.genres = genres;
     }
+
+    public Album(String name, String id, String url) {
+        this.name = name;
+        this.id = id;
+        this.imageUrl = url;
+    }
+
     public Album() {
         this.name = "Album";
     }
@@ -76,7 +86,7 @@ public class Album implements Content {
 
     @Override
     public Bitmap getImage() {
-        return null;
+        return image;
     }
 
     @Override
@@ -84,5 +94,8 @@ public class Album implements Content {
         return R.drawable.fallback_album;
     }
 
-
+    public void downloadImage() {
+        if(image == null && imageUrl != null && !imageUrl.equals(""))
+            image = NetworkUtils.getBitmapFromUrl(imageUrl);
+    }
 }
