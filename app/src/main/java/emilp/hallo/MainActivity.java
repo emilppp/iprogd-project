@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         ((GlobalApplication) getApplication()).getRecommendedArtists(contentList);
-        contentList.setTitle(R.string.recommendations_albums);
+        contentList.setTitle(R.string.recommendations_artists);
     }
 
     private void loadRecommendedAlbums() {

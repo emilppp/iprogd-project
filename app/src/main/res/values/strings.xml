@@ -29,4 +29,5 @@
     <string name="album_title_placeholder">Album Title</string>
     <string name="albums">Albums</string>
     <string name="popular_songs">Popular Songs</string>
+    <string name="pause">&#9612; &#9612;</string>
 </resources>

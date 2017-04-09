@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_alignParentBottom="true"
+    android:background="@color/colorPrimaryDarkTransparent"
+    android:layout_height="wrap_content">
+
+    <!--ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/fallback_album"
+        android:id="@+id/current_cover" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_toEndOf="@id/current_cover"
+        android:layout_toStartOf="@id/current_action"
+        android:layout_above="@id/current_progress"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_song_title"
+            style="@style/text_fat"
+            android:layout_marginStart="@dimen/activity_vertical_margin_half"
+            android:id="@+id/current_title"
+            android:textColor="@color/colorWhiteish"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/current_information"
+            android:layout_marginStart="@dimen/activity_vertical_margin_half"
+            android:text="@string/placeholder_song_information"
+            style="@style/text"
+            android:textColor="@color/colorWhiteish"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/current_action"
+        android:layout_width="wrap_content"
+        android:layout_above="@id/current_progress"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textColor="@color/colorWhiteish"
+        android:text="@string/pause"/>
+
+    <ProgressBar
+        android:id="@+id/current_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="5dp"
+        android:max="0"
+        android:layout_toEndOf="@id/current_cover"
+        android:layout_alignBottom="@id/current_cover"
+        android:layout_alignParentEnd="true"/-->
+
+</RelativeLayout>
