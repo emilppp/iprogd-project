@@ -80,7 +80,7 @@ public class WelcomeActivity extends Activity implements ConnectionStateCallback
         // TODO: Log error?
         AlertDialog alertDialog = new AlertDialog.Builder(WelcomeActivity.this).create();
         alertDialog.setTitle("Whoops!");
-        alertDialog.setMessage("An error occured when signing in to Spotify");
+        alertDialog.setMessage("An error occurred when signing in to Spotify");
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -92,10 +92,21 @@ public class WelcomeActivity extends Activity implements ConnectionStateCallback
 
     @Override
     public void onTemporaryError() {
+        // TODO: Log error?
+        AlertDialog alertDialog = new AlertDialog.Builder(WelcomeActivity.this).create();
+        alertDialog.setTitle("Whoops!");
+        alertDialog.setMessage("A temporary error occurred");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     @Override
     public void onConnectionMessage(String s) {
-
+        Toast.makeText(this, "Connection message: " + s, Toast.LENGTH_SHORT).show();
     }
 }

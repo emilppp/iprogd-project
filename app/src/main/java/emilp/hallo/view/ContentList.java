@@ -32,8 +32,6 @@ public class ContentList {
      * The view that is the correct layout
      * @param direction
      * The direction of the list
-     * @param data
-     * The data to be displayed
      */
     public ContentList(Activity activity, int container, int direction) {
         constructorHelp(activity, container, direction);
@@ -47,11 +45,16 @@ public class ContentList {
         layout = customLayout;
     }
 
-    private void constructorHelp(Activity activity, int container, int direction) {
+    private void constructorHelp(Activity activity, int container, final int direction) {
         this.activity = activity;
         this.view = activity.findViewById(container);
         recyclerView = (RecyclerView) view.findViewById(R.id.song_history_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity, direction, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity, direction, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return direction != LinearLayoutManager.VERTICAL;
+            }
+        };
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
