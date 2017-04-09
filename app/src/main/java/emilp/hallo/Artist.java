@@ -30,6 +30,11 @@ public class Artist implements Content {
         this.imageUrl = imageUrl;
     }
 
+    public Artist(String name, String id) {
+        this.name = name;
+        this.spotifyID = id;
+    }
+
     public Artist() {
         name = "Artist";
         spotifyID = "opsasdasdpiahsdopiahsd12";

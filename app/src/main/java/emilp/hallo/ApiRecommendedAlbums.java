@@ -12,14 +12,14 @@ import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
 
-public class ApiRecommendedSongs {
+public class ApiRecommendedAlbums {
 
     private ContentList contentList;
     private GlobalApplication global;
     private ArrayList<Content> songs = new ArrayList<>();
 
 
-    public ApiRecommendedSongs(ContentList contentList, GlobalApplication global) {
+    public ApiRecommendedAlbums(ContentList contentList, GlobalApplication global) {
         this.contentList = contentList;
         this.global = global;
 
@@ -27,12 +27,12 @@ public class ApiRecommendedSongs {
         getSongHistory();
     }
 
-    private void addSongToResult(Song song) {
+    private void addSongToResult(Content song) {
         songs.add(song);
     }
 
     private void getSongHistory() {
-        URL url = NetworkUtils.buildRandom("track", 10);
+        URL url = NetworkUtils.buildRandom("album", 10);
         new AsyncTask<URL, Void, Void>(){
             @Override
             protected Void doInBackground(URL... params) {
@@ -56,23 +56,25 @@ public class ApiRecommendedSongs {
 
     private void parseTracksJSON(JSONObject obj) {
         try {
-            JSONArray arr = obj.getJSONObject("tracks").getJSONArray("items");
+            JSONArray arr = obj.getJSONObject("albums").getJSONArray("items");
             for(int i=0; i<arr.length(); i++) {
                 obj = arr.getJSONObject(i);
-                JSONObject a = obj.getJSONObject("album");
-                String aName = a.getString("name");
-                String aId = a.getString("id");
-                String aUrl = a.getJSONArray("images").getJSONObject(0).getString("url");
+                String aName = obj.getString("name");
+                String aId = obj.getString("id");
+                String aUrl = obj.getJSONArray("images").getJSONObject(0).getString("url");
                 Album album = new Album(aName, aId, aUrl);
-
-                int duration = (int) (obj.getLong("duration_ms") / 1000);
-                String songName = obj.getString("name");
-                String songId = obj.getString("id");
-                Song song = new Song(songName, songId, duration);
-
-                song.setAlbum(album);
                 album.downloadImage();
-                addSongToResult(song);
+
+                JSONArray artists = obj.getJSONArray("artists");
+                for(int k=0; k<artists.length(); k++) {
+                    JSONObject b = artists.getJSONObject(k);
+                    String bName = b.getString("name");
+                    String bId = b.getString("id");
+                    Artist artist = new Artist(bName, bId);
+                    album.addArtists(artist);
+                }
+
+                addSongToResult(album);
             }
 
         } catch (JSONException e) {

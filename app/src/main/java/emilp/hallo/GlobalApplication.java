@@ -50,6 +50,10 @@ public class GlobalApplication extends Application {
         historyAdapter.notifyDataSetChanged();
     }
 
+    public void getRecommendedAlbums(ContentList contentList) {
+        new ApiRecommendedAlbums(contentList, this);
+    }
+
     public ArrayList<Content> getRecommendedAlbums() {
         ArrayList<Content> arr = new ArrayList<>();
         arr.add(new Song());

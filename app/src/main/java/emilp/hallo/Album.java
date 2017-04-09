@@ -2,13 +2,15 @@ package emilp.hallo;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+
 /**
  * Created by emil on 2017-03-28.
  */
 
 public class Album implements Content {
     private String type;
-    private Artist[] artists;
+    private ArrayList<Artist> artists = new ArrayList<>();
     private Song[] songs;
     private String name;
     private String[] genres;
@@ -16,10 +18,10 @@ public class Album implements Content {
     private Bitmap image;
     private String id;
 
-    public Album(String name, String type, Artist[] artists, Song[] songs, String[] genres) {
+    public Album(String name, String type, Artist artists, Song[] songs, String[] genres) {
         this.name = name;
         this.type = type;
-        this.artists = artists;
+        this.artists.add(artists);
         this.songs = songs;
         this.genres = genres;
     }
@@ -50,12 +52,12 @@ public class Album implements Content {
         return name;
     }
 
-    public Artist[] getArtists() {
+    public ArrayList<Artist> getArtists() {
         return artists;
     }
 
-    public void setArtists(Artist[] art) {
-        artists = art;
+    public void addArtists(Artist art) {
+        artists.add(art);
     }
 
     public void setSongs(Song[] sang) {

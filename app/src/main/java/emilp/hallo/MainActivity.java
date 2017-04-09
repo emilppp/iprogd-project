@@ -149,10 +149,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRecommendedAlbums() {
-        ArrayList<Content> data = ((GlobalApplication) getApplication()).getRecommendedAlbums();
         ContentList contentList = new ContentList(this, R.id.album_recommendations, LinearLayoutManager.HORIZONTAL);
+        ((GlobalApplication) getApplication()).getRecommendedAlbums(contentList);
         contentList.setTitle(R.string.recommendations_albums);
-        contentList.init(data);
     }
 
     private void loadSongHistory() {
