@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -151,11 +152,18 @@ public class NetworkUtils {
     public static JSONObject getResponseFromPostHttpUrl(URL url, String token) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");
+
         if(token != null) {
             urlConnection.setRequestProperty("Authorization", "Bearer " + token);
             urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("name", "Playlist from apperino");
-            urlConnection.setRequestProperty("public", "false");
+            String data = "{ \"name\": \"A new playlist\", \"public\": false}";
+            byte[] outputInBytes = data.getBytes("UTF-8");
+
+            OutputStream os = urlConnection.getOutputStream();
+            os.write(outputInBytes);
+            os.close();
+
+
 
             System.out.println(token);
             System.out.println(urlConnection.toString());

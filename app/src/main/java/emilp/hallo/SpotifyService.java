@@ -287,25 +287,21 @@ public class SpotifyService extends Activity implements
     public static void parsePlaylistJSON(JSONObject res, GlobalApplication global) {
         try {
 
-            System.out.println(res);
-            JSONArray arr = res.getJSONArray("items");
-            JSONObject obj = arr.getJSONObject(0);
-            String url = obj.getJSONObject("external_urls").getString("spotify");
-            String name = obj.getString("name");
-            String uri = obj.getString("uri");
-            String id = obj.getString("id");
-//            JSONArray tracks = obj.getJSONObject("tracks").getJSONArray("items");
+            String url = res.getJSONObject("external_urls").getString("spotify");
+            String name = res.getString("name");
+            String uri = res.getString("uri");
+            String id = res.getString("id");
 
+            global.setPlaylistID(id);
             System.out.println(id);
             System.out.println(url);
             System.out.println(name);
             System.out.println(uri);
-        //    System.out.println(tracks.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
+    
 
     public String getAccessToken() {
         return accessToken;

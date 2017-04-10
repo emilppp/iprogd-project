@@ -19,6 +19,8 @@ public class GlobalApplication extends Application {
     private ArrayList<Content> songHistory = new ArrayList<>();
     private ContentList historyAdapter;
 
+    private String playlistID;
+
     private String clientID;
 
     private String displayName;
@@ -159,5 +161,13 @@ public class GlobalApplication extends Application {
 
     public void createPlaylist() {
         spotifyService.createPlaylist(this);
+    }
+
+    public String getPlaylistID() {
+        return playlistID;
+    }
+
+    public void setPlaylistID(String playlistID) {
+        this.playlistID = playlistID;
     }
 }
