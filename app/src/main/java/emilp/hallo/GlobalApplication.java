@@ -156,4 +156,8 @@ public class GlobalApplication extends Application {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+
+    public void createPlaylist() {
+        spotifyService.createPlaylist(this);
+    }
 }

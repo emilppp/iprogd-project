@@ -108,11 +108,15 @@ public class NetworkUtils {
         return null;
     }
 
-    public static URL buildUrlCreatePlaylist() {
-        try {
-            return new URL(SPOTIFY_CREATE_PLAYLIST_URL);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+    public static URL buildUrlCreatePlaylist(String userid) {
+        if(userid != null && userid != "") {
+            Uri builtUri = Uri.parse(SPOTIFY_CREATE_PLAYLIST_URL).buildUpon().appendPath(userid).appendPath("playlists").build();
+            System.out.println(builtUri.toString());
+            try {
+                return new URL(builtUri.toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -152,6 +156,9 @@ public class NetworkUtils {
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("name", "Playlist from apperino");
             urlConnection.setRequestProperty("public", "false");
+
+            System.out.println(token);
+            System.out.println(urlConnection.toString());
         } try {
             InputStream in;
             in = urlConnection.getInputStream();

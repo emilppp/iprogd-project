@@ -221,8 +221,6 @@ public class SpotifyService extends Activity implements
         try {
             global.setClientID(res.getString("id"));
             global.setDisplayName(res.getString("display_name"));
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -286,7 +284,46 @@ public class SpotifyService extends Activity implements
         }
     }
 
+    public static void parsePlaylistJSON(JSONObject res, GlobalApplication global) {
+        try {
+
+            System.out.println(res);
+            JSONArray arr = res.getJSONArray("items");
+            JSONObject obj = arr.getJSONObject(0);
+            String url = obj.getJSONObject("external_urls").getString("spotify");
+            String name = obj.getString("name");
+            String uri = obj.getString("uri");
+            String id = obj.getString("id");
+//            JSONArray tracks = obj.getJSONObject("tracks").getJSONArray("items");
+
+            System.out.println(id);
+            System.out.println(url);
+            System.out.println(name);
+            System.out.println(uri);
+        //    System.out.println(tracks.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
+
+    public void createPlaylist(final GlobalApplication global) {
+        String userID = global.getClientID();
+        URL url = NetworkUtils.buildUrlCreatePlaylist(userID);
+        new SpotifyQueryTask(this, getAccessToken(), true){
+            @Override
+            protected void onPostExecute(JSONObject res) {
+                // TODO
+                if(res!=null) {
+                    parsePlaylistJSON(res, global);
+                }
+            }
+        }.execute(url);
+    }
+
+
 }

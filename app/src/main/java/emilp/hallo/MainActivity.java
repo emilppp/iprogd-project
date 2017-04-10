@@ -89,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((GlobalApplication) getApplication()).createPlaylist();
+                System.out.println("Hej skapar spellista var är den");
                 Intent intent = new Intent(getApplicationContext(), PlayList.class);
                 startActivity(intent);
             }
@@ -157,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL);
         ((GlobalApplication) getApplication()).getSongHistory(contentList);
     }
+
 
     /* SEARCH SHIT ICON SHIT STUFF */
 /*

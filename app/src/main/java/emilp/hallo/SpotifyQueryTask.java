@@ -22,6 +22,7 @@ import emilp.hallo.view.ContentList;
 public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
     private Activity act;
     private String token = null;
+    private boolean post = false;
 
     public SpotifyQueryTask(Activity activity) {
         act = activity;
@@ -31,17 +32,31 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
         act = activity;
         this.token = token;
     }
+    public SpotifyQueryTask(Activity activity, String token, Boolean isPost) {
+        act = activity;
+        this.token = token;
+        post = isPost;
+    }
 
+
+    // superful lösning med POST ist för GET
     @Override
     protected JSONObject doInBackground(URL... params) {
         URL searchUrl = params[0];
-        JSONObject githubSearchResults = null;
+        JSONObject spotifyResults = null;
+
         try {
-            githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl, token);
+            if(post) {
+                spotifyResults = NetworkUtils.getResponseFromPostHttpUrl(searchUrl, token);
+
+            } else {
+                spotifyResults = NetworkUtils.getResponseFromHttpUrl(searchUrl, token);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return githubSearchResults;
+        post = false;
+        return spotifyResults;
     }
 
     @Override
