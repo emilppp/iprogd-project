@@ -41,6 +41,35 @@ public class ApiGetAlbums {
         getSongHistory();
     }
 
+    public ApiGetAlbums(ContentList contentList, Artist artist) {
+        this.contentList = contentList;
+
+        contentList.init(songs);
+        getAlbumsFromArtist(artist);
+    }
+
+    private void getAlbumsFromArtist(final Artist artist) {
+        URL url = NetworkUtils.buildArtistAlbumsURL(artist.getSpotifyID());
+        new AsyncTask<URL, Void, Void>() {
+            @Override
+            protected Void doInBackground(URL... urls) {
+                URL searchUrl = urls[0];
+                try {
+                    JSONObject res = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+                    parseArtistAlbumsJSON(res);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                contentList.notifyDataSetChanged();
+            }
+        }.execute(url);
+    }
+
     private void addSongToResult(Content song) {
         songs.add(song);
     }
@@ -69,6 +98,38 @@ public class ApiGetAlbums {
                 contentList.notifyDataSetChanged();
             }
         }.execute(url);
+    }
+
+    private void extractArtists(JSONObject obj, Album album) throws JSONException {
+        JSONArray artists = obj.getJSONArray("artists");
+        for(int k=0; k<artists.length(); k++) {
+            JSONObject b = artists.getJSONObject(k);
+            String bName = b.getString("name");
+            String bId = b.getString("id");
+            Artist artist = new Artist(bName, bId);
+            album.addArtists(artist);
+        }
+    }
+
+    private void parseArtistAlbumsJSON(JSONObject obj) {
+        try {
+            JSONArray arr = obj.getJSONArray("items");
+            for(int i=0; i<arr.length(); i++) {
+                obj = arr.getJSONObject(i);
+                String aName = obj.getString("name");
+                String aId = obj.getString("id");
+                String aUrl = obj.getJSONArray("images").getJSONObject(0).getString("url");
+                Album album = new Album(aName, aId, aUrl);
+                album.downloadImage();
+
+                extractArtists(obj, album);
+
+                addSongToResult(album);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void parseTracksJSON(JSONObject obj) {

@@ -53,36 +53,25 @@ public class ArtistPage extends AppCompatActivity {
             //getSupportActionBar().setDisplayShowTitleEnabled(true);
             //getSupportActionBar().setLogo(R.drawable.icon_naked2);
         }
-        ArrayList<Content> data = new ArrayList<>();
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
-
         ContentList c = new ContentList(this, R.id.popular_songs, LinearLayoutManager.VERTICAL){
             @Override
             protected void onItemClick(View view, Content content) {
                 super.onItemClick(view, content);
             }
         };
-        c.init(data);
+        new ApiGetSongs(c, currentArtist);
         c.setTitle(R.string.popular_songs);
-
-        ArrayList<Content> data2 = new ArrayList<>();
-        data2.add(new Album());
-        data2.add(new Album());
-        data2.add(new Album());
 
         ContentList c2 = new ContentList(this, R.id.album_list, LinearLayoutManager.VERTICAL, R.layout.list_item_album){
             @Override
             protected void onItemClick(View view, Content content) {
                 super.onItemClick(view, content);
+                ((GlobalApplication) getApplication()).setCurrentContent(content);
                 Intent intent = new Intent(getApplicationContext(), AlbumPage.class);
                 startActivity(intent);
             }
         };
-        c2.init(data2);
+        new ApiGetAlbums(c2, currentArtist);
         c2.setTitle(R.string.albums);
     }
 

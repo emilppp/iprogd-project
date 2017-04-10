@@ -51,26 +51,14 @@ public class AlbumPage extends AppCompatActivity {
                 }
             });
         }
-        ArrayList<Content> data = new ArrayList<>();
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
-        data.add(new Song());
 
         ContentList c = new ContentList(this, R.id.album_songs, LinearLayoutManager.VERTICAL) {
             @Override
             protected void onItemClick(View view, Content content) {
-                super.onItemClick(view, content);
             }
         };
-        c.init(data);
         c.hideTitle();
+        new ApiGetSongs(c, currentAlbum);
     }
 
     @Override

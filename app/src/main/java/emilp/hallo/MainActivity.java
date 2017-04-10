@@ -148,7 +148,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRecommendedAlbums() {
-        ContentList contentList = new ContentList(this, R.id.album_recommendations, LinearLayoutManager.HORIZONTAL);
+        ContentList contentList = new ContentList(this, R.id.album_recommendations, LinearLayoutManager.HORIZONTAL) {
+            @Override
+            protected void onItemClick(View view, Content content) {
+                ((GlobalApplication) getApplication()).setCurrentContent(content);
+                Intent intent = new Intent(getApplicationContext(), AlbumPage.class);
+                startActivity(intent);
+            }
+        };
         ((GlobalApplication) getApplication()).getRecommendedAlbums(contentList);
         contentList.setTitle(R.string.recommendations_albums);
     }

@@ -51,6 +51,35 @@ public class NetworkUtils {
     final static String PARAM_QUERY = "q";
     final static String PARAM_TYPE = "type";
 
+    public static URL buildAristsPopularTracksURL(String id) {
+        URL url = null;
+        try {
+            url = new URL("https://api.spotify.com/v1/artists/" + id + "/top-tracks?country=SE");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
+    public static URL buildArtistAlbumsURL(String id) {
+        URL url = null;
+        try {
+            url = new URL("https://api.spotify.com/v1/artists/" + id + "/albums");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
+    public static URL buildAlbumTracksURL(String album) {
+        URL url = null;
+        try {
+            url = new URL("https://api.spotify.com/v1/albums/" + album + "/tracks");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
 
     public static URL buildRandom(String type, int limit) {
         String[] randomArray = new String[]{"%25a%25", "a%25", "%25e%25", "e%25", "%25i%25", "i%25", "%25o%25", "o%25"};
@@ -134,6 +163,7 @@ public class NetworkUtils {
         return url;
     }
 
+
     public static URL buildUrlGetSpotifyProfile() {
         try {
             return new URL(SPOTIFY_GET_USER_URL);
@@ -143,7 +173,6 @@ public class NetworkUtils {
         }
         return null;
     }
-
 
     public static JSONObject getResponseFromHttpUrl(URL url) throws IOException {
         return getResponseFromHttpUrl(url, null);
@@ -192,6 +221,8 @@ public class NetworkUtils {
         return null;
     }
 
+
+
     /**
      * This method returns the entire result from the HTTP response.
      *
@@ -233,8 +264,6 @@ public class NetworkUtils {
         }
         return null;
     }
-
-
 
     /**
      *

@@ -71,6 +71,10 @@ public class Album implements Content {
         return res;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public void addArtists(Artist art) {
         artists.add(art);
     }
