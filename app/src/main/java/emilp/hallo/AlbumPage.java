@@ -29,14 +29,14 @@ import emilp.hallo.view.ContentList;
 public class AlbumPage extends AppCompatActivity {
 
     String testId = "0OdUWJ0sBjDrqHygGUXeCF";
-    Artist currentAlbum;
+    Album currentAlbum;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.album_page);
 
-        currentAlbum = ((GlobalApplication) getApplication()).getCurrentArtist();
+        currentAlbum = (Album) ((GlobalApplication) getApplication()).getCurrentContent();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.album_page_toolbar);
         setSupportActionBar(myToolbar);

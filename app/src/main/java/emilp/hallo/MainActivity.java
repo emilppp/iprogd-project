@@ -31,6 +31,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
+import emilp.hallo.view.MoreOptions;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -126,10 +127,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onSecondItemClick(View view, Content content) {
                 Song song = (Song) content;
-                final Dialog dialog = new Dialog(activity);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.more_options_menu);
-                dialog.show();
+                new MoreOptions(MainActivity.this, song);
             }
         };
         ((GlobalApplication) getApplication()).getRecommendedSongs(contentList);
@@ -140,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         ContentList contentList = new ContentList(this, R.id.recommended_artists_list, LinearLayoutManager.VERTICAL, R.layout.list_item_big) {
             @Override
             protected void onItemClick(View view, Content content) {
-                ((GlobalApplication) getApplication()).setCurrentArtist((Artist) content);
+                ((GlobalApplication) getApplication()).setCurrentContent(content);
                 Intent intent = new Intent(getApplicationContext(), ArtistPage.class);
                 startActivity(intent);
             }

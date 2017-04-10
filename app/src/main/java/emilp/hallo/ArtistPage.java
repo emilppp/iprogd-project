@@ -35,7 +35,7 @@ public class ArtistPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artist_page);
 
-        currentArtist = ((GlobalApplication) getApplication()).getCurrentArtist();
+        currentArtist = (Artist) ((GlobalApplication) getApplication()).getCurrentContent();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.artist_page_toolbar);
         setSupportActionBar(myToolbar);

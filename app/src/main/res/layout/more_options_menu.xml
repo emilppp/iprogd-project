@@ -1,12 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:padding="@dimen/activity_vertical_margin"
+    android:layout_height="wrap_content">
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:text="More options will go here"/>
+        android:orientation="vertical">
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/cover"
+            android:src="@drawable/fallback_album" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            style="@style/text_fat"
+            android:text="@string/artist_name_placeholder"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bread"
+            android:layout_marginTop="@dimen/activity_vertical_margin_half"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:text="@string/placeholder_song_information"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_vertical_margin_half"
+            android:layout_marginBottom="@dimen/activity_vertical_margin_half"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_huge"
+                android:textSize="50dp"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="80dp"
+                android:id="@+id/dislike"
+                android:text="@string/minus"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_huge"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:textSize="50dp"
+                android:id="@+id/like"
+                android:text="@string/plus"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/add_to_playlist"
+            android:id="@+id/add_to_playlist"
+            android:padding="@dimen/activity_vertical_margin"
+            style="@style/text_big"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/activity_vertical_margin"
+            android:id="@+id/queue_song"
+            android:text="@string/queue_song"
+            style="@style/text_big"/>
+
+    </LinearLayout>
+
+</ScrollView>

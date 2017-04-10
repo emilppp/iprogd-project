@@ -2,22 +2,14 @@ package emilp.hallo;
 
 import android.app.Activity;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONObject;
-
-import java.net.URL;
 
 import emilp.hallo.view.ContentList;
+import emilp.hallo.view.MoreOptions;
 
 public class SearchResultsActivity extends Activity {
 
@@ -33,51 +25,45 @@ public class SearchResultsActivity extends Activity {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d("SearchResultsActivity", query);
 
-            URL searchUrl = NetworkUtils.buildUrlSearch(query, "artist");
-            new SpotifyQueryTask(this){
-                @Override
-                protected void onPostExecute(JSONObject githubSearchResults) {
-                    if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                        Log.d("SpotifyQueryTask", "Fann" + githubSearchResults);
-
-                        final GlobalApplication global = (GlobalApplication) getApplication();
-                        SpotifyService.parseSearchJSON(githubSearchResults, global);
-
-                        Object[] artists = global.getSearchRes().toArray();
-
-                        new AsyncTask<Object, Void, Void>() {
-                            @Override
-                            protected Void doInBackground(Object[] params) {
-                                for (Object o : params)
-                                    ((Artist) o).downloadImage();
-                                return null;
-                            }
-
-                            @Override
-                            protected void onPostExecute(Void aVoid) {
-                                super.onPostExecute(aVoid);
-
-                                ContentList contentList = new ContentList(SearchResultsActivity.this, R.id.search_results, LinearLayoutManager.VERTICAL) {
-                                    @Override
-                                    protected void onItemClick(View view, Content content) {
-                                        Artist art = (Artist) content;
-                                        ((GlobalApplication) getApplication()).setCurrentArtist(art);
-                                        Intent intent = new Intent(SearchResultsActivity.this, ArtistPage.class);
-                                        startActivity(intent);
-                                    }
-
-                                    @Override
-                                    protected void onSecondItemClick(View view, Content content) {
-
-                                    }
-                                };
-                                contentList.setTitle(R.string.artists);
-                                contentList.init(global.getSearchRes());
-                            }
-                        }.execute(artists);
-                    }
-                }
-            }.execute(searchUrl);
+            searchArtists(query);
+            searchAlbums(query);
+            searchSongs(query);
         }
+    }
+
+    private ContentList getContentList(int id, int direction, final Class<?> c) {
+        return new ContentList(SearchResultsActivity.this, id, direction) {
+            @Override
+            protected void onItemClick(View view, Content content) {
+                ((GlobalApplication) getApplication()).setCurrentContent(content);
+                Intent intent = new Intent(SearchResultsActivity.this, c);
+                startActivity(intent);
+            }
+        };
+    }
+
+    private void searchSongs(String query) {
+        ContentList contentList = new ContentList(SearchResultsActivity.this, R.id.search_results_songs, LinearLayoutManager.VERTICAL) {
+            @Override
+            protected void onSecondItemClick(View view, Content content) {
+                super.onSecondItemClick(view, content);
+                new MoreOptions(SearchResultsActivity.this, content);
+            }
+        };
+        contentList.setTitle(R.string.songs);
+        // TODO: Song view?
+        new ApiGetSongs(contentList, query);
+    }
+
+    private void searchArtists(String query) {
+        ContentList contentList = getContentList(R.id.search_results_artists, LinearLayoutManager.HORIZONTAL, ArtistPage.class);
+        contentList.setTitle(R.string.artists);
+        new ApiGetArtists(contentList, query);
+    }
+
+    private void searchAlbums(String query) {
+        ContentList contentList = getContentList(R.id.search_results_albums, LinearLayoutManager.HORIZONTAL, AlbumPage.class);
+        contentList.setTitle(R.string.albums);
+        new ApiGetAlbums(contentList, query);
     }
 }

@@ -31,10 +31,14 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final Content content = (Content) data.get(position);
+        final Content content = data.get(position);
 
-        if(holder.getArtistTextView() != null)
-           holder.getArtistTextView().setText(content.getBread());
+        if(holder.getArtistTextView() != null) {
+            if(content.getBread() == null) {
+                holder.getArtistTextView().setVisibility(View.GONE);
+            } else
+                holder.getArtistTextView().setText(content.getBread());
+        }
         if(holder.getTitleTextView() != null)
            holder.getTitleTextView().setText(content.getTitle());
         if(content.getImage() != null)

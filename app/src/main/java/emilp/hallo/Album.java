@@ -57,6 +57,8 @@ public class Album implements Content {
     }
 
     private String getArtistsName() {
+        if (getArtists().size() == 0)
+            return null;
         String res = "";
         ArrayList<Artist> artists = getArtists();
         for(int i=0; i<artists.size(); i++) {

@@ -5,7 +5,7 @@ import android.text.Html;
 
 import java.util.ArrayList;
 
-class Song implements Content {
+public class Song implements Content {
     private String title;
     private Artist artist;
     private Album album;
@@ -60,6 +60,12 @@ class Song implements Content {
     @Override
     public int fallbackImage() {
         return getAlbum().fallbackImage();
+    }
+
+    @Override
+    public void downloadImage() {
+        if(getAlbum() != null)
+            getAlbum().downloadImage();
     }
 
     public void setTitle(String tit) {

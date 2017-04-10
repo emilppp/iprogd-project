@@ -32,6 +32,8 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
         act = activity;
         this.token = token;
     }
+    public SpotifyQueryTask() {
+    }
     public SpotifyQueryTask(Activity activity, String token, Boolean isPost) {
         act = activity;
         this.token = token;

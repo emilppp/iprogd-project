@@ -12,16 +12,30 @@ import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
 
-public class ApiRecommendedArtists {
+public class ApiGetArtists {
 
     private ContentList contentList;
-    private GlobalApplication global;
     private ArrayList<Content> songs = new ArrayList<>();
+    private String query = null;
 
-
-    public ApiRecommendedArtists(ContentList contentList, GlobalApplication global) {
+    /**
+     * Using this constructor, random results will be returned
+     * @param contentList
+     */
+    public ApiGetArtists(ContentList contentList) {
         this.contentList = contentList;
-        this.global = global;
+
+        contentList.init(songs);
+        getSongHistory();
+    }
+
+    /**
+     * Using this constructor, results will be based on the query
+     * @param contentList
+     */
+    public ApiGetArtists(ContentList contentList, String query) {
+        this.contentList = contentList;
+        this.query = query;
 
         contentList.init(songs);
         getSongHistory();
@@ -32,14 +46,17 @@ public class ApiRecommendedArtists {
     }
 
     private void getSongHistory() {
-        URL url = NetworkUtils.buildRandom("artist", 3);
+        URL url;
+        if(query == null)
+            url = NetworkUtils.buildRandom("artist", 3);
+        else
+            url = NetworkUtils.buildUrlSearch(query, "artist");
         new AsyncTask<URL, Void, Void>(){
             @Override
             protected Void doInBackground(URL... params) {
                 URL searchUrl = params[0];
-                JSONObject res = null;
                 try {
-                    res = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+                    JSONObject res = NetworkUtils.getResponseFromHttpUrl(searchUrl);
                     parseTracksJSON(res);
                 } catch (IOException e) {
                     e.printStackTrace();

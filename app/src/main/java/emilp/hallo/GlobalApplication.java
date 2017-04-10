@@ -1,8 +1,6 @@
 package emilp.hallo;
 
 import android.app.Application;
-import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -25,7 +23,7 @@ public class GlobalApplication extends Application {
 
     private String displayName;
 
-    private Artist currentArtist;
+    private Content currentContent;
 
     private SpotifyService spotifyService = new SpotifyService();
 
@@ -38,7 +36,7 @@ public class GlobalApplication extends Application {
     }
 
     public void getRecommendedSongs(ContentList contentList) {
-        new ApiRecommendedSongs(contentList, this);
+        new ApiGetSongs(contentList);
     }
 
     public ArrayList<Content> getSongHistory() {
@@ -53,7 +51,7 @@ public class GlobalApplication extends Application {
     }
 
     public void getRecommendedAlbums(ContentList contentList) {
-        new ApiRecommendedAlbums(contentList, this);
+        new ApiGetAlbums(contentList);
     }
 
     public ArrayList<Content> getRecommendedAlbums() {
@@ -75,7 +73,7 @@ public class GlobalApplication extends Application {
     }
 
     public void getRecommendedArtists(ContentList contentList) {
-        new ApiRecommendedArtists(contentList, this);
+        new ApiGetArtists(contentList);
     }
 
     public ArrayList<Content> getRecommendedArtists() {
@@ -129,12 +127,12 @@ public class GlobalApplication extends Application {
         return null;
     }
 
-    public Artist getCurrentArtist() {
-        return currentArtist;
+    public Content getCurrentContent() {
+        return currentContent;
     }
 
-    public void setCurrentArtist(Artist currentArtist) {
-        this.currentArtist = currentArtist;
+    public void setCurrentContent(Content currentArtist) {
+        this.currentContent = currentArtist;
     }
 
     public void fetchClientID() {

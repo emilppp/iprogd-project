@@ -12,34 +12,51 @@ import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
 
-public class ApiRecommendedSongs {
+public class ApiGetAlbums {
 
     private ContentList contentList;
-    private GlobalApplication global;
     private ArrayList<Content> songs = new ArrayList<>();
+    private String query = null;
 
-
-    public ApiRecommendedSongs(ContentList contentList, GlobalApplication global) {
+    /**
+     * Using this constructor, random results will be returned
+     * @param contentList
+     */
+    public ApiGetAlbums(ContentList contentList) {
         this.contentList = contentList;
-        this.global = global;
 
         contentList.init(songs);
         getSongHistory();
     }
 
-    private void addSongToResult(Song song) {
+    /**
+     * Using this constructor, results will be based on the query
+     * @param contentList
+     */
+    public ApiGetAlbums(ContentList contentList, String query) {
+        this.contentList = contentList;
+        this.query = query;
+
+        contentList.init(songs);
+        getSongHistory();
+    }
+
+    private void addSongToResult(Content song) {
         songs.add(song);
     }
 
     private void getSongHistory() {
-        URL url = NetworkUtils.buildRandom("track", 10);
+        URL url;
+        if(query == null)
+            url = NetworkUtils.buildRandom("album", 3);
+        else
+            url = NetworkUtils.buildUrlSearch(query, "album");
         new AsyncTask<URL, Void, Void>(){
             @Override
             protected Void doInBackground(URL... params) {
                 URL searchUrl = params[0];
-                JSONObject res = null;
                 try {
-                    res = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+                    JSONObject res = NetworkUtils.getResponseFromHttpUrl(searchUrl);
                     parseTracksJSON(res);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -56,32 +73,25 @@ public class ApiRecommendedSongs {
 
     private void parseTracksJSON(JSONObject obj) {
         try {
-            JSONArray arr = obj.getJSONObject("tracks").getJSONArray("items");
+            JSONArray arr = obj.getJSONObject("albums").getJSONArray("items");
             for(int i=0; i<arr.length(); i++) {
                 obj = arr.getJSONObject(i);
-                JSONObject a = obj.getJSONObject("album");
-                String aName = a.getString("name");
-                String aId = a.getString("id");
-                String aUrl = a.getJSONArray("images").getJSONObject(0).getString("url");
+                String aName = obj.getString("name");
+                String aId = obj.getString("id");
+                String aUrl = obj.getJSONArray("images").getJSONObject(0).getString("url");
                 Album album = new Album(aName, aId, aUrl);
-
-                int duration = (int) (obj.getLong("duration_ms") / 1000);
-                String songName = obj.getString("name");
-                String songId = obj.getString("id");
-                Song song = new Song(songName, songId, duration);
+                album.downloadImage();
 
                 JSONArray artists = obj.getJSONArray("artists");
                 for(int k=0; k<artists.length(); k++) {
-                    JSONObject bb = artists.getJSONObject(k);
-                    String bbName = bb.getString("name");
-                    String bbId = bb.getString("id");
-                    Artist artist = new Artist(bbName, bbId);
-                    song.addArtist(artist);
+                    JSONObject b = artists.getJSONObject(k);
+                    String bName = b.getString("name");
+                    String bId = b.getString("id");
+                    Artist artist = new Artist(bName, bId);
+                    album.addArtists(artist);
                 }
 
-                song.setAlbum(album);
-                album.downloadImage();
-                addSongToResult(song);
+                addSongToResult(album);
             }
 
         } catch (JSONException e) {

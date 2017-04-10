@@ -12,4 +12,5 @@ public interface Content {
     String getBread();
     Bitmap getImage();
     int fallbackImage();
+    void downloadImage();
 }
