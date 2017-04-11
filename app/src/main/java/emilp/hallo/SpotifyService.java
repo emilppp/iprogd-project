@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -231,7 +232,6 @@ public class SpotifyService extends Activity implements
 
     }
 
-
     private void parseHistoryJSON(JSONObject res, GlobalApplication global) {
         try {
             JSONArray arr = res.getJSONArray("items");
@@ -305,7 +305,7 @@ public class SpotifyService extends Activity implements
             e.printStackTrace();
         }
     }
-    
+
 
     public String getAccessToken() {
         return accessToken;
@@ -314,16 +314,34 @@ public class SpotifyService extends Activity implements
     public void createPlaylist(final GlobalApplication global) {
         String userID = global.getClientID();
         URL url = NetworkUtils.buildUrlCreatePlaylist(userID);
-        new SpotifyQueryTask(this, getAccessToken(), true){
+        new SpotifyQueryTask(this, getAccessToken(), "post"){
             @Override
             protected void onPostExecute(JSONObject res) {
                 // TODO
                 if(res!=null) {
                     parsePlaylistJSON(res, global);
+                    global.postPlaylist();
+
                 }
             }
         }.execute(url);
     }
 
+
+    public void postPlaylist(final GlobalApplication global) {
+        String userID = global.getClientID();
+        String playlistID = global.getPlaylistID();
+        URL url = NetworkUtils.buildUrlAddTracksToPlaylist(userID, playlistID, global.getSongsToBeAdded());
+        new SpotifyQueryTask(this, getAccessToken(), global.getSongsToBeAdded()) {
+            @Override
+            protected void onPostExecute(JSONObject res) {
+                if(res!=null) {
+                    System.out.println("posted " +  res.toString());
+
+                }
+            }
+        }.execute(url);
+
+    }
 
 }

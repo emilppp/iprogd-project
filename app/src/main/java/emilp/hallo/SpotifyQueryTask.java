@@ -12,6 +12,7 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -22,7 +23,8 @@ import emilp.hallo.view.ContentList;
 public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
     private Activity act;
     private String token = null;
-    private boolean post = false;
+    private String type = null;
+    private ArrayList<Song> tracks;
 
     public SpotifyQueryTask(Activity activity) {
         act = activity;
@@ -31,14 +33,25 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
     public SpotifyQueryTask(Activity activity, String token) {
         act = activity;
         this.token = token;
+        this.type = "get";
     }
     public SpotifyQueryTask() {
     }
-    public SpotifyQueryTask(Activity activity, String token, Boolean isPost) {
+    public SpotifyQueryTask(Activity activity, String token, String post) {
         act = activity;
         this.token = token;
-        post = isPost;
+        this.type = "post";
     }
+
+    public SpotifyQueryTask(Activity activity, String token, ArrayList<Song> arr) {
+        act = activity;
+        this.token = token;
+        this.type = "playlist";
+        this.tracks = arr;
+    }
+
+
+
 
 
     // superful lösning med POST ist för GET
@@ -48,16 +61,25 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
         JSONObject spotifyResults = null;
 
         try {
-            if(post) {
-                spotifyResults = NetworkUtils.getResponseFromPostHttpUrl(searchUrl, token);
 
-            } else {
-                spotifyResults = NetworkUtils.getResponseFromHttpUrl(searchUrl, token);
+            switch (type) {
+                case "get":
+                    spotifyResults = NetworkUtils.getResponseFromHttpUrl(searchUrl, token);
+                    break;
+                case "post":
+                    spotifyResults = NetworkUtils.getResponseFromPostHttpUrl(searchUrl, token);
+                    break;
+                case "playlist":
+                    spotifyResults = NetworkUtils.getResponseFromAddToPlaylist(searchUrl, token, tracks);
+                    break;
+                default:
+                    break;
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        post = false;
+        type = "";
         return spotifyResults;
     }
 

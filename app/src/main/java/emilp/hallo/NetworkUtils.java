@@ -19,15 +19,19 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.renderscript.ScriptGroup;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -151,6 +155,30 @@ public class NetworkUtils {
         return null;
     }
 
+
+    public static URL buildUrlAddTracksToPlaylist(String userID, String playlistID, ArrayList<Song> tracks) {
+        if(userID != null && playlistID != null && tracks != null) {
+            StringBuilder sb = new StringBuilder();
+
+            for(int i = 0; i<tracks.size(); i++) {
+                if(i == tracks.size() -1) {
+                    sb.append(tracks.get(i).getId());
+                } else {
+                    sb.append(tracks.get(i).getId());
+                    sb.append(",");
+                }
+            }
+            Uri builtUri = Uri.parse(SPOTIFY_CREATE_PLAYLIST_URL).buildUpon().appendPath(userID).appendPath("playlists").appendPath(playlistID).appendPath("tracks").appendQueryParameter("uris", sb.toString()).build();
+            System.out.println("kebab "  + builtUri.toString());
+            try {
+                return new URL(builtUri.toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public static URL buildUrlArtist(String artistId) {
         Uri builtUri = Uri.parse(SPOTIFY_ARTIST_URL).buildUpon().appendPath(artistId).build();
         URL url = null;
@@ -178,6 +206,79 @@ public class NetworkUtils {
         return getResponseFromHttpUrl(url, null);
     }
 
+
+    public static JSONObject getResponseFromAddToPlaylist(URL url, String token, ArrayList<Song> tracks) throws IOException {
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod("POST");
+
+        if(token != null) {
+            urlConnection.setRequestProperty("Authorization", "Bearer " + token);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+        /*    ArrayList<String> trk = new ArrayList<String>();
+            for(Song i : tracks) {
+                trk.add(i.getId());
+            }
+            new JSONArray(Arrays.asList(trk));
+            urlConnection.;
+            */
+/*
+            StringBuilder sb = new StringBuilder();
+            String data = "{uris:";
+            sb.append(data);
+            sb.append("[");
+
+            for(int i = 0; i<tracks.size(); i++) {
+                if(i == tracks.size() - 1) {
+                    sb.append("\"");
+                    sb.append(tracks.get(i).getId());
+                    sb.append("\"");
+                } else {
+                    sb.append("\"");
+                    sb.append(tracks.get(i).getId());
+                    sb.append("\",");
+                }
+            }
+            sb.append("]}");
+            data = sb.toString();
+            System.out.println(data);
+
+            */
+           /* urlConnection.setDoOutput(true);
+
+            byte[] outputInBytes = trk.toString().getBytes("UTF-8");
+            OutputStream os = urlConnection.getOutputStream();
+            os.write(outputInBytes);
+            os.close();
+            */
+
+
+            System.out.println("Vad har vi byggt " + urlConnection.toString());
+        } try {
+            InputStream in;
+            in = urlConnection.getInputStream();
+            Scanner scanner = new Scanner(in);
+            scanner.useDelimiter("\\A");
+
+            boolean hasInput = scanner.hasNext();
+            if (hasInput) {
+                try {
+                    String res = scanner.next();
+                    return new JSONObject(res);
+                } catch (JSONException e) {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            urlConnection.disconnect();
+        }
+        return null;
+    }
+
+
     public static JSONObject getResponseFromPostHttpUrl(URL url, String token) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");
@@ -186,6 +287,7 @@ public class NetworkUtils {
             urlConnection.setRequestProperty("Authorization", "Bearer " + token);
             urlConnection.setRequestProperty("Content-Type", "application/json");
             String data = "{ \"name\": \"A new playlist\", \"public\": false}";
+            urlConnection.setDoOutput(true);
             byte[] outputInBytes = data.getBytes("UTF-8");
 
             OutputStream os = urlConnection.getOutputStream();
