@@ -15,6 +15,7 @@ public class GlobalApplication extends Application {
     private ArrayList<Content> artist = new ArrayList<>();
     private ArrayList<Content> searchRes = new ArrayList<>();
     private ArrayList<Content> songHistory = new ArrayList<>();
+    private ArrayList<Song> songsToBeAdded = new ArrayList<>();
     private ContentList historyAdapter;
 
     private String playlistID;
@@ -167,5 +168,23 @@ public class GlobalApplication extends Application {
 
     public void setPlaylistID(String playlistID) {
         this.playlistID = playlistID;
+    }
+
+    public ArrayList<Song> getSongsToBeAdded() {
+        return songsToBeAdded;
+    }
+
+    public void setSongsToBeAdded(ArrayList<Song> songsToBeAdded) {
+        this.songsToBeAdded = songsToBeAdded;
+    }
+
+    public void addToPlaylist(Song content) {
+        if(content != null)
+            songsToBeAdded.add(content);
+    }
+
+    public void postPlaylist() {
+        addToPlaylist(new Song("hej", "spotify:track:67Og4lrOb8CeyFur6KyGnf", 3));
+        spotifyService.postPlaylist(this);
     }
 }

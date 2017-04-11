@@ -127,4 +127,12 @@ public class Song implements Content {
     public String getInformation() {
         return getArtistsName() + " - " + getAlbum().getName() + " " + Html.fromHtml("&#8226;").toString() + " " + getDurationString();
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
