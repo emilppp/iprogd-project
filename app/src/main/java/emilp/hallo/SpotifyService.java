@@ -137,6 +137,10 @@ public class SpotifyService extends Activity implements
         mPlayer.pause(mOperationCallback);
     }
 
+    public boolean isPlaying() {
+        return mPlayer.getPlaybackState().isPlaying;
+    }
+
     public void resumeSong() {
         mPlayer.resume(mOperationCallback);
     }

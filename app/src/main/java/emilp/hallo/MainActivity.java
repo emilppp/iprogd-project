@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,9 +29,13 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
+import emilp.hallo.view.CurrentlyPlaying;
 import emilp.hallo.view.MoreOptions;
 
 
@@ -96,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        new CurrentlyPlaying(this);
     }
 
     private void loadRecommended() {
