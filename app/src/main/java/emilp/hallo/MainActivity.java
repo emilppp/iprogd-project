@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDrawerInfo() {
-        ImageView mImageViewUser = (ImageView) findViewById(R.id.profile_pic)
+        ImageView mImageViewUser = (ImageView) findViewById(R.id.profile_pic);
         TextView mDrawerUserName = (TextView) findViewById(R.id.user_name);
         TextView mDrawerRealName = (TextView) findViewById(R.id.real_name);
         mDrawerRealName.setText(((GlobalApplication) getApplication()).getDisplayName());
