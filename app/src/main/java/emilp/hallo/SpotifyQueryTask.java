@@ -23,7 +23,7 @@ import emilp.hallo.view.ContentList;
 public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
     private Activity act;
     private String token = null;
-    private String type = null;
+    private String type = "get";
     private ArrayList<Song> tracks;
 
     public SpotifyQueryTask(Activity activity) {

@@ -74,7 +74,7 @@ public class AlbumPage extends AppCompatActivity {
         URL url = NetworkUtils.buildUrlArtist(testId);
         new SpotifyQueryTask(this) {
             @Override
-            protected void onPostExecute(JSONObject githubSearchResults) {
+            protected void onPostExecute(JSONObject spotifySearchresults) {
                 TextView tvAlbumName = (TextView) findViewById(R.id.album_name);
                 ImageView ivAlbumCover = (ImageView) findViewById(R.id.album_cover);
 
