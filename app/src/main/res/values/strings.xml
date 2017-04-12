@@ -36,4 +36,6 @@
     <string name="add_to_playlist">Add to playlist</string>
     <string name="queue_song">Queue</string>
     <string name="songs">Songs</string>
+    <string name="user_name_placeholder">John_Doe_1337</string>
+    <string name="real_name_placeholder">John Doe</string>
 </resources>

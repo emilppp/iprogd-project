@@ -27,6 +27,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         ((GlobalApplication) getApplication()).fetchClientID();
 
 
+        setDrawerInfo();
 
         // initActionbar();
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -170,6 +172,14 @@ public class MainActivity extends AppCompatActivity {
     private void loadSongHistory() {
         ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL);
         ((GlobalApplication) getApplication()).getSongHistory(contentList);
+    }
+
+    private void setDrawerInfo() {
+        ImageView mImageViewUser = (ImageView) findViewById(R.id.profile_pic)
+        TextView mDrawerUserName = (TextView) findViewById(R.id.user_name);
+        TextView mDrawerRealName = (TextView) findViewById(R.id.real_name);
+        mDrawerRealName.setText(((GlobalApplication) getApplication()).getDisplayName());
+        mDrawerUserName.setText(((GlobalApplication) getApplication()).getClientID());
     }
 
 
