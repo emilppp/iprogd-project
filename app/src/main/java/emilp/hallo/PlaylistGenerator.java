@@ -81,10 +81,6 @@ public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
             for (Content c : api.getSongs())
                 global.addToPlaylist((Song) c);
 
-            for( Content d : api.getSongs()) {
-                Song s = (Song) d;
-                global.removeTrackFromPlaylist("spotify:track:" + s.getId());
-            }
         }
         return null;
     }

@@ -122,7 +122,12 @@ public class SpotifyService extends Activity implements
         }
     }
 
-    public void playSong(String spotifyUri) {
+    public void playSong(GlobalApplication global, Song song) {
+        global.setCurrentlyPlayingSong(song);
+        playSong("spotify:track:" + song.getId());
+    }
+
+    private void playSong(String spotifyUri) {
         mPlayer.playUri(mOperationCallback, spotifyUri, 0, 0);
     }
 

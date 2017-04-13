@@ -33,6 +33,7 @@ public class GlobalApplication extends Application {
     private SpotifyService spotifyService = new SpotifyService();
     private FeedReaderContract.FeedReaderDbHelper mDbHelper;
     private SharedPreferences sharedPreferences;
+    private Song currentlyPlayingSong = null;
 
     private static String SHARED_PREFERENCES = "spotgenprefs";
     private static String SHARED_PREFERENCES_PLAYLIST_ID = "playlistId";
@@ -43,10 +44,6 @@ public class GlobalApplication extends Application {
 
         mDbHelper = new FeedReaderContract.FeedReaderDbHelper( getApplicationContext() );
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-
-
-        reset();
-
 
         playlistID = getSavedPlaylistId();
 
@@ -332,8 +329,10 @@ public class GlobalApplication extends Application {
 
     public void addToPlaylist(Song content) {
         if(content != null) {
-            songsToBeAdded.add(content);
-            addSongToDatabase(content);
+            if(!isInPlaylist(content)) {
+                songsToBeAdded.add(content);
+                addSongToDatabase(content);
+            }
         }
     }
 
@@ -344,9 +343,16 @@ public class GlobalApplication extends Application {
     public void removeFromLocalPlaylist(Song track) {
         for(Iterator<Song> it = songsToBeAdded.iterator(); it.hasNext();) {
             Song c = it.next();
-            if(c.getId() == track.getId())
+            if(c.getId().equals(track.getId()))
                 it.remove();
         }
+    }
+
+    public boolean isInPlaylist(Song song) {
+        for(int i=0; i<songsToBeAdded.size(); i++)
+            if(songsToBeAdded.get(i).getId().equals(song.getId()))
+                return true;
+        return false;
     }
 
     public void removeTrackFromPlaylist(Song track) {
@@ -354,5 +360,13 @@ public class GlobalApplication extends Application {
         String removeSong = "spotify:track:" + track.getId();
         spotifyService.removeTrackFromPlaylist(this, removeSong);
         removeFromLocalPlaylist(track);
+    }
+
+    public Song getCurrentlyPlayingSong() {
+        return currentlyPlayingSong;
+    }
+
+    public void setCurrentlyPlayingSong(Song currentlyPlayingSong) {
+        this.currentlyPlayingSong = currentlyPlayingSong;
     }
 }
