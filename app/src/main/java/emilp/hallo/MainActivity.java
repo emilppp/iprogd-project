@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         activity = this;
 
         ((GlobalApplication) getApplication()).fetchClientID();
-
+        System.out.println("Playlist ID: " + ((GlobalApplication) getApplication()).getPlaylistID());
 
         setDrawerInfo();
 

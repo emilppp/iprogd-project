@@ -55,6 +55,18 @@ public class ApiGetSongs {
     }
 
     /**
+     * WARNING! This will not be thread-safe and will halt execution.
+     * This constructor will get all songs from the provided list of ids
+     * The results can then be fetched with the <code>getSongs()</code> method.
+     * @param ids
+     *      Should be of the form "id1,id2,...,idn". All ids must be separated by a comma.
+     */
+    public ApiGetSongs(String ids) {
+        this.limit = limit;
+        getSongHistoryIdsUnsafe(ids);
+    }
+
+    /**
      * Using this constructor, results will be based on the query
      * @param contentList
      */
@@ -143,6 +155,11 @@ public class ApiGetSongs {
         }
     }
 
+    private void getSongHistoryIdsUnsafe(String ids) {
+        JSONObject res = NetworkUtils.getTracks( ids );
+        parseTracksIdsJSON(res);
+    }
+
     private void getSongHistory() {
         URL url;
         if(query == null)
@@ -226,6 +243,26 @@ public class ApiGetSongs {
     private void parseTracksJSON(JSONObject obj) {
         try {
             JSONArray arr = obj.getJSONObject("tracks").getJSONArray("items");
+            for(int i=0; i<arr.length(); i++) {
+                obj = arr.getJSONObject(i);
+
+                Album album = extractAlbumInformation(obj);
+                Song song = extractSongInformation(obj);
+
+                addArtists(obj, song);
+
+                song.setAlbum(album);
+                album.downloadImage();
+                addSongToResult(song);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void parseTracksIdsJSON(JSONObject obj) {
+        try {
+            JSONArray arr = obj.getJSONArray("tracks");
             for(int i=0; i<arr.length(); i++) {
                 obj = arr.getJSONObject(i);
 
