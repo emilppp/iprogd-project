@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         };
         ((GlobalApplication) getApplication()).getRecommendedSongs(contentList);
         contentList.setTitle(R.string.recommendations_songs);
+        contentList.hideAnimation();
     }
 
     private void loadRecommendedArtists() {
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         };
         ((GlobalApplication) getApplication()).getRecommendedArtists(contentList);
         contentList.setTitle(R.string.recommendations_artists);
+        contentList.hideAnimation();
     }
 
     private void loadRecommendedAlbums() {

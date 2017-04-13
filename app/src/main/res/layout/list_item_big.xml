@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:cropToPadding="false"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:id="@+id/history_item_cover"
             android:src="@drawable/fallback_album"
             android:background="?android:attr/selectableItemBackground"/>
