@@ -345,7 +345,7 @@ public class SpotifyService extends Activity implements
         String userID = global.getClientID();
         String playlistID = global.getPlaylistID();
         URL url = NetworkUtils.buildUrlRemoveFromPlaylist(userID, playlistID, track);
-        new SpotifyQueryTask(this, getAccessToken(), "delete") {
+        new SpotifyQueryTask(this, getAccessToken(), "delete", track) {
             @Override
             protected void onPostExecute(JSONObject res) {
                 if(res!=null) {

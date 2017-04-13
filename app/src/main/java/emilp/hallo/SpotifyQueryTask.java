@@ -25,6 +25,7 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
     private String token = null;
     private String type = "get";
     private ArrayList<Song> tracks;
+    String track = null;
 
     public SpotifyQueryTask(Activity activity) {
         act = activity;
@@ -41,6 +42,13 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
         act = activity;
         this.token = token;
         this.type = type;
+    }
+
+    public SpotifyQueryTask(Activity activity, String token, String type, String track) {
+        act = activity;
+        this.token = token;
+        this.type = type;
+        this.track = track;
     }
 
     public SpotifyQueryTask(Activity activity, String token, ArrayList<Song> arr) {
@@ -73,6 +81,7 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
                     spotifyResults = NetworkUtils.getResponseFromAddToPlaylist(searchUrl, token, tracks);
                     break;
                 case "delete":
+                    spotifyResults = NetworkUtils.getResponseFromDeleteFromPlaylist(searchUrl, token, track);
                 default:
                     break;
             }

@@ -262,14 +262,17 @@ public class NetworkUtils {
         /*    { "tracks": [{ "uri": "spotify:track:4iV5W9uYEdYUVa79Axb7Rh" },{
                 "uri": "spotify:track:1301WleyT98MSxVHPZCA6M" }] }
 
+
                 */
 
         sb.append("{ \"tracks\": [{ \"uri\": ");
+        sb.append("\"");
         sb.append(track);
+        sb.append("\"");
         sb.append("}]}");
 
         String data = sb.toString();
-
+        System.out.println(data);
 
 
         if(token != null) {
