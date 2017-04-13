@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -155,6 +156,19 @@ public class NetworkUtils {
         return null;
     }
 
+    public static URL buildUrlRemoveFromPlaylist(String userID, String playlistID, String track) {
+        if(userID != null && userID != "") {
+            Uri builtUri = Uri.parse(SPOTIFY_CREATE_PLAYLIST_URL).buildUpon().appendPath(userID).appendPath("playlists").appendPath(playlistID).appendPath("tracks").build();
+            System.out.println(builtUri.toString());
+            try {
+                return new URL(builtUri.toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 
     public static URL buildUrlAddTracksToPlaylist(String userID, String playlistID, ArrayList<Song> tracks) {
         if(userID != null && playlistID != null && tracks != null) {
@@ -211,45 +225,65 @@ public class NetworkUtils {
         if(token != null) {
             urlConnection.setRequestProperty("Authorization", "Bearer " + token);
             urlConnection.setRequestProperty("Content-Type", "application/json");
-        /*    ArrayList<String> trk = new ArrayList<String>();
-            for(Song i : tracks) {
-                trk.add(i.getId());
-            }
-            new JSONArray(Arrays.asList(trk));
-            urlConnection.;
-            */
-/*
-            StringBuilder sb = new StringBuilder();
-            String data = "{uris:";
-            sb.append(data);
-            sb.append("[");
 
-            for(int i = 0; i<tracks.size(); i++) {
-                if(i == tracks.size() - 1) {
-                    sb.append("\"");
-                    sb.append(tracks.get(i).getId());
-                    sb.append("\"");
-                } else {
-                    sb.append("\"");
-                    sb.append(tracks.get(i).getId());
-                    sb.append("\",");
+            System.out.println("Vad har vi byggt " + urlConnection.toString());
+        } try {
+            InputStream in;
+            in = urlConnection.getInputStream();
+            Scanner scanner = new Scanner(in);
+            scanner.useDelimiter("\\A");
+
+            boolean hasInput = scanner.hasNext();
+            if (hasInput) {
+                try {
+                    String res = scanner.next();
+                    return new JSONObject(res);
+                } catch (JSONException e) {
+                    return null;
                 }
+            } else {
+                return null;
             }
-            sb.append("]}");
-            data = sb.toString();
-            System.out.println(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            urlConnection.disconnect();
+        }
+        return null;
+    }
 
-            */
-           /* urlConnection.setDoOutput(true);
+    public static JSONObject getResponseFromDeleteFromPlaylist(URL url, String token, String track) throws IOException {
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod("DELETE");
 
-            byte[] outputInBytes = trk.toString().getBytes("UTF-8");
+        StringBuilder sb = new StringBuilder();
+
+
+        /*    { "tracks": [{ "uri": "spotify:track:4iV5W9uYEdYUVa79Axb7Rh" },{
+                "uri": "spotify:track:1301WleyT98MSxVHPZCA6M" }] }
+
+                */
+
+        sb.append("{ \"tracks\": [{ \"uri\": ");
+        sb.append(track);
+        sb.append("}]}");
+
+        String data = sb.toString();
+
+
+
+        if(token != null) {
+            urlConnection.setRequestProperty("Authorization", "Bearer " + token);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            urlConnection.setDoOutput(true);
+            byte[] outputInBytes = data.getBytes("UTF-8");
+
             OutputStream os = urlConnection.getOutputStream();
             os.write(outputInBytes);
             os.close();
-            */
 
-
-            System.out.println("Vad har vi byggt " + urlConnection.toString());
+            System.out.println("Vad har vi tagit bort " + urlConnection.toString());
         } try {
             InputStream in;
             in = urlConnection.getInputStream();
@@ -319,8 +353,6 @@ public class NetworkUtils {
         }
         return null;
     }
-
-
 
     /**
      * This method returns the entire result from the HTTP response.

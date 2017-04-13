@@ -193,4 +193,8 @@ public class GlobalApplication extends Application {
     public void postPlaylist() {
         spotifyService.postPlaylist(this);
     }
+
+    public void removeTrackFromPlaylist(String track) {
+        spotifyService.removeTrackFromPlaylist(this, track);
+    }
 }
