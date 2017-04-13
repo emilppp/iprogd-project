@@ -161,12 +161,9 @@ public class NetworkUtils {
             StringBuilder sb = new StringBuilder();
 
             for(int i = 0; i<tracks.size(); i++) {
-                if(i == tracks.size() -1) {
-                    sb.append(tracks.get(i).getId());
-                } else {
-                    sb.append(tracks.get(i).getId());
+                sb.append("spotify:track:"+tracks.get(i).getId());
+                if(i != tracks.size() -1)
                     sb.append(",");
-                }
             }
             Uri builtUri = Uri.parse(SPOTIFY_CREATE_PLAYLIST_URL).buildUpon().appendPath(userID).appendPath("playlists").appendPath(playlistID).appendPath("tracks").appendQueryParameter("uris", sb.toString()).build();
             System.out.println("kebab "  + builtUri.toString());

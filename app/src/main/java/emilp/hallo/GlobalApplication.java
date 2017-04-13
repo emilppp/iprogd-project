@@ -178,13 +178,19 @@ public class GlobalApplication extends Application {
         this.songsToBeAdded = songsToBeAdded;
     }
 
+    public ArrayList<Content> getSongsToBeAddedAsContent() {
+        ArrayList<Content> res = new ArrayList<>();
+        for(Song song : getSongsToBeAdded())
+            res.add(song);
+        return res;
+    }
+
     public void addToPlaylist(Song content) {
         if(content != null)
             songsToBeAdded.add(content);
     }
 
     public void postPlaylist() {
-        addToPlaylist(new Song("hej", "spotify:track:67Og4lrOb8CeyFur6KyGnf", 3));
         spotifyService.postPlaylist(this);
     }
 }

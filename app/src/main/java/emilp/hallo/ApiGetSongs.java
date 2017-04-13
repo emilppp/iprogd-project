@@ -17,9 +17,10 @@ public class ApiGetSongs {
     private ContentList contentList;
     private ArrayList<Content> songs = new ArrayList<>();
     private String query = null;
+    private int limit = 3;
 
     /**
-     * Using this constructor, random results will be returned
+     * This constructor will generate 3 random results
      * @param contentList
      */
     public ApiGetSongs(ContentList contentList) {
@@ -27,6 +28,30 @@ public class ApiGetSongs {
 
         contentList.init(songs);
         getSongHistory();
+    }
+
+    /**
+     * This constructor will generate <code>limit</code> random results
+     * @param contentList
+     * @param limit
+     */
+    public ApiGetSongs(ContentList contentList, int limit) {
+        this.contentList = contentList;
+        this.limit = limit;
+
+        contentList.init(songs);
+        getSongHistory();
+    }
+
+    /**
+     * WARNING! This will not be thread-safe and will halt execution.
+     * This constructor will generate <code>limit</code> random results.
+     * The results can then be fetched with the <code>getSongs()</code> method.
+     * @param limit
+     */
+    public ApiGetSongs(int limit) {
+        this.limit = limit;
+        getSongHistoryUnsafe();
     }
 
     /**
@@ -95,18 +120,33 @@ public class ApiGetSongs {
             @Override
             protected void onPostExecute(Void aVoid) {
                 contentList.notifyDataSetChanged();
+                ApiGetSongs.this.onPostExcecute();
             }
         }.execute(url);
     }
 
-    private void addSongToResult(Song song) {
+    protected void onPostExcecute() {
+
+    }
+
+    protected void addSongToResult(Song song) {
         songs.add(song);
+    }
+
+    private void getSongHistoryUnsafe() {
+        URL url = NetworkUtils.buildRandom("track", this.limit);
+        try {
+            JSONObject res = NetworkUtils.getResponseFromHttpUrl(url);
+            parseTracksJSON(res);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getSongHistory() {
         URL url;
         if(query == null)
-            url = NetworkUtils.buildRandom("track", 3);
+            url = NetworkUtils.buildRandom("track", this.limit);
         else
             url = NetworkUtils.buildUrlSearch(query, "track");
         new AsyncTask<URL, Void, Void>(){
@@ -210,5 +250,9 @@ public class ApiGetSongs {
         String aId = a.getString("id");
         String aUrl = a.getJSONArray("images").getJSONObject(0).getString("url");
         return new Album(aName, aId, aUrl);
+    }
+
+    public ArrayList<Content> getSongs() {
+        return songs;
     }
 }

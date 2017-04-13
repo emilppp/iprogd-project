@@ -85,10 +85,14 @@ public class MainActivity extends AppCompatActivity {
         btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((GlobalApplication) getApplication()).createPlaylist();
-                System.out.println("Hej skapar spellista var är den");
-                Intent intent = new Intent(getApplicationContext(), PlayList.class);
-                startActivity(intent);
+                // TODO: Show loading here.
+                new PlaylistGenerator(MainActivity.this) {
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        Intent intent = new Intent(getApplicationContext(), PlayList.class);
+                        startActivity(intent);
+                    }
+                }.execute();
             }
         });
 

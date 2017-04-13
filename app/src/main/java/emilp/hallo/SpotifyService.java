@@ -21,6 +21,8 @@ import com.spotify.sdk.android.player.SpotifyPlayer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -307,20 +309,19 @@ public class SpotifyService extends Activity implements
         return accessToken;
     }
 
+    /**
+     * WARNING! This function is NOT thread-safe and will halt execution until it completes.
+     * @param global
+     */
     public void createPlaylist(final GlobalApplication global) {
         String userID = global.getClientID();
         URL url = NetworkUtils.buildUrlCreatePlaylist(userID);
-        new SpotifyQueryTask(this, getAccessToken(), "post"){
-            @Override
-            protected void onPostExecute(JSONObject res) {
-                // TODO
-                if(res!=null) {
-                    parsePlaylistJSON(res, global);
-                    global.postPlaylist();
-
-                }
-            }
-        }.execute(url);
+        try {
+            JSONObject result = NetworkUtils.getResponseFromPostHttpUrl(url, getAccessToken());
+            parsePlaylistJSON(result, global);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
