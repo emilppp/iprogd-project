@@ -21,6 +21,8 @@ import com.spotify.sdk.android.player.SpotifyPlayer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -120,7 +122,12 @@ public class SpotifyService extends Activity implements
         }
     }
 
-    public void playSong(String spotifyUri) {
+    public void playSong(GlobalApplication global, Song song) {
+        global.setCurrentlyPlayingSong(song);
+        playSong("spotify:track:" + song.getId());
+    }
+
+    private void playSong(String spotifyUri) {
         mPlayer.playUri(mOperationCallback, spotifyUri, 0, 0);
     }
 
@@ -235,8 +242,8 @@ public class SpotifyService extends Activity implements
                 JSONObject obj = arr.getJSONObject(i).getJSONObject("track");
                 String name = obj.getString("name");
                 String id = obj.getString("id");
-                int duration = obj.getInt("duration_ms") / 1000;
-                Song song = new Song(name, new Album(), new Artist(), new Artist[0], duration);
+                long duration = obj.getLong("duration_ms");
+                Song song = new Song(name, id, duration);
 
                 global.addSongHistory(song);
             }
@@ -307,27 +314,30 @@ public class SpotifyService extends Activity implements
         return accessToken;
     }
 
+    /**
+     * WARNING! This function is NOT thread-safe and will halt execution until it completes.
+     * @param global
+     */
     public void createPlaylist(final GlobalApplication global) {
         String userID = global.getClientID();
         URL url = NetworkUtils.buildUrlCreatePlaylist(userID);
-        new SpotifyQueryTask(this, getAccessToken(), "post"){
-            @Override
-            protected void onPostExecute(JSONObject res) {
-                // TODO
-                if(res!=null) {
-                    parsePlaylistJSON(res, global);
-                    global.postPlaylist();
-
-                }
-            }
-        }.execute(url);
+        try {
+            JSONObject result = NetworkUtils.getResponseFromPostHttpUrl(url, getAccessToken());
+            parsePlaylistJSON(result, global);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
     public void postPlaylist(final GlobalApplication global) {
+        postPlaylist(global, global.getSongsToBeAdded());
+    }
+
+    public void postPlaylist(final GlobalApplication global, ArrayList<Song> content) {
         String userID = global.getClientID();
         String playlistID = global.getPlaylistID();
-        URL url = NetworkUtils.buildUrlAddTracksToPlaylist(userID, playlistID, global.getSongsToBeAdded());
+        URL url = NetworkUtils.buildUrlAddTracksToPlaylist(userID, playlistID, content);
         new SpotifyQueryTask(this, getAccessToken(), global.getSongsToBeAdded()) {
             @Override
             protected void onPostExecute(JSONObject res) {
@@ -337,7 +347,20 @@ public class SpotifyService extends Activity implements
                 }
             }
         }.execute(url);
+    }
 
+    public void removeTrackFromPlaylist(final GlobalApplication global, String track) {
+        String userID = global.getClientID();
+        String playlistID = global.getPlaylistID();
+        URL url = NetworkUtils.buildUrlRemoveFromPlaylist(userID, playlistID, track);
+        new SpotifyQueryTask(this, getAccessToken(), "delete", track) {
+            @Override
+            protected void onPostExecute(JSONObject res) {
+                if(res!=null) {
+                    System.out.println("deleted " + res.toString());
+                }
+            }
+        }.execute(url);
     }
 
 }

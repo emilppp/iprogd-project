@@ -45,7 +45,7 @@
 
         </LinearLayout>
 
-        <TextView
+        <!--TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -53,7 +53,7 @@
             android:layout_marginTop="20dp"
             android:layout_below="@id/btn_with_spotify"
             android:text="@string/continue_without_spotify"
-            style="@style/text" />
+            style="@style/text" /-->
 
     </RelativeLayout>
 

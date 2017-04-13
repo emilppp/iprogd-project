@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.solver.Goal;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,7 +36,9 @@ public class ArtistPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artist_page);
 
-        currentArtist = (Artist) ((GlobalApplication) getApplication()).getCurrentContent();
+        final GlobalApplication global = (GlobalApplication) getApplication();
+
+        currentArtist = (Artist) global.getCurrentContent();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.artist_page_toolbar);
         setSupportActionBar(myToolbar);
@@ -57,6 +60,7 @@ public class ArtistPage extends AppCompatActivity {
             @Override
             protected void onItemClick(View view, Content content) {
                 super.onItemClick(view, content);
+                global.getSpotifyService().playSong(global, (Song) content);
             }
         };
         new ApiGetSongs(c, currentArtist);

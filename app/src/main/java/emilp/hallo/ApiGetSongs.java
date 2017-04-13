@@ -17,9 +17,10 @@ public class ApiGetSongs {
     private ContentList contentList;
     private ArrayList<Content> songs = new ArrayList<>();
     private String query = null;
+    private int limit = 3;
 
     /**
-     * Using this constructor, random results will be returned
+     * This constructor will generate 3 random results
      * @param contentList
      */
     public ApiGetSongs(ContentList contentList) {
@@ -27,6 +28,42 @@ public class ApiGetSongs {
 
         contentList.init(songs);
         getSongHistory();
+    }
+
+    /**
+     * This constructor will generate <code>limit</code> random results
+     * @param contentList
+     * @param limit
+     */
+    public ApiGetSongs(ContentList contentList, int limit) {
+        this.contentList = contentList;
+        this.limit = limit;
+
+        contentList.init(songs);
+        getSongHistory();
+    }
+
+    /**
+     * WARNING! This will not be thread-safe and will halt execution.
+     * This constructor will generate <code>limit</code> random results.
+     * The results can then be fetched with the <code>getSongs()</code> method.
+     * @param limit
+     */
+    public ApiGetSongs(int limit) {
+        this.limit = limit;
+        getSongHistoryUnsafe();
+    }
+
+    /**
+     * WARNING! This will not be thread-safe and will halt execution.
+     * This constructor will get all songs from the provided list of ids
+     * The results can then be fetched with the <code>getSongs()</code> method.
+     * @param ids
+     *      Should be of the form "id1,id2,...,idn". All ids must be separated by a comma.
+     */
+    public ApiGetSongs(String ids) {
+        this.limit = limit;
+        getSongHistoryIdsUnsafe(ids);
     }
 
     /**
@@ -95,18 +132,38 @@ public class ApiGetSongs {
             @Override
             protected void onPostExecute(Void aVoid) {
                 contentList.notifyDataSetChanged();
+                ApiGetSongs.this.onPostExcecute();
             }
         }.execute(url);
     }
 
-    private void addSongToResult(Song song) {
+    protected void onPostExcecute() {
+
+    }
+
+    protected void addSongToResult(Song song) {
         songs.add(song);
+    }
+
+    private void getSongHistoryUnsafe() {
+        URL url = NetworkUtils.buildRandom("track", this.limit);
+        try {
+            JSONObject res = NetworkUtils.getResponseFromHttpUrl(url);
+            parseTracksJSON(res);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getSongHistoryIdsUnsafe(String ids) {
+        JSONObject res = NetworkUtils.getTracks( ids );
+        parseTracksIdsJSON(res);
     }
 
     private void getSongHistory() {
         URL url;
         if(query == null)
-            url = NetworkUtils.buildRandom("track", 3);
+            url = NetworkUtils.buildRandom("track", this.limit);
         else
             url = NetworkUtils.buildUrlSearch(query, "track");
         new AsyncTask<URL, Void, Void>(){
@@ -177,7 +234,7 @@ public class ApiGetSongs {
     }
 
     private Song extractSongInformation(JSONObject obj) throws JSONException {
-        int duration = (int) (obj.getLong("duration_ms") / 1000);
+        long duration = (obj.getLong("duration_ms"));
         String songName = obj.getString("name");
         String songId = obj.getString("id");
         return new Song(songName, songId, duration);
@@ -203,6 +260,26 @@ public class ApiGetSongs {
             e.printStackTrace();
         }
     }
+    private void parseTracksIdsJSON(JSONObject obj) {
+        try {
+            JSONArray arr = obj.getJSONArray("tracks");
+            for(int i=0; i<arr.length(); i++) {
+                obj = arr.getJSONObject(i);
+
+                Album album = extractAlbumInformation(obj);
+                Song song = extractSongInformation(obj);
+
+                addArtists(obj, song);
+
+                song.setAlbum(album);
+                album.downloadImage();
+                addSongToResult(song);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     private Album extractAlbumInformation(JSONObject obj) throws JSONException {
         JSONObject a = obj.getJSONObject("album");
@@ -210,5 +287,9 @@ public class ApiGetSongs {
         String aId = a.getString("id");
         String aUrl = a.getJSONArray("images").getJSONObject(0).getString("url");
         return new Album(aName, aId, aUrl);
+    }
+
+    public ArrayList<Content> getSongs() {
+        return songs;
     }
 }

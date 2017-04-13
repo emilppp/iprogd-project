@@ -11,6 +11,7 @@ public class Song implements Content {
     private Album album;
     private ArrayList<Artist> artists = new ArrayList<>();
     private int duration;
+    private long duration_ms;
     private String id;
 
     public Song(String title, Album album, Artist artist, Artist[] artists, int duration) {
@@ -25,6 +26,12 @@ public class Song implements Content {
         this.title = title;
         this.id = id;
         this.duration = duration;
+    }
+
+    public Song(String title, String id, long duration_ms) {
+        this.title = title;
+        this.id = id;
+        this.duration_ms = duration_ms;
     }
 
     public Song() {
@@ -85,8 +92,10 @@ public class Song implements Content {
     }
 
     public int getDuration() {
-        return duration;
+        return (int) (duration_ms / 1000);
     }
+
+    public long getDurationMs() { return duration_ms; }
 
     public String getDurationString() {
         int h = 0, m = 0, s = getDuration();

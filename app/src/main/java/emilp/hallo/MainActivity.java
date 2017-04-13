@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import emilp.hallo.view.ContentList;
 import emilp.hallo.view.CurrentlyPlaying;
+import emilp.hallo.view.Loader;
 import emilp.hallo.view.MoreOptions;
 
 
@@ -39,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         activity = this;
 
-        ((GlobalApplication) getApplication()).fetchClientID();
+        GlobalApplication global = (GlobalApplication) getApplication();
+        global.fetchClientID();
 
+        System.out.println("Playlist ID: " + global.getPlaylistID());
 
         setDrawerInfo();
 
@@ -82,13 +85,24 @@ public class MainActivity extends AppCompatActivity {
         //getSupportActionBar().setLogo(R.drawable.icon_naked2);
 
         Button btnCreatePlaylist = (Button) findViewById(R.id.btn_create_playlist);
+        if(global.getPlaylistID() != null) {
+            btnCreatePlaylist.setText(R.string.view_playlist);
+        }
         btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((GlobalApplication) getApplication()).createPlaylist();
-                System.out.println("Hej skapar spellista var är den");
-                Intent intent = new Intent(getApplicationContext(), PlayList.class);
-                startActivity(intent);
+                // TODO: Show loading here.
+
+                final Loader loader = new Loader(MainActivity.this);
+
+                new PlaylistGenerator(MainActivity.this) {
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        loader.hide();
+                        Intent intent = new Intent(getApplicationContext(), PlayList.class);
+                        startActivity(intent);
+                    }
+                }.execute();
             }
         });
 
@@ -114,11 +128,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRecommendedSongs() {
+        final GlobalApplication global = (GlobalApplication) getApplication();
         ContentList contentList = new ContentList(this, R.id.song_recommendations, LinearLayoutManager.VERTICAL) {
             @Override
             protected void onItemClick(View view, Content content) {
-                Song song = (Song) content;
-                Toast.makeText(getApplicationContext(), "Show song view here", Toast.LENGTH_SHORT).show();
+                global.getSpotifyService().playSong(global, (Song) content);
             }
 
             @Override
@@ -127,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 new MoreOptions(MainActivity.this, song);
             }
         };
-        ((GlobalApplication) getApplication()).getRecommendedSongs(contentList);
+        new ApiGetSongs(contentList, 20);
         contentList.setTitle(R.string.recommendations_songs);
         contentList.hideAnimation();
     }
@@ -155,41 +169,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
-        ((GlobalApplication) getApplication()).getRecommendedAlbums(contentList);
+        new ApiGetAlbums(contentList, 10);
         contentList.setTitle(R.string.recommendations_albums);
     }
 
     private void loadSongHistory() {
-        ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL);
+        ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL) {
+            @Override
+            protected void onItemClick(View view, Content content) {
+                new MoreOptions(MainActivity.this, content);
+            }
+        };
         ((GlobalApplication) getApplication()).getSongHistory(contentList);
     }
 
     private void setDrawerInfo() {
-        ImageView mImageViewUser = (ImageView) findViewById(R.id.profile_pic);
         TextView mDrawerUserName = (TextView) findViewById(R.id.user_name);
         TextView mDrawerRealName = (TextView) findViewById(R.id.real_name);
         mDrawerRealName.setText(((GlobalApplication) getApplication()).getDisplayName());
         mDrawerUserName.setText(((GlobalApplication) getApplication()).getClientID());
     }
-
-
-    /* SEARCH SHIT ICON SHIT STUFF */
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-
-        // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-        return true;
-    }
-
-*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

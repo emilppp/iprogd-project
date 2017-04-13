@@ -6,22 +6,22 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.spotify.sdk.android.*;
 import com.spotify.sdk.android.player.Error;
-import com.spotify.sdk.android.player.PlaybackState;
 import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
-
-import org.w3c.dom.Text;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import emilp.hallo.Album;
+import emilp.hallo.Artist;
 import emilp.hallo.GlobalApplication;
 import emilp.hallo.R;
+import emilp.hallo.Song;
 
 /**
  * Created by jonas on 2017-04-11.
@@ -33,11 +33,13 @@ public class CurrentlyPlaying {
     private ProgressBar progressBar;
     private Timer timer = new Timer();
 
-    public CurrentlyPlaying(Activity activity) {
+    public CurrentlyPlaying(final Activity activity) {
         this.activity = activity;
 
         this.progressBar = (ProgressBar) activity.findViewById(R.id.current_progress);
         styleProgressBar();
+
+        activity.findViewById(R.id.currentlyplaying).setVisibility(View.GONE);
 
         progressBar.setMax(100);
         progressBar.setProgress(50);
@@ -46,6 +48,10 @@ public class CurrentlyPlaying {
         final Player player = global.getSpotifyService().getmPlayer();
 
         final TextView pausePlay = (TextView) activity.findViewById(R.id.current_action);
+        final ImageView current_cover = (ImageView) activity.findViewById(R.id.current_cover);
+        final TextView current_title = (TextView) activity.findViewById(R.id.current_title);
+        final TextView current_information = (TextView) activity.findViewById(R.id.current_information);
+
         pausePlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,10 +68,27 @@ public class CurrentlyPlaying {
             @Override
             public void onPlaybackEvent(PlayerEvent playerEvent) {
                 // Duration in set of quarter-seconds
-                int duration = (int) (player.getMetadata().currentTrack.durationMs);
+                if(global.getCurrentlyPlayingSong() == null) return;
+
+                int duration = (int) global.getCurrentlyPlayingSong().getDurationMs();
+
+                if(playerEvent.equals(PlayerEvent.kSpPlaybackNotifyAudioDeliveryDone)) {
+                    activity.findViewById(R.id.currentlyplaying).setVisibility(View.GONE);
+                    global.setCurrentlyPlayingSong(null);
+                }
                 if(playerEvent.equals(PlayerEvent.kSpPlaybackNotifyMetadataChanged)) {
+                    activity.findViewById(R.id.currentlyplaying).setVisibility(View.VISIBLE);
+
                     progressBar.setMax(duration);
                     progressBar.setProgress(0);
+                    Song song = global.getCurrentlyPlayingSong();
+
+                    current_information.setText(song.getBread());
+                    current_title.setText(song.getTitle());
+                    if(song.getImage() != null)
+                        current_cover.setImageBitmap(song.getImage());
+                    else
+                        current_cover.setImageResource(song.fallbackImage());
                 }
                 if(playerEvent.equals(PlayerEvent.kSpPlaybackNotifyPlay)) {
                     handlePlayed(global, pausePlay);
@@ -89,7 +112,27 @@ public class CurrentlyPlaying {
             public void onPlaybackError(Error error) {
             }
         });
-        global.getSpotifyService().playSong("spotify:track:2zvot9pY2FNl1E94kc4K8M");
+
+        /*
+        final Song s = new Song("Rocket Man (I Think It's Going To Be A Long Long Time)", "2zvot9pY2FNl1E94kc4K8M", 281613L);
+        s.addArtist(new Artist("Elton John", "3PhoLpVuITZKcymswpck5b"));
+        s.setAlbum(new Album("Honky Chateau (Remastered)", "46g6b33tbttcPtzbwzBoG6", "https://i.scdn.co/image/85d8635d72b9dbd0c49a99131a07b1f92d2660c2"));
+        s.getAlbum().addArtists(s.getArtist());
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                s.downloadImage();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                global.getSpotifyService().playSong(global, s);
+            }
+        }.execute();
+        */
     }
 
     private void handlePaused(GlobalApplication global, TextView pausePlay) {

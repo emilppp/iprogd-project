@@ -9,13 +9,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import emilp.hallo.Content;
+import emilp.hallo.GlobalApplication;
 import emilp.hallo.R;
+import emilp.hallo.Song;
 
 public class MoreOptions {
-    public MoreOptions(final Activity activity, Content content) {
+    public MoreOptions(final Activity activity, final Content content) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.more_options_menu);
+
+        final GlobalApplication global = (GlobalApplication) activity.getApplication();
 
         ImageView cover = ((ImageView) dialog.findViewById(R.id.cover));
 
@@ -48,7 +52,7 @@ public class MoreOptions {
         addToPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(activity, "Add to playlist", Toast.LENGTH_SHORT).show();
+                global.addToPlaylist((Song) content);
             }
         });
         queue.setOnClickListener(new View.OnClickListener() {

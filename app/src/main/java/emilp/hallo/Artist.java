@@ -90,7 +90,7 @@ public class Artist implements Content {
 
     @Override
     public String getBread() {
-        return "";
+        return null;
     }
 
     @Override
