@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         ((GlobalApplication) getApplication()).getSongHistory(contentList);
+        contentList.setTitle(R.string.song_history);
     }
 
     private void setDrawerInfo() {

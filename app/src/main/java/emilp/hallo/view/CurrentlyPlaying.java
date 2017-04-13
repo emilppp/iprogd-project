@@ -52,6 +52,9 @@ public class CurrentlyPlaying {
         final TextView current_title = (TextView) activity.findViewById(R.id.current_title);
         final TextView current_information = (TextView) activity.findViewById(R.id.current_information);
 
+        current_title.setSelected(true);
+        current_information.setSelected(true);
+
         pausePlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

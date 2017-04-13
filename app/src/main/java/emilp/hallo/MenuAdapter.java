@@ -45,14 +45,14 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
                 holder.getArtistTextView().setText(content.getBread());
                 //Context context = holder.getArtistTextView().getContext();
                 //setAnimation(holder.getArtistTextView(), position, context);
-                holder.getArtistTextView().setSelected(true);
+                //holder.getArtistTextView().setSelected(true);
             }
         }
         if(holder.getTitleTextView() != null) {
             holder.getTitleTextView().setText(content.getTitle());
             //Context context = holder.getTitleTextView().getContext();
             //setAnimation(holder.getTitleTextView(), position, context);
-            holder.getTitleTextView().setSelected(true);
+            //holder.getTitleTextView().setSelected(true);
         }
         if(content.getImage() != null)
             holder.getCoverImageView().setImageBitmap(content.getImage());
