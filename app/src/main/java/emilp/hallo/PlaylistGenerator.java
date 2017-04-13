@@ -30,8 +30,9 @@ public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
             System.out.println("Hej skapar spellista var är den");
 
             ApiGetSongs api = new ApiGetSongs(AMOUNT_OF_SONGS_FOR_INITIAL_PLAYLIST);
-            for (Content c : api.getSongs())
+            for (Content c : api.getSongs()) {
                 global.addToPlaylist((Song) c);
+            }
 
             global.postPlaylist();
 
@@ -44,10 +45,37 @@ public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
                 builder.append(id+",");
                 hej = true;
             }
+
+            boolean match = false;
+            for(int i=0; i<ids.size(); i++) {
+                for(int k=i+1; k<ids.size(); k++) {
+                    if(ids.get(i).equals(ids.get(k))) {
+                        match = true;
+                    }
+                }
+            }
+            System.out.println( match ? "Found duplicates" : "No duplicates" );
+
+            if(match) {
+                builder = new StringBuilder();
+                for(int i=0; i<ids.size(); i++) {
+                    boolean dupe = false;
+                    for(int k=i+1; k<ids.size(); k++) {
+                        if(ids.get(i).equals(ids.get(k))) {
+                            dupe = true;
+                        }
+                    }
+                    if(!dupe) {
+                        builder.append(ids.get(i)+",");
+                        hej = true;
+                    }
+                }
+            }
+
             if(hej)
                 builder.deleteCharAt(builder.length()-1);
 
-            System.out.println("WASDASDASD " + builder.toString());
+            System.out.println("Playlist exsists, fetching: " + builder.toString());
 
             ApiGetSongs api = new ApiGetSongs( builder.toString() );
             for (Content c : api.getSongs())

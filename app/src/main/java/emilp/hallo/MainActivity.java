@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import emilp.hallo.view.ContentList;
 import emilp.hallo.view.CurrentlyPlaying;
+import emilp.hallo.view.Loader;
 import emilp.hallo.view.MoreOptions;
 
 
@@ -39,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         activity = this;
 
-        ((GlobalApplication) getApplication()).fetchClientID();
-        System.out.println("Playlist ID: " + ((GlobalApplication) getApplication()).getPlaylistID());
+        GlobalApplication global = (GlobalApplication) getApplication();
+        global.fetchClientID();
+
+        System.out.println("Playlist ID: " + global.getPlaylistID());
 
         setDrawerInfo();
 
@@ -82,13 +85,20 @@ public class MainActivity extends AppCompatActivity {
         //getSupportActionBar().setLogo(R.drawable.icon_naked2);
 
         Button btnCreatePlaylist = (Button) findViewById(R.id.btn_create_playlist);
+        if(global.getPlaylistID() != null) {
+            btnCreatePlaylist.setText(R.string.view_playlist);
+        }
         btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: Show loading here.
+
+                final Loader loader = new Loader(MainActivity.this);
+
                 new PlaylistGenerator(MainActivity.this) {
                     @Override
                     protected void onPostExecute(Void aVoid) {
+                        loader.hide();
                         Intent intent = new Intent(getApplicationContext(), PlayList.class);
                         startActivity(intent);
                     }
