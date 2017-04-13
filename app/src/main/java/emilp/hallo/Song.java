@@ -92,7 +92,7 @@ public class Song implements Content {
     }
 
     public int getDuration() {
-        return duration;
+        return (int) (duration_ms / 1000);
     }
 
     public long getDurationMs() { return duration_ms; }

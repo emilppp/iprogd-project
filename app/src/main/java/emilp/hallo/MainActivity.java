@@ -128,11 +128,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRecommendedSongs() {
+        final GlobalApplication global = (GlobalApplication) getApplication();
         ContentList contentList = new ContentList(this, R.id.song_recommendations, LinearLayoutManager.VERTICAL) {
             @Override
             protected void onItemClick(View view, Content content) {
-                Song song = (Song) content;
-                Toast.makeText(getApplicationContext(), "Show song view here", Toast.LENGTH_SHORT).show();
+                global.getSpotifyService().playSong(global, (Song) content);
             }
 
             @Override
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 new MoreOptions(MainActivity.this, song);
             }
         };
-        ((GlobalApplication) getApplication()).getRecommendedSongs(contentList);
+        global.getRecommendedSongs(contentList);
         contentList.setTitle(R.string.recommendations_songs);
     }
 
@@ -172,7 +172,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSongHistory() {
-        ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL);
+        ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL) {
+            @Override
+            protected void onItemClick(View view, Content content) {
+                new MoreOptions(MainActivity.this, content);
+            }
+        };
         ((GlobalApplication) getApplication()).getSongHistory(contentList);
     }
 

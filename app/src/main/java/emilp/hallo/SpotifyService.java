@@ -242,8 +242,8 @@ public class SpotifyService extends Activity implements
                 JSONObject obj = arr.getJSONObject(i).getJSONObject("track");
                 String name = obj.getString("name");
                 String id = obj.getString("id");
-                int duration = obj.getInt("duration_ms") / 1000;
-                Song song = new Song(name, new Album(), new Artist(), new Artist[0], duration);
+                long duration = obj.getLong("duration_ms");
+                Song song = new Song(name, id, duration);
 
                 global.addSongHistory(song);
             }

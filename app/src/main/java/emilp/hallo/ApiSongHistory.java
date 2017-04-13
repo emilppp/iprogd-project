@@ -71,7 +71,7 @@ public class ApiSongHistory {
                 String aUrl = a.getJSONArray("images").getJSONObject(0).getString("url");
                 Album album = new Album(aName, aId, aUrl);
 
-                int duration = (int) (obj.getLong("duration_ms") / 1000);
+                long duration = (obj.getLong("duration_ms"));
                 String songName = obj.getString("name");
                 String songId = obj.getString("id");
                 Song song = new Song(songName, songId, duration);
@@ -103,7 +103,7 @@ public class ApiSongHistory {
                 JSONObject obj = arr.getJSONObject(i).getJSONObject("track");
                 String name = obj.getString("name");
                 String id = obj.getString("id");
-                int duration = obj.getInt("duration_ms") / 1000;
+                long duration = obj.getLong("duration_ms");
 
                 if(i < arr.length()-1)
                     songUrl += id + ",";

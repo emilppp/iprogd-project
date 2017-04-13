@@ -35,7 +35,9 @@ public class AlbumPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.album_page);
 
-        currentAlbum = (Album) ((GlobalApplication) getApplication()).getCurrentContent();
+        final GlobalApplication global = ((GlobalApplication) getApplication());
+
+        currentAlbum = (Album) global.getCurrentContent();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.album_page_toolbar);
         setSupportActionBar(myToolbar);
@@ -54,6 +56,7 @@ public class AlbumPage extends AppCompatActivity {
         ContentList c = new ContentList(this, R.id.album_songs, LinearLayoutManager.VERTICAL) {
             @Override
             protected void onItemClick(View view, Content content) {
+                global.getSpotifyService().playSong(global, (Song) content);
             }
         };
         c.hideTitle();

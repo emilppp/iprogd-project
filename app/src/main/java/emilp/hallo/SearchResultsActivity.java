@@ -45,6 +45,13 @@ public class SearchResultsActivity extends Activity {
     private void searchSongs(String query) {
         ContentList contentList = new ContentList(SearchResultsActivity.this, R.id.search_results_songs, LinearLayoutManager.VERTICAL) {
             @Override
+            protected void onItemClick(View view, Content content) {
+                super.onItemClick(view, content);
+                GlobalApplication global = (GlobalApplication) getApplication();
+                global.getSpotifyService().playSong(global, (Song) content);
+            }
+
+            @Override
             protected void onSecondItemClick(View view, Content content) {
                 super.onSecondItemClick(view, content);
                 new MoreOptions(SearchResultsActivity.this, content);

@@ -234,7 +234,7 @@ public class ApiGetSongs {
     }
 
     private Song extractSongInformation(JSONObject obj) throws JSONException {
-        int duration = (int) (obj.getLong("duration_ms") / 1000);
+        long duration = (obj.getLong("duration_ms"));
         String songName = obj.getString("name");
         String songId = obj.getString("id");
         return new Song(songName, songId, duration);
