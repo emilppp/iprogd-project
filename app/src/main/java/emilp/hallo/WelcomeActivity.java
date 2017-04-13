@@ -27,7 +27,7 @@ public class WelcomeActivity extends Activity implements ConnectionStateCallback
         setContentView(R.layout.welcome_screen);
 
         LinearLayout btnSignInWithSpotify = (LinearLayout) findViewById(R.id.btn_with_spotify);
-        final TextView btnContinueWithoutSpotify = (TextView) findViewById(R.id.btn_without_spotify);
+        //final TextView btnContinueWithoutSpotify = (TextView) findViewById(R.id.btn_without_spotify);
 
         btnSignInWithSpotify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,12 +35,12 @@ public class WelcomeActivity extends Activity implements ConnectionStateCallback
                 loginWithSpotify();
             }
         });
-        btnContinueWithoutSpotify.setOnClickListener(new View.OnClickListener() {
+        /*btnContinueWithoutSpotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 continueWithoutSpotify();
             }
-        });
+        });*/
     }
 
     private void loginWithSpotify() {
