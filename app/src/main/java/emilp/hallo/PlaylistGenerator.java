@@ -22,9 +22,11 @@ public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         GlobalApplication global = (GlobalApplication) activity.getApplication();
-        global.resetPlaylist();
+        global.clearPlaylist();
 
         if(global.getPlaylistID() == null) {
+
+            global.resetPlaylist();
 
             global.createPlaylist();
             System.out.println("Hej skapar spellista var är den");

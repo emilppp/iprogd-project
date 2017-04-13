@@ -60,11 +60,6 @@ public class GlobalApplication extends Application {
         printDataBase();
     }
 
-    private void reset() {
-        resetDataBase();
-        removeSavedPlaylistId();
-    }
-
     private void setSavedPlaylistId(String id) {
         if(id == null)
             removeSavedPlaylistId();
@@ -323,8 +318,14 @@ public class GlobalApplication extends Application {
         return res;
     }
 
-    public void resetPlaylist() {
+    public void clearPlaylist() {
         songsToBeAdded.clear();
+    }
+
+    public void resetPlaylist() {
+        clearPlaylist();
+        resetDataBase();
+        removeSavedPlaylistId();
     }
 
     public void addToPlaylist(Song content) {
@@ -332,6 +333,9 @@ public class GlobalApplication extends Application {
             if(!isInPlaylist(content)) {
                 songsToBeAdded.add(content);
                 addSongToDatabase(content);
+                ArrayList<Song> a = new ArrayList<Song>();
+                a.add(content);
+                spotifyService.postPlaylist(this, a);
             }
         }
     }

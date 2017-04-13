@@ -331,9 +331,13 @@ public class SpotifyService extends Activity implements
 
 
     public void postPlaylist(final GlobalApplication global) {
+        postPlaylist(global, global.getSongsToBeAdded());
+    }
+
+    public void postPlaylist(final GlobalApplication global, ArrayList<Song> content) {
         String userID = global.getClientID();
         String playlistID = global.getPlaylistID();
-        URL url = NetworkUtils.buildUrlAddTracksToPlaylist(userID, playlistID, global.getSongsToBeAdded());
+        URL url = NetworkUtils.buildUrlAddTracksToPlaylist(userID, playlistID, content);
         new SpotifyQueryTask(this, getAccessToken(), global.getSongsToBeAdded()) {
             @Override
             protected void onPostExecute(JSONObject res) {
@@ -343,7 +347,6 @@ public class SpotifyService extends Activity implements
                 }
             }
         }.execute(url);
-
     }
 
     public void removeTrackFromPlaylist(final GlobalApplication global, String track) {
