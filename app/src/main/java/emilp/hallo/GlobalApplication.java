@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import emilp.hallo.SQL.FeedReaderContract;
 import emilp.hallo.view.ContentList;
@@ -43,6 +44,10 @@ public class GlobalApplication extends Application {
         mDbHelper = new FeedReaderContract.FeedReaderDbHelper( getApplicationContext() );
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
 
+
+        reset();
+
+
         playlistID = getSavedPlaylistId();
 
         if(playlistID == null) {
@@ -56,6 +61,11 @@ public class GlobalApplication extends Application {
         }
 
         printDataBase();
+    }
+
+    private void reset() {
+        resetDataBase();
+        removeSavedPlaylistId();
     }
 
     private void setSavedPlaylistId(String id) {
@@ -329,5 +339,20 @@ public class GlobalApplication extends Application {
 
     public void postPlaylist() {
         spotifyService.postPlaylist(this);
+    }
+
+    public void removeFromLocalPlaylist(Song track) {
+        for(Iterator<Song> it = songsToBeAdded.iterator(); it.hasNext();) {
+            Song c = it.next();
+            if(c.getId() == track.getId())
+                it.remove();
+        }
+    }
+
+    public void removeTrackFromPlaylist(Song track) {
+        removeSongFromPlaylistDb(track.getId());
+        String removeSong = "spotify:track:" + track.getId();
+        spotifyService.removeTrackFromPlaylist(this, removeSong);
+        removeFromLocalPlaylist(track);
     }
 }
