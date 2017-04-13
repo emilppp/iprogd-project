@@ -2,7 +2,6 @@ package emilp.hallo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,12 +18,9 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 

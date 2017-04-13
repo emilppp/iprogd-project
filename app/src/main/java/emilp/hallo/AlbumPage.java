@@ -18,7 +18,6 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import java.net.URL;
-import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
 
