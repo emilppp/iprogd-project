@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 new MoreOptions(MainActivity.this, song);
             }
         };
-        global.getRecommendedSongs(contentList);
+        new ApiGetSongs(contentList, 20);
         contentList.setTitle(R.string.recommendations_songs);
     }
 
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
-        ((GlobalApplication) getApplication()).getRecommendedAlbums(contentList);
+        new ApiGetAlbums(contentList, 10);
         contentList.setTitle(R.string.recommendations_albums);
     }
 

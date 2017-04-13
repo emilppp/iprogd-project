@@ -17,6 +17,7 @@ public class ApiGetAlbums {
     private ContentList contentList;
     private ArrayList<Content> songs = new ArrayList<>();
     private String query = null;
+    private int limit = 3;
 
     /**
      * Using this constructor, random results will be returned
@@ -24,6 +25,18 @@ public class ApiGetAlbums {
      */
     public ApiGetAlbums(ContentList contentList) {
         this.contentList = contentList;
+
+        contentList.init(songs);
+        getSongHistory();
+    }
+
+    /**
+     * Using this constructor, <code>limit</code> random results will be returned
+     * @param contentList
+     */
+    public ApiGetAlbums(ContentList contentList, int limit) {
+        this.contentList = contentList;
+        this.limit = limit;
 
         contentList.init(songs);
         getSongHistory();
@@ -77,7 +90,7 @@ public class ApiGetAlbums {
     private void getSongHistory() {
         URL url;
         if(query == null)
-            url = NetworkUtils.buildRandom("album", 3);
+            url = NetworkUtils.buildRandom("album", limit);
         else
             url = NetworkUtils.buildUrlSearch(query, "album");
         new AsyncTask<URL, Void, Void>(){

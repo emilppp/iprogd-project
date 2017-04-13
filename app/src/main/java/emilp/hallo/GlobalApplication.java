@@ -166,10 +166,6 @@ public class GlobalApplication extends Application {
         new ApiSongHistory(contentList, this);
     }
 
-    public void getRecommendedSongs(ContentList contentList) {
-        new ApiGetSongs(contentList);
-    }
-
     public ArrayList<Content> getSongHistory() {
         if(songHistory.size() == 0)
             songHistory = spotifyService.getSongHistory(this);
@@ -179,10 +175,6 @@ public class GlobalApplication extends Application {
     public void addSongHistory(Song song) {
         songHistory.add(song);
         historyAdapter.notifyDataSetChanged();
-    }
-
-    public void getRecommendedAlbums(ContentList contentList) {
-        new ApiGetAlbums(contentList);
     }
 
     public ArrayList<Content> getRecommendedAlbums() {

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.SearchView;
 
 import emilp.hallo.view.ContentList;
+import emilp.hallo.view.MoreOptions;
 
 /**
  * Created by jonas on 2017-04-04.
@@ -26,7 +27,7 @@ public class PlayList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playlist);
 
-        GlobalApplication global = (GlobalApplication) getApplication();
+        final GlobalApplication global = (GlobalApplication) getApplication();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.playlist_page_toolbar);
         setSupportActionBar(myToolbar);
@@ -43,7 +44,19 @@ public class PlayList extends AppCompatActivity {
             });
         }
 
-        ContentList contentList = new ContentList(this, R.id.playlist, LinearLayoutManager.VERTICAL);
+        ContentList contentList = new ContentList(this, R.id.playlist, LinearLayoutManager.VERTICAL) {
+            @Override
+            protected void onItemClick(View view, Content content) {
+                super.onItemClick(view, content);
+                global.getSpotifyService().playSong(global, (Song) content);
+            }
+
+            @Override
+            protected void onSecondItemClick(View view, Content content) {
+                super.onSecondItemClick(view, content);
+                new MoreOptions(PlayList.this, content);
+            }
+        };
         contentList.setTitle(R.string.playlist);
         contentList.init(global.getSongsToBeAddedAsContent());
     }
