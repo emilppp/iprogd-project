@@ -1,6 +1,7 @@
 package emilp.hallo;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println("Playlist ID: " + global.getPlaylistID());
 
-        setDrawerInfo();
 
         // initActionbar();
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -84,15 +84,23 @@ public class MainActivity extends AppCompatActivity {
 
         loadRecommended();
 
+        setDrawerInfo();
+
         Button btnSignOut = (Button) findViewById(R.id.btn_sign_out);
         btnSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                global.getSpotifyService().logOut();
-                Intent i = new Intent(getApplicationContext(), WelcomeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-                finish();
+
+                // It does not appear as if it's possible to sign out unless using the
+                // webservice to sign in, which we are not using.
+                // So this will do Donkey, this will do.
+                System.exit(0);
+
+                /*global.logOut();
+                Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                startActivity(intent);
+                MainActivity.this.finish();*/
             }
         });
 

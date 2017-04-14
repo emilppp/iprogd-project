@@ -35,8 +35,13 @@
         android:textColor="@color/colorPrimaryDark"
         android:text="@string/user_name_placeholder"
         android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
         android:layout_below="@id/profile_pic"
+        android:layout_marginTop="350dp"
+        android:textStyle="bold"
+
         />
+
     <TextView
         android:id="@+id/real_name"
         android:layout_width="wrap_content"
@@ -45,8 +50,9 @@
         android:layout_centerHorizontal="true"
         android:text="@string/real_name_placeholder"
         android:layout_below="@id/user_name"
-        android:paddingTop="50dp"
+        android:textStyle="bold"
         />
+
 
     <Button
         android:id="@+id/btn_sign_out"
@@ -57,6 +63,8 @@
         android:layout_centerHorizontal="true"
         android:background="@color/colorLogo"
         android:textColor="@color/colorWhiteish"
-        android:layout_margin="5dp"/>
+        android:paddingEnd="@dimen/activity_vertical_margin"
+        android:paddingStart="@dimen/activity_vertical_margin"
+        android:layout_margin="@dimen/activity_vertical_margin"/>
 
 </RelativeLayout>

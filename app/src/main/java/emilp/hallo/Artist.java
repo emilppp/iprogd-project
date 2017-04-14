@@ -82,7 +82,7 @@ public class Artist implements Content {
 
     @Override
     public Bitmap getImage() {
-        return image;
+        return image == null ? null : Bitmap.createScaledBitmap(this.image, 250, 250, false);
     }
 
     @Override
