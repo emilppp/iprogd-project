@@ -158,7 +158,17 @@ public class SpotifyService extends Activity implements
     }
 
     public void logOut() {
-        mPlayer.logout();
+        AuthenticationClient.clearCookies(this);
+        this.clearPlayerState();
+        accessToken = null;
+    }
+    private void clearPlayerState() {
+        if(mPlayer != null) {
+            mPlayer.pause(mOperationCallback);
+            mPlayer.logout();
+        }
+
+        mPlayer = null;
     }
 
 

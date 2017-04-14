@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
 
 import emilp.hallo.SQL.FeedReaderContract;
 import emilp.hallo.view.ContentList;
@@ -268,6 +269,10 @@ public class GlobalApplication extends Application {
         return songsToBeAdded;
     }
 
+    public void clearSongsToBeAdded() {
+        this.songsToBeAdded.clear();
+    }
+
     public void setSongsToBeAdded(ArrayList<Song> songsToBeAdded) {
         this.songsToBeAdded = songsToBeAdded;
         resetDataBase();
@@ -315,10 +320,19 @@ public class GlobalApplication extends Application {
         }
     }
 
+    public void printPlaylist() {
+        for(Song i : songsToBeAdded)
+            System.out.println(i.getId());
+    }
+
     public boolean isInPlaylist(Song song) {
-        for(int i=0; i<songsToBeAdded.size(); i++)
-            if(songsToBeAdded.get(i).getId().equals(song.getId()))
+        for(int i=0; i<songsToBeAdded.size(); i++) {
+            System.out.println("Is " + song.getId() + " == ");
+
+
+            if (Objects.equals(songsToBeAdded.get(i).getId(), song.getId()))
                 return true;
+        }
         return false;
     }
 
@@ -335,5 +349,9 @@ public class GlobalApplication extends Application {
 
     public void setCurrentlyPlayingSong(Song currentlyPlayingSong) {
         this.currentlyPlayingSong = currentlyPlayingSong;
+    }
+
+    public void logOut() {
+        spotifyService.getmPlayer().logout();
     }
 }

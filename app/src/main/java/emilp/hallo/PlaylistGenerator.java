@@ -36,8 +36,6 @@ public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
                 global.addToPlaylist((Song) c);
             }
 
-            global.postPlaylist();
-
         } else {
             ArrayList<String> ids = global.getPlaylistFromDb();
             StringBuilder builder = new StringBuilder();

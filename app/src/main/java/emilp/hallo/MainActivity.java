@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         activity = this;
 
-        GlobalApplication global = (GlobalApplication) getApplication();
+        final GlobalApplication global = (GlobalApplication) getApplication();
         global.fetchClientID();
 
         System.out.println("Playlist ID: " + global.getPlaylistID());
@@ -80,6 +80,18 @@ public class MainActivity extends AppCompatActivity {
         loadSongHistory();
 
         loadRecommended();
+
+        Button btnSignOut = (Button) findViewById(R.id.btn_sign_out);
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                global.getSpotifyService().logOut();
+                Intent i = new Intent(getApplicationContext(), WelcomeActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                finish();
+            }
+        });
 
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
         //getSupportActionBar().setLogo(R.drawable.icon_naked2);
