@@ -166,46 +166,17 @@ public class GlobalApplication extends Application {
         new ApiSongHistory(contentList, this);
     }
 
-    public ArrayList<Content> getSongHistory() {
-        if(songHistory.size() == 0)
-            songHistory = spotifyService.getSongHistory(this);
-        return songHistory;
-    }
 
     public void addSongHistory(Song song) {
         songHistory.add(song);
         historyAdapter.notifyDataSetChanged();
     }
 
-    public ArrayList<Content> getRecommendedAlbums() {
-        ArrayList<Content> arr = new ArrayList<>();
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        return arr;
-    }
 
     public void getRecommendedArtists(ContentList contentList) {
         new ApiGetArtists(contentList);
     }
 
-    public ArrayList<Content> getRecommendedArtists() {
-        ArrayList<Content> data = new ArrayList<>();
-        data.add(new Artist());
-        data.add(new Artist());
-        data.add(new Artist());
-        return data;
-    }
 
     public void addArtist(Artist artist) {
         this.artist.add(artist);

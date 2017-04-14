@@ -1,24 +1,10 @@
 package  emilp.hallo;
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import org.json.JSONObject;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
-
-import emilp.hallo.NetworkUtils;
-import emilp.hallo.view.ContentList;
 
 public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
     private Activity act;
@@ -36,13 +22,6 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
         this.token = token;
         this.type = "get";
     }
-    public SpotifyQueryTask() {
-    }
-    public SpotifyQueryTask(Activity activity, String token, String type) {
-        act = activity;
-        this.token = token;
-        this.type = type;
-    }
 
     public SpotifyQueryTask(Activity activity, String token, String type, String track) {
         act = activity;
@@ -57,9 +36,6 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
         this.type = "playlist";
         this.tracks = arr;
     }
-
-
-
 
 
     // superful lösning med POST ist för GET

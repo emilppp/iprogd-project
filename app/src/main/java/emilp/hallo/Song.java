@@ -34,13 +34,6 @@ public class Song implements Content {
         this.duration_ms = duration_ms;
     }
 
-    public Song() {
-        this.title = "Title";
-        this.artist = new Artist();
-        this.album = new Album();
-        this.duration = 10;
-    }
-
     public Artist getArtist() {
         return artist;
     }

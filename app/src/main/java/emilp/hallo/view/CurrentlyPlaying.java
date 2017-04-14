@@ -115,27 +115,6 @@ public class CurrentlyPlaying {
             public void onPlaybackError(Error error) {
             }
         });
-
-        /*
-        final Song s = new Song("Rocket Man (I Think It's Going To Be A Long Long Time)", "2zvot9pY2FNl1E94kc4K8M", 281613L);
-        s.addArtist(new Artist("Elton John", "3PhoLpVuITZKcymswpck5b"));
-        s.setAlbum(new Album("Honky Chateau (Remastered)", "46g6b33tbttcPtzbwzBoG6", "https://i.scdn.co/image/85d8635d72b9dbd0c49a99131a07b1f92d2660c2"));
-        s.getAlbum().addArtists(s.getArtist());
-
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                s.downloadImage();
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                global.getSpotifyService().playSong(global, s);
-            }
-        }.execute();
-        */
     }
 
     private void handlePaused(GlobalApplication global, TextView pausePlay) {
