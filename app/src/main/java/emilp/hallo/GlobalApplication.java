@@ -296,6 +296,11 @@ public class GlobalApplication extends Application {
         removeSavedPlaylistId();
     }
 
+    /**
+     * Will add the content to the playlist an update both the local database as well as
+     * the Spotify playlist.
+     * @param content
+     */
     public void addToPlaylist(Song content) {
         if(content != null) {
             if(!isInPlaylist(content)) {
@@ -308,8 +313,25 @@ public class GlobalApplication extends Application {
         }
     }
 
+    /**
+     * Will only add the content to the playlist and won't update the database nor Spotify.
+     * @param content
+     */
+    public void addToPlaylistPure(Song content) {
+        if(content != null)
+            if(!isInPlaylist(content))
+                songsToBeAdded.add(content);
+    }
+
+    /**
+     * Will post all contents in the playlist to both the database as well as Spotify.
+     * This can cause duplicates.
+     */
     public void postPlaylist() {
-        spotifyService.postPlaylist(this);
+        ArrayList<Song> songs = getSongsToBeAdded();
+        for(Song s : songs)
+            addSongToDatabase(s);
+        spotifyService.postPlaylist(this, songs);
     }
 
     public void removeFromLocalPlaylist(Song track) {
@@ -352,6 +374,7 @@ public class GlobalApplication extends Application {
     }
 
     public void logOut() {
-        spotifyService.getmPlayer().logout();
+        spotifyService.logOut();
+        spotifyService = new SpotifyService();
     }
 }
