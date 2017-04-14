@@ -29,12 +29,14 @@ public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
             global.resetPlaylist();
 
             global.createPlaylist();
-            System.out.println("Hej skapar spellista var är den");
 
             ApiGetSongs api = new ApiGetSongs(AMOUNT_OF_SONGS_FOR_INITIAL_PLAYLIST);
             for (Content c : api.getSongs()) {
-                global.addToPlaylist((Song) c);
+                global.addToPlaylistPure((Song) c);
             }
+
+            // Remember to post the playlist
+            global.postPlaylist();
 
         } else {
             ArrayList<String> ids = global.getPlaylistFromDb();
@@ -79,8 +81,7 @@ public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
 
             ApiGetSongs api = new ApiGetSongs( builder.toString() );
             for (Content c : api.getSongs())
-                global.addToPlaylist((Song) c);
-
+                global.addToPlaylistPure((Song) c);
         }
         return null;
     }
