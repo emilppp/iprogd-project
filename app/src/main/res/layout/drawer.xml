@@ -63,6 +63,8 @@
         android:layout_centerHorizontal="true"
         android:background="@color/colorLogo"
         android:textColor="@color/colorWhiteish"
-        android:layout_margin="5dp"/>
+        android:paddingEnd="@dimen/activity_vertical_margin"
+        android:paddingStart="@dimen/activity_vertical_margin"
+        android:layout_margin="@dimen/activity_vertical_margin"/>
 
 </RelativeLayout>

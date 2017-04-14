@@ -1,6 +1,7 @@
 package emilp.hallo;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -86,11 +87,17 @@ public class MainActivity extends AppCompatActivity {
         btnSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                global.logOut();
+
+                // It does not appear as if it's possible to sign out unless using the
+                // webservice to sign in, which we are not using.
+                // So this will do Donkey, this will do.
+                System.exit(0);
+
+                /*global.logOut();
                 Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
                 startActivity(intent);
-                MainActivity.this.finish();
+                MainActivity.this.finish();*/
             }
         });
 
