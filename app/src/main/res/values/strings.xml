@@ -40,4 +40,6 @@
     <string name="user_name_placeholder">John_Doe_1337</string>
     <string name="real_name_placeholder">John Doe</string>
     <string name="playlist">Playlist</string>
+    <string name="real_name">Real name:</string>
+    <string name="user_name">User name:</string>
 </resources>

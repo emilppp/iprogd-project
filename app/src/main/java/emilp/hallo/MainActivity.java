@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println("Playlist ID: " + global.getPlaylistID());
 
-        setDrawerInfo();
 
         // initActionbar();
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -80,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         loadSongHistory();
 
         loadRecommended();
+
+        setDrawerInfo();
 
         Button btnSignOut = (Button) findViewById(R.id.btn_sign_out);
         btnSignOut.setOnClickListener(new View.OnClickListener() {
