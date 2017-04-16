@@ -1,7 +1,6 @@
 package emilp.hallo;
 
 import android.app.Activity;
-import android.app.Application;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,11 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import emilp.hallo.view.ContentList;
 import emilp.hallo.view.CurrentlyPlaying;
@@ -130,11 +128,41 @@ public class MainActivity extends AppCompatActivity {
         });
 
         new CurrentlyPlaying(this);
+
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.main_scroll);
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+
+            @Override
+            public void onScrollChanged() {
+                if (scrollView != null) {
+                    if (scrollView.getChildAt(0).getBottom() <= (scrollView.getHeight() + scrollView.getScrollY())) {
+                        if(songRec.getSize() < 50) {
+                            songRec.addSongs(5);
+                        } else {
+                            //TODO: update list button or something
+
+                        }
+                    } else {
+                        //scroll view is not at bottom
+                    }
+                }
+            }
+        });
+
+        final SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+            @Override
+            public void onRefresh(){
+                  srl.setRefreshing(true);
+                  loadRecommended();
+                  srl.setRefreshing(false);
+            }
+        });
     }
 
     private void loadRecommended() {
-        loadRecommendedAlbums();
         loadRecommendedArtists();
+        loadRecommendedAlbums();
         loadRecommendedSongs();
     }
 
@@ -167,26 +195,6 @@ public class MainActivity extends AppCompatActivity {
         songRec = new ApiGetSongs(contentList, 20);
         contentList.setTitle(R.string.recommendations_songs);
         contentList.hideAnimation();
-
-        final ScrollView scrollView = (ScrollView) findViewById(R.id.main_scroll);
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-
-            @Override
-            public void onScrollChanged() {
-                if (scrollView != null) {
-                    if (scrollView.getChildAt(0).getBottom() <= (scrollView.getHeight() + scrollView.getScrollY())) {
-                        if(songRec.getSize() < 50) {
-                            songRec.addSongs(5);
-                        } else {
-                            //TODO: update list button or something
-                            loadRecommendedSongs();
-                        }
-                    } else {
-                        //scroll view is not at bottom
-                    }
-                }
-            }
-        });
     }
 
     private void loadRecommendedArtists() {
@@ -212,8 +220,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
-        new ApiGetAlbums(contentList, 10);
         contentList.setTitle(R.string.recommendations_albums);
+        new ApiGetAlbums(contentList, 10);
     }
 
     private void loadSongHistory() {

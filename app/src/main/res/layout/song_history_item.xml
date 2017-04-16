@@ -29,9 +29,6 @@
             android:ellipsize="end"
             android:marqueeRepeatLimit ="marquee_forever"
             android:scrollHorizontally="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:duplicateParentState="true"
             android:scrollbars="horizontal"/>
         <TextView
             android:id="@+id/history_item_artist"
@@ -44,12 +41,7 @@
             android:ellipsize="end"
             android:marqueeRepeatLimit ="marquee_forever"
             android:scrollHorizontally="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:duplicateParentState="true"
             android:scrollbars="horizontal">
-        <requestFocus android:focusable="true" android:focusableInTouchMode="true"
-            android:duplicateParentState="true"/>
         </TextView>
 
     </LinearLayout>

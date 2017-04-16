@@ -1,6 +1,9 @@
 package emilp.hallo;
 
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -168,6 +171,11 @@ public class ApiGetSongs {
             url = NetworkUtils.buildUrlSearch(query, "track");
         new AsyncTask<URL, Void, Void>(){
             @Override
+            protected void onPreExecute(){
+                LinearLayout spinner = contentList.getSpinner();
+                spinner.setVisibility(View.VISIBLE);
+            }
+            @Override
             protected Void doInBackground(URL... params) {
                 URL searchUrl = params[0];
                 try {
@@ -182,6 +190,8 @@ public class ApiGetSongs {
             @Override
             protected void onPostExecute(Void aVoid) {
                 contentList.notifyDataSetChanged();
+                LinearLayout spinner = contentList.getSpinner();
+                spinner.setVisibility(View.GONE);
             }
         }.execute(url);
     }

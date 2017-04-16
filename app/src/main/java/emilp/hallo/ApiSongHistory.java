@@ -1,6 +1,10 @@
 package emilp.hallo;
 
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,16 +15,19 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
+import emilp.hallo.view.Loader;
 
 public class ApiSongHistory {
 
     private ContentList contentList;
     private GlobalApplication global;
     private ArrayList<Content> songs = new ArrayList<>();
+    private Loader spinner;
 
     public ApiSongHistory(ContentList contentList, GlobalApplication global) {
         this.contentList = contentList;
         this.global = global;
+        //this.spinner = new Loader(new Activity());
 
         contentList.init(songs);
         getSongHistory();
@@ -36,6 +43,11 @@ public class ApiSongHistory {
         URL url = NetworkUtils.buildUrlHistory();
         final String token = global.getSpotifyService().getAccessToken();
         new AsyncTask<URL, Void, Void>(){
+            @Override
+            protected void onPreExecute(){
+                LinearLayout spinner = contentList.getSpinner();
+                spinner.setVisibility(View.VISIBLE);
+            }
             @Override
             protected Void doInBackground(URL... params) {
                 URL searchUrl = params[0];
@@ -56,6 +68,8 @@ public class ApiSongHistory {
             @Override
             protected void onPostExecute(Void aVoid) {
                 contentList.notifyDataSetChanged();
+                LinearLayout spinner = contentList.getSpinner();
+                spinner.setVisibility(View.GONE);
             }
         }.execute(url);
     }

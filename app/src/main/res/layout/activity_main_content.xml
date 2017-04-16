@@ -7,64 +7,72 @@
         layout="@layout/toolbar">
     </include>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_above="@+id/currentlyplaying"
-        android:layout_height="match_parent"
         android:layout_below="@+id/my_toolbar"
-        android:id="@+id/main_scroll">
+        android:layout_above="@+id/currentlyplaying"
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <include
-                android:id="@+id/song_history"
+            android:layout_height="match_parent"
+            android:id="@+id/main_scroll">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                layout="@layout/list_horizontal"/>
+                android:orientation="vertical">
+                <include
+                    android:id="@+id/song_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    layout="@layout/list_horizontal"/>
 
-            <Button
-                android:id="@+id/btn_create_playlist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/activity_vertical_margin"
-                android:layout_gravity="center"
-                style="@style/buttonStyle"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:text="@string/create_playlist"
-                android:background="@color/colorLogo"
-                android:textColor="@color/colorWhiteish" />
+                <Button
+                    android:id="@+id/btn_create_playlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_vertical_margin"
+                    android:layout_gravity="center"
+                    style="@style/buttonStyle"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:text="@string/create_playlist"
+                    android:background="@color/colorLogo"
+                    android:textColor="@color/colorWhiteish" />
 
-            <include
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/recommended_artists"/>
+                <include
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/recommended_artists"/>
 
-            <include
-                android:id="@+id/album_recommendations"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/list_horizontal"/>
+                <include
+                    android:id="@+id/album_recommendations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/list_horizontal"/>
 
-            <include
-                android:id="@+id/song_recommendations"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/list_horizontal"/>
+                <include
+                    android:id="@+id/song_recommendations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/list_horizontal"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/text_big"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/char_vertical_ellipsis"/>
-        </LinearLayout>
-    </ScrollView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/text_big"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="@string/char_vertical_ellipsis"/>
+            </LinearLayout>
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <include android:layout_height="wrap_content"
         android:id="@id/currentlyplaying"

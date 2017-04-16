@@ -5,6 +5,8 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -99,6 +101,10 @@ public class ContentList {
 
     public void hideAnimation(){
         adapter.noAnimation();
+    }
+
+    public LinearLayout getSpinner(){
+        return (LinearLayout) view.findViewById(R.id.progress_bar);
     }
 
 }

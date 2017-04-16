@@ -3,6 +3,7 @@ package emilp.hallo;
 import emilp.hallo.MenuAdapter.ViewHolder;
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -54,8 +56,9 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
             //setAnimation(holder.getTitleTextView(), position, context);
             //holder.getTitleTextView().setSelected(true);
         }
-        if(content.getImage() != null)
+        if(content.getImage() != null) {
             holder.getCoverImageView().setImageBitmap(content.getImage());
+        }
         else
             holder.getCoverImageView().setImageResource(content.fallbackImage());
 
@@ -117,6 +120,9 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
         public ImageView getCoverImageView() {
             return (ImageView) item.findViewById(R.id.history_item_cover);
         }
+        public ProgressBar getProgressBar() {
+            return (ProgressBar) item.findViewById(R.id.progress_bar);
+        }
     }
 
     /**
@@ -137,4 +143,5 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void noAnimation(){
         animation = false;
     }
+
 }

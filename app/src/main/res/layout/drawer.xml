@@ -35,11 +35,9 @@
         android:textColor="@color/colorPrimaryDark"
         android:text="@string/user_name_placeholder"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
         android:layout_below="@id/profile_pic"
-        android:layout_marginTop="350dp"
         android:textStyle="bold"
-
+        android:layout_marginStart="@dimen/activity_vertical_margin"
         />
 
     <TextView
@@ -49,7 +47,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:layout_centerHorizontal="true"
         android:text="@string/real_name_placeholder"
-        android:layout_below="@id/user_name"
+        android:layout_below="@+id/user_name"
         android:textStyle="bold"
         />
 
