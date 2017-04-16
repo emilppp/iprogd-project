@@ -1,5 +1,6 @@
 package emilp.hallo;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import java.util.Iterator;
 
 import emilp.hallo.SQL.FeedReaderContract;
 import emilp.hallo.view.ContentList;
+import emilp.hallo.view.CurrentlyPlaying;
 
 import static java.security.AccessController.getContext;
 
@@ -34,6 +36,8 @@ public class GlobalApplication extends Application {
     private FeedReaderContract.FeedReaderDbHelper mDbHelper;
     private SharedPreferences sharedPreferences;
     private Song currentlyPlayingSong = null;
+    private CurrentlyPlaying currentlyPlayingPlayer = null;
+    private boolean isBroadcasting = false;
 
     private static String SHARED_PREFERENCES = "spotgenprefs";
     private static String SHARED_PREFERENCES_PLAYLIST_ID = "playlistId";
@@ -364,5 +368,29 @@ public class GlobalApplication extends Application {
 
     public void setCurrentlyPlayingSong(Song currentlyPlayingSong) {
         this.currentlyPlayingSong = currentlyPlayingSong;
+        isBroadcasting = false;
+    }
+
+    public void initPlayer(Activity activity) {
+        currentlyPlayingPlayer = new CurrentlyPlaying(activity);
+    }
+
+    public void showCurrentlyPlayingBroadcastedSong(Song song, int progress) {
+        isBroadcasting = true;
+        if(song != null)
+            this.currentlyPlayingSong = song;
+        currentlyPlayingPlayer.showBroadcasted(progress);
+    }
+
+    public void hideCurrentlyPlayingBroadcastedSong() {
+        currentlyPlayingPlayer.hideBroadcasted();
+    }
+
+    public boolean isBroadcasting() {
+        return isBroadcasting;
+    }
+
+    public CurrentlyPlaying getCurrentlyPlayingPlayer() {
+        return currentlyPlayingPlayer;
     }
 }

@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        new CurrentlyPlaying(this);
+        global.initPlayer(this);
     }
 
     private void loadRecommended() {
