@@ -104,6 +104,8 @@ public class CurrentlyPlaying {
                     }, 0, 1);
                 }
                 if(playerEvent.equals(PlayerEvent.kSpPlaybackNotifyPause)) {
+                    if(global.isBroadcasting()) return;
+                    
                     handlePaused(global, pausePlay);
                     timer.cancel();
                     timer.purge();
@@ -119,16 +121,59 @@ public class CurrentlyPlaying {
 
     private void handlePaused(GlobalApplication global, TextView pausePlay) {
         global.getSpotifyService().pauseSong();
+        pausePlay.setVisibility(View.VISIBLE);
         pausePlay.setText(activity.getResources().getString(R.string.play));
     }
 
     private void handlePlayed(GlobalApplication global, TextView pausePlay) {
         global.getSpotifyService().resumeSong();
+        pausePlay.setVisibility(View.VISIBLE);
         pausePlay.setText(activity.getResources().getString(R.string.pause));
     }
 
     private void styleProgressBar() {
         progressBar.setBackgroundColor(ResourcesCompat.getColor(activity.getResources(), R.color.colorPrimary, null));
         progressBar.setProgressTintList(ColorStateList.valueOf(ResourcesCompat.getColor(activity.getResources(), R.color.colorWhiteish, null)));
+    }
+
+    public void showBroadcasted(int progress) {
+        GlobalApplication global = (GlobalApplication) activity.getApplication();
+        activity.findViewById(R.id.currentlyplaying).setVisibility(View.VISIBLE);
+
+        int duration = (int) global.getCurrentlyPlayingSong().getDurationMs();
+        final TextView pausePlay = (TextView) activity.findViewById(R.id.current_action);
+        final ImageView current_cover = (ImageView) activity.findViewById(R.id.current_cover);
+        final TextView current_title = (TextView) activity.findViewById(R.id.current_title);
+        final TextView current_information = (TextView) activity.findViewById(R.id.current_information);
+
+        pausePlay.setVisibility(View.GONE);
+
+        progressBar.setMax(duration);
+        progressBar.setProgress(progress);
+        Song song = global.getCurrentlyPlayingSong();
+
+        current_information.setText(song.getBread());
+        current_title.setText(song.getTitle());
+        if(song.getImage() != null)
+            current_cover.setImageBitmap(song.getImage());
+        else
+            current_cover.setImageResource(song.fallbackImage());
+
+        timer.cancel();
+        timer.purge();
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                progressBar.setProgress(progressBar.getProgress() + 1);
+            }
+        }, 0, 1);
+    }
+
+    public void hideBroadcasted() {
+        timer.cancel();
+        timer.purge();
+        timer = new Timer();
+        activity.findViewById(R.id.currentlyplaying).setVisibility(View.GONE);
     }
 }

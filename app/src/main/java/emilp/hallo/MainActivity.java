@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                   srl.setRefreshing(false);
             }
         });
+        global.initPlayer(this);
     }
 
     private void loadRecommended() {
