@@ -41,11 +41,6 @@ public class Artist implements Content {
         this.spotifyID = id;
     }
 
-    public Artist() {
-        name = "Artist";
-        spotifyID = "opsasdasdpiahsdopiahsd12";
-    }
-
     public String getName() {
         return name;
     }
@@ -60,14 +55,6 @@ public class Artist implements Content {
 
     public String[] getGenres() {
         return this.genres;
-    }
-
-    public void setPopularity(int pop) {
-        popularity = pop;
-    }
-
-    public int getPopularity() {
-        return popularity;
     }
 
     public void setSpotifyID(String id) {
@@ -95,7 +82,7 @@ public class Artist implements Content {
 
     @Override
     public Bitmap getImage() {
-        return image;
+        return image == null ? null : Bitmap.createScaledBitmap(this.image, 250, 250, false);
     }
 
     @Override

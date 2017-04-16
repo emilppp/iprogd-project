@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
 
 import emilp.hallo.SQL.FeedReaderContract;
 import emilp.hallo.view.ContentList;
@@ -170,46 +171,17 @@ public class GlobalApplication extends Application {
         new ApiSongHistory(contentList, this);
     }
 
-    public ArrayList<Content> getSongHistory() {
-        if(songHistory.size() == 0)
-            songHistory = spotifyService.getSongHistory(this);
-        return songHistory;
-    }
 
     public void addSongHistory(Song song) {
         songHistory.add(song);
         historyAdapter.notifyDataSetChanged();
     }
 
-    public ArrayList<Content> getRecommendedAlbums() {
-        ArrayList<Content> arr = new ArrayList<>();
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        arr.add(new Song());
-        return arr;
-    }
 
     public void getRecommendedArtists(ContentList contentList) {
         new ApiGetArtists(contentList);
     }
 
-    public ArrayList<Content> getRecommendedArtists() {
-        ArrayList<Content> data = new ArrayList<>();
-        data.add(new Artist());
-        data.add(new Artist());
-        data.add(new Artist());
-        return data;
-    }
 
     public void addArtist(Artist artist) {
         this.artist.add(artist);
@@ -301,6 +273,10 @@ public class GlobalApplication extends Application {
         return songsToBeAdded;
     }
 
+    public void clearSongsToBeAdded() {
+        this.songsToBeAdded.clear();
+    }
+
     public void setSongsToBeAdded(ArrayList<Song> songsToBeAdded) {
         this.songsToBeAdded = songsToBeAdded;
         resetDataBase();
@@ -324,6 +300,11 @@ public class GlobalApplication extends Application {
         removeSavedPlaylistId();
     }
 
+    /**
+     * Will add the content to the playlist an update both the local database as well as
+     * the Spotify playlist.
+     * @param content
+     */
     public void addToPlaylist(Song content) {
         if(content != null) {
             if(!isInPlaylist(content)) {
@@ -336,8 +317,25 @@ public class GlobalApplication extends Application {
         }
     }
 
+    /**
+     * Will only add the content to the playlist and won't update the database nor Spotify.
+     * @param content
+     */
+    public void addToPlaylistPure(Song content) {
+        if(content != null)
+            if(!isInPlaylist(content))
+                songsToBeAdded.add(content);
+    }
+
+    /**
+     * Will post all contents in the playlist to both the database as well as Spotify.
+     * This can cause duplicates.
+     */
     public void postPlaylist() {
-        spotifyService.postPlaylist(this);
+        ArrayList<Song> songs = getSongsToBeAdded();
+        for(Song s : songs)
+            addSongToDatabase(s);
+        spotifyService.postPlaylist(this, songs);
     }
 
     public void removeFromLocalPlaylist(Song track) {
@@ -348,10 +346,19 @@ public class GlobalApplication extends Application {
         }
     }
 
+    public void printPlaylist() {
+        for(Song i : songsToBeAdded)
+            System.out.println(i.getId());
+    }
+
     public boolean isInPlaylist(Song song) {
-        for(int i=0; i<songsToBeAdded.size(); i++)
-            if(songsToBeAdded.get(i).getId().equals(song.getId()))
+        for(int i=0; i<songsToBeAdded.size(); i++) {
+            System.out.println("Is " + song.getId() + " == ");
+
+
+            if (Objects.equals(songsToBeAdded.get(i).getId(), song.getId()))
                 return true;
+        }
         return false;
     }
 
@@ -392,5 +399,10 @@ public class GlobalApplication extends Application {
 
     public CurrentlyPlaying getCurrentlyPlayingPlayer() {
         return currentlyPlayingPlayer;
+    }
+
+    public void logOut() {
+        spotifyService.logOut();
+        spotifyService = new SpotifyService();
     }
 }

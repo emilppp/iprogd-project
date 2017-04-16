@@ -1,6 +1,7 @@
 package emilp.hallo.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -94,6 +95,10 @@ public class ContentList {
     public void hideTitle(){
         TextView textView = (TextView) view.findViewById(R.id.list_horizontal_title);
         textView.setVisibility(View.GONE);
+    }
+
+    public void hideAnimation(){
+        adapter.noAnimation();
     }
 
 }

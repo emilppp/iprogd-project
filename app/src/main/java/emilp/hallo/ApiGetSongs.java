@@ -292,4 +292,13 @@ public class ApiGetSongs {
     public ArrayList<Content> getSongs() {
         return songs;
     }
+
+    public void addSongs(int amount){
+        this.limit = amount;
+        getSongHistory();
+    }
+
+    public int getSize(){
+        return songs.size();
+    }
 }

@@ -1,6 +1,7 @@
 package emilp.hallo;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +18,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle mDrawerToggle;
 
     private Activity activity;
+    ApiGetSongs songRec;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,12 +44,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         activity = this;
 
-        GlobalApplication global = (GlobalApplication) getApplication();
+        final GlobalApplication global = (GlobalApplication) getApplication();
         global.fetchClientID();
 
         System.out.println("Playlist ID: " + global.getPlaylistID());
 
-        setDrawerInfo();
 
         // initActionbar();
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -81,6 +84,26 @@ public class MainActivity extends AppCompatActivity {
 
         loadRecommended();
 
+        setDrawerInfo();
+
+        Button btnSignOut = (Button) findViewById(R.id.btn_sign_out);
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // It does not appear as if it's possible to sign out unless using the
+                // webservice to sign in, which we are not using.
+                // So this will do Donkey, this will do.
+                System.exit(0);
+
+                /*global.logOut();
+                Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                startActivity(intent);
+                MainActivity.this.finish();*/
+            }
+        });
+
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
         //getSupportActionBar().setLogo(R.drawable.icon_naked2);
 
@@ -111,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadRecommended() {
         loadRecommendedAlbums();
-        loadRecommendedSongs();
         loadRecommendedArtists();
+        loadRecommendedSongs();
     }
 
     @Override
@@ -129,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadRecommendedSongs() {
         final GlobalApplication global = (GlobalApplication) getApplication();
-        ContentList contentList = new ContentList(this, R.id.song_recommendations, LinearLayoutManager.VERTICAL) {
+        final ContentList contentList = new ContentList(this, R.id.song_recommendations, LinearLayoutManager.VERTICAL) {
             @Override
             protected void onItemClick(View view, Content content) {
                 global.getSpotifyService().playSong(global, (Song) content);
@@ -141,8 +164,29 @@ public class MainActivity extends AppCompatActivity {
                 new MoreOptions(MainActivity.this, song);
             }
         };
-        new ApiGetSongs(contentList, 20);
+        songRec = new ApiGetSongs(contentList, 20);
         contentList.setTitle(R.string.recommendations_songs);
+        contentList.hideAnimation();
+
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.main_scroll);
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+
+            @Override
+            public void onScrollChanged() {
+                if (scrollView != null) {
+                    if (scrollView.getChildAt(0).getBottom() <= (scrollView.getHeight() + scrollView.getScrollY())) {
+                        if(songRec.getSize() < 50) {
+                            songRec.addSongs(5);
+                        } else {
+                            //TODO: update list button or something
+                            loadRecommendedSongs();
+                        }
+                    } else {
+                        //scroll view is not at bottom
+                    }
+                }
+            }
+        });
     }
 
     private void loadRecommendedArtists() {
@@ -156,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
         };
         ((GlobalApplication) getApplication()).getRecommendedArtists(contentList);
         contentList.setTitle(R.string.recommendations_artists);
+        contentList.hideAnimation();
     }
 
     private void loadRecommendedAlbums() {
@@ -179,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         ((GlobalApplication) getApplication()).getSongHistory(contentList);
+        contentList.setTitle(R.string.song_history);
     }
 
     private void setDrawerInfo() {

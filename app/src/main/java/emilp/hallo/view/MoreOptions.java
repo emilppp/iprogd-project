@@ -53,12 +53,15 @@ public class MoreOptions {
             @Override
             public void onClick(View view) {
                 global.addToPlaylist((Song) content);
+                Toast.makeText(activity, "Added " + content.getTitle() + " to playlist.", Toast.LENGTH_SHORT).show();
+
             }
         });
         queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(activity, "Queue song", Toast.LENGTH_SHORT).show();
+                global.getSpotifyService().queueSong("spotify:track:"+((Song) content).getId());
+                Toast.makeText(activity, "Queued song " + content.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
 

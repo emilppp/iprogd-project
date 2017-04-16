@@ -158,7 +158,17 @@ public class SpotifyService extends Activity implements
     }
 
     public void logOut() {
-        mPlayer.logout();
+        AuthenticationClient.clearCookies(this);
+        this.clearPlayerState();
+        accessToken = null;
+    }
+    private void clearPlayerState() {
+        if(mPlayer != null) {
+            mPlayer.pause(mOperationCallback);
+            mPlayer.logout();
+        }
+
+        mPlayer = null;
     }
 
 
@@ -190,23 +200,6 @@ public class SpotifyService extends Activity implements
         Log.d("MainActivity", "Received connection message: " + message);
     }
 
-    Artist[] arre;
-    public ArrayList<Content> getSongHistory(final GlobalApplication global) {
-        ArrayList<Content> arr = new ArrayList<>();
-
-        URL url = NetworkUtils.buildUrlHistory();
-        new SpotifyQueryTask(this, getAccessToken()){
-            @Override
-            protected void onPostExecute(JSONObject res) {
-                if(res != null) {
-                    parseHistoryJSON(res, global);
-                }
-            }
-        }.execute(url);
-
-        return arr;
-    }
-
     public void getClientId(final GlobalApplication global) {
 
         URL url = NetworkUtils.buildUrlGetSpotifyProfile();
@@ -221,7 +214,6 @@ public class SpotifyService extends Activity implements
                 }
             }
         }.execute(url);
-
     }
 
     public static void parseProfileJSON(JSONObject res, GlobalApplication global) {
@@ -233,62 +225,6 @@ public class SpotifyService extends Activity implements
             e.printStackTrace();
         }
 
-    }
-
-    private void parseHistoryJSON(JSONObject res, GlobalApplication global) {
-        try {
-            JSONArray arr = res.getJSONArray("items");
-            for(int i=0; i<arr.length(); i++) {
-                JSONObject obj = arr.getJSONObject(i).getJSONObject("track");
-                String name = obj.getString("name");
-                String id = obj.getString("id");
-                long duration = obj.getLong("duration_ms");
-                Song song = new Song(name, id, duration);
-
-                global.addSongHistory(song);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Type kan vara album, track, artist, playlist
-
-    public static void parseSearchJSON(JSONObject obj, GlobalApplication global) {
-        try {
-            obj = obj.getJSONObject("artists");
-            JSONArray arr = obj.getJSONArray("items");
-
-            for(int i=0; i<arr.length(); i++) {
-                obj = arr.getJSONObject(i);
-                String id = obj.getString("id");
-
-                Artist artist = global.getArtistFromId(id);
-                if(artist == null) {
-                    String name = obj.getString("name");
-                    JSONArray genreArr = obj.getJSONArray("genres");
-                    String[] genres = new String[genreArr.length()];
-                    for(int k=0; k<genreArr.length(); k++)
-                        genres[k] = genreArr.getString(k);
-
-                    int popularity = obj.getInt("popularity");
-
-                    if(obj.has("images") && obj.getJSONArray("images").length() > 0) {
-                        JSONArray img = obj.getJSONArray("images");
-                        String imageUrl = img.getJSONObject(0).getString("url");
-                        artist = new Artist(name, genres, id, popularity, imageUrl);
-                    }
-                    else
-                        artist = new Artist(name, genres, id, popularity);
-
-                    global.addArtist(artist);
-                }
-                global.addSearchRes(artist);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void parsePlaylistJSON(JSONObject res, GlobalApplication global) {
@@ -308,7 +244,6 @@ public class SpotifyService extends Activity implements
             e.printStackTrace();
         }
     }
-
 
     public String getAccessToken() {
         return accessToken;

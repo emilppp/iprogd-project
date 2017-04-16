@@ -119,9 +119,9 @@ public class NetworkUtils {
         return null;
     }
 
-    public static URL buildUrlSearch(String githubSearchQuery, String type) {
+    public static URL buildUrlSearch(String spotifySearchQuery, String type) {
         Uri builtUri = Uri.parse(SPOTIFY_BASE_URL).buildUpon()
-                .appendQueryParameter(PARAM_QUERY, githubSearchQuery)
+                .appendQueryParameter(PARAM_QUERY, spotifySearchQuery)
                 .appendQueryParameter(PARAM_TYPE, type).build();
 
         URL url = null;
@@ -257,23 +257,13 @@ public class NetworkUtils {
         urlConnection.setRequestMethod("DELETE");
 
         StringBuilder sb = new StringBuilder();
-
-
-        /*    { "tracks": [{ "uri": "spotify:track:4iV5W9uYEdYUVa79Axb7Rh" },{
-                "uri": "spotify:track:1301WleyT98MSxVHPZCA6M" }] }
-
-
-                */
-
         sb.append("{ \"tracks\": [{ \"uri\": ");
         sb.append("\"");
         sb.append(track);
         sb.append("\"");
         sb.append("}]}");
-
         String data = sb.toString();
         System.out.println(data);
-
 
         if(token != null) {
             urlConnection.setRequestProperty("Authorization", "Bearer " + token);
@@ -323,13 +313,9 @@ public class NetworkUtils {
             String data = "{ \"name\": \"A new playlist\", \"public\": false}";
             urlConnection.setDoOutput(true);
             byte[] outputInBytes = data.getBytes("UTF-8");
-
             OutputStream os = urlConnection.getOutputStream();
             os.write(outputInBytes);
             os.close();
-
-
-
             System.out.println(token);
             System.out.println(urlConnection.toString());
         } try {

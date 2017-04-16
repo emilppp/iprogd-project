@@ -13,21 +13,45 @@
         android:layout_gravity="center"
         android:src="@drawable/fallback_album" />
 
-    <TextView
-        android:id="@+id/history_item_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/placeholder_song_title"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        style="@style/text_fat"/>
-    <TextView
-        android:id="@+id/history_item_artist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center"
-        android:text="@string/placeholder_song_artist"
-        style="@style/text"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/history_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_song_title"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            style="@style/text_fat"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:marqueeRepeatLimit ="marquee_forever"
+            android:scrollHorizontally="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:duplicateParentState="true"
+            android:scrollbars="horizontal"/>
+        <TextView
+            android:id="@+id/history_item_artist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/placeholder_song_artist"
+            style="@style/text"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:marqueeRepeatLimit ="marquee_forever"
+            android:scrollHorizontally="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:duplicateParentState="true"
+            android:scrollbars="horizontal">
+        <requestFocus android:focusable="true" android:focusableInTouchMode="true"
+            android:duplicateParentState="true"/>
+        </TextView>
+
+    </LinearLayout>
 
 </LinearLayout>
