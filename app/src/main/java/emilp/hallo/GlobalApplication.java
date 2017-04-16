@@ -15,6 +15,7 @@ import java.util.Objects;
 import emilp.hallo.SQL.FeedReaderContract;
 import emilp.hallo.view.ContentList;
 import emilp.hallo.view.CurrentlyPlaying;
+import emilp.hallo.view.Notification;
 
 import static java.security.AccessController.getContext;
 
@@ -380,6 +381,10 @@ public class GlobalApplication extends Application {
 
     public void initPlayer(Activity activity) {
         currentlyPlayingPlayer = new CurrentlyPlaying(activity);
+    }
+
+    public void showNotification() {
+        new Notification().show(this);
     }
 
     public void showCurrentlyPlayingBroadcastedSong(Song song, int progress) {
