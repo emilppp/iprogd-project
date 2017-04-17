@@ -211,6 +211,7 @@ public class SpotifyService extends Activity implements
 
                     System.out.println(global.getClientID());
                     System.out.println(global.getDisplayName());
+                    global.downloadImage();
                 }
             }
         }.execute(url);
@@ -221,6 +222,7 @@ public class SpotifyService extends Activity implements
         try {
             global.setClientID(res.getString("id"));
             global.setDisplayName(res.getString("display_name"));
+            global.setImageUrl(res.getJSONObject("images").getString("url"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

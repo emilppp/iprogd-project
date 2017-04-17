@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -75,14 +77,13 @@ public class MainActivity extends AppCompatActivity {
             };
             mDrawerToggle.setDrawerIndicatorEnabled(true);
             drawerLayout.addDrawerListener(mDrawerToggle);
+            setDrawerInfo();
             mDrawerToggle.syncState();
         }
 
         loadSongHistory();
 
         loadRecommended();
-
-        setDrawerInfo();
 
         Button btnSignOut = (Button) findViewById(R.id.btn_sign_out);
         btnSignOut.setOnClickListener(new View.OnClickListener() {
@@ -101,9 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.finish();*/
             }
         });
-
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //getSupportActionBar().setLogo(R.drawable.icon_naked2);
 
         Button btnCreatePlaylist = (Button) findViewById(R.id.btn_create_playlist);
         if(global.getPlaylistID() != null) {
@@ -195,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
         };
         songRec = new ApiGetSongs(contentList, 20);
         contentList.setTitle(R.string.recommendations_songs);
-        contentList.hideAnimation();
     }
 
     private void loadRecommendedArtists() {
@@ -209,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
         };
         ((GlobalApplication) getApplication()).getRecommendedArtists(contentList);
         contentList.setTitle(R.string.recommendations_artists);
-        contentList.hideAnimation();
     }
 
     private void loadRecommendedAlbums() {
@@ -237,10 +233,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDrawerInfo() {
+        String userName = ((GlobalApplication) getApplication()).getDisplayName();
+        String realName = ((GlobalApplication) getApplication()).getClientID();
+        Bitmap pic = ((GlobalApplication) getApplication()).getProfilePicture();
         TextView mDrawerUserName = (TextView) findViewById(R.id.user_name);
         TextView mDrawerRealName = (TextView) findViewById(R.id.real_name);
-        mDrawerRealName.setText(((GlobalApplication) getApplication()).getDisplayName());
-        mDrawerUserName.setText(((GlobalApplication) getApplication()).getClientID());
+        ImageView mDrawerProfilePic = (ImageView) findViewById(R.id.profile_pic);
+        if(userName != null) {
+            mDrawerUserName.setText(userName);
+        } else {
+            mDrawerUserName.setVisibility(View.GONE);
+        }
+        if(realName != null) {
+            mDrawerRealName.setText(realName);
+        } else {
+            mDrawerRealName.setVisibility(View.GONE);
+        }
+        if(pic != null) {
+            mDrawerProfilePic.setImageBitmap(pic);
+        }
     }
 
     @Override

@@ -28,7 +28,7 @@
                 android:cropToPadding="false"
                 android:scaleType="centerCrop"
                 android:id="@+id/artist_banner"
-                android:src="@drawable/placeholder_pink"
+                android:src="@drawable/fallback_album"
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/artist_banner"
                 android:layout_gravity="start"/>

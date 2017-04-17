@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,8 @@ public class GlobalApplication extends Application {
     private Song currentlyPlayingSong = null;
     private CurrentlyPlaying currentlyPlayingPlayer = null;
     private boolean isBroadcasting = false;
+    private String imageUrl;
+    private Bitmap image;
 
     private static String SHARED_PREFERENCES = "spotgenprefs";
     private static String SHARED_PREFERENCES_PLAYLIST_ID = "playlistId";
@@ -255,6 +258,21 @@ public class GlobalApplication extends Application {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public void setImageUrl(String url) {this.imageUrl = url;}
+
+    public void downloadImage() {
+        if(image == null && imageUrl != null && !imageUrl.equals(""))
+            image = NetworkUtils.getBitmapFromUrl(imageUrl);
+    }
+
+    public Bitmap getProfilePicture() {
+        return image == null ? null : Bitmap.createScaledBitmap(this.image, 250, 250, false);
+    }
+
+    public int fallbackImage() {
+        return R.drawable.blank_profile;
     }
 
     public void createPlaylist() {

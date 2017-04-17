@@ -26,6 +26,7 @@ public class ContentList {
     private MenuAdapter adapter;
     private View view;
     private int layout;
+    private int spinner;
 
     /**
      * Creates a list in the given direction with the provided data
@@ -39,6 +40,7 @@ public class ContentList {
     public ContentList(Activity activity, int container, int direction) {
         constructorHelp(activity, container, direction);
         layout = R.layout.list_item_song;
+        spinner = R.id.progress_bar;
         if(direction == LinearLayoutManager.HORIZONTAL)
             layout = R.layout.song_history_item;
     }
@@ -99,12 +101,12 @@ public class ContentList {
         textView.setVisibility(View.GONE);
     }
 
-    public void hideAnimation(){
-        adapter.noAnimation();
+    public LinearLayout getSpinner(){
+        return (LinearLayout) view.findViewById(spinner);
     }
 
-    public LinearLayout getSpinner(){
-        return (LinearLayout) view.findViewById(R.id.progress_bar);
+    public void setSpinner(int spinner){
+        this.spinner = spinner;
     }
 
 }
