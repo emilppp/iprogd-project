@@ -258,12 +258,12 @@ public class MainActivity extends AppCompatActivity {
         TextView mDrawerUserName = (TextView) findViewById(R.id.user_name);
         TextView mDrawerRealName = (TextView) findViewById(R.id.real_name);
         ImageView mDrawerProfilePic = (ImageView) findViewById(R.id.profile_pic);
-        if(userName != null && mDrawerUserName != null) {
+        if(userName != null && mDrawerUserName != null && !userName.equals("null")) {
             mDrawerUserName.setText(userName);
         } else if(mDrawerUserName != null) {
             mDrawerUserName.setVisibility(View.GONE);
         }
-        if(realName != null && mDrawerRealName != null) {
+        if(realName != null && mDrawerRealName != null && !realName.equals("null")) {
             mDrawerRealName.setText(realName);
         } else if(mDrawerRealName != null) {
             mDrawerRealName.setVisibility(View.GONE);
