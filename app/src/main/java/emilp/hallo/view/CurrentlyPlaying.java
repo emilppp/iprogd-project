@@ -2,8 +2,6 @@ package emilp.hallo.view;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,15 +15,9 @@ import com.spotify.sdk.android.player.PlayerEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import emilp.hallo.Album;
-import emilp.hallo.Artist;
 import emilp.hallo.GlobalApplication;
 import emilp.hallo.R;
 import emilp.hallo.Song;
-
-/**
- * Created by jonas on 2017-04-11.
- */
 
 public class CurrentlyPlaying {
 

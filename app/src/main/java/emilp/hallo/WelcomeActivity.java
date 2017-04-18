@@ -9,15 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Error;
-
-/**
- * Created by jonas on 2017-03-23.
- */
 
 public class WelcomeActivity extends Activity implements ConnectionStateCallback {
 
@@ -28,7 +23,6 @@ public class WelcomeActivity extends Activity implements ConnectionStateCallback
         setContentView(R.layout.welcome_screen);
 
         LinearLayout btnSignInWithSpotify = (LinearLayout) findViewById(R.id.btn_with_spotify);
-        //final TextView btnContinueWithoutSpotify = (TextView) findViewById(R.id.btn_without_spotify);
 
         btnSignInWithSpotify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,21 +30,11 @@ public class WelcomeActivity extends Activity implements ConnectionStateCallback
                 loginWithSpotify();
             }
         });
-        /*btnContinueWithoutSpotify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                continueWithoutSpotify();
-            }
-        });*/
     }
 
     private void loginWithSpotify() {
         SpotifyService spotifyService = ((GlobalApplication) getApplication()).getSpotifyService();
         spotifyService.authSpotify(this);
-    }
-
-    private void continueWithoutSpotify() {
-        startMainActivityAndReturn();
     }
 
     private void startMainActivityAndReturn() {

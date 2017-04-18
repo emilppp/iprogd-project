@@ -1,20 +1,15 @@
-<resources
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:textColorSecondary">@color/colorWhiteish</item>
         <item name="android:textColorPrimary">@color/colorWhiteish</item>
         <item name="android:textColorHint">@color/colorWhiteish</item>
-
     </style>
 
-    <style name="WelcomeTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    </style>
+    <style name="WelcomeTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
 
     <style name="toolbarStyle" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="contentInsetStart">0dp</item>
@@ -22,31 +17,25 @@
     </style>
 
     <!-- http://stackoverflow.com/questions/12128331/how-to-change-fontfamily-of-textview-in-android -->
-
     <style name="buttonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-
     <style name="text">
         <item name="android:color">@color/colorPrimaryDark</item>
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">sans-serif</item>
     </style>
-
     <style name="text_fat" parent="text">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-
     <style name="text_huge" parent="text">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-
     <style name="text_big" parent="text">
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
-
 </resources>

@@ -17,22 +17,18 @@ package emilp.hallo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.renderscript.ScriptGroup;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -41,26 +37,24 @@ import java.util.Scanner;
  */
 public class NetworkUtils {
 
-    final static String SPOTIFY_BASE_URL =
+    private final static String SPOTIFY_BASE_URL =
             "https://api.spotify.com/v1/search";
 
-    final static String SPOTIFY_GET_USER_URL = "https://api.spotify.com/v1/me";
-    final static String SPOTIFY_ARTIST_URL = "https://api.spotify.com/v1/artists/";
+    private final static String SPOTIFY_GET_USER_URL = "https://api.spotify.com/v1/me";
 
-    final static String SPOTIFY_HISTORY_URL = "https://api.spotify.com/v1/me/player/recently-played";
+    private final static String SPOTIFY_HISTORY_URL = "https://api.spotify.com/v1/me/player/recently-played";
 
-    final static String SPOTIFY_CREATE_PLAYLIST_URL = "https://api.spotify.com/v1/users/";
+    private final static String SPOTIFY_CREATE_PLAYLIST_URL = "https://api.spotify.com/v1/users/";
 
-    final static String SPOTIFY_TRACKS_URL = "https://api.spotify.com/v1/tracks/?ids=";
+    private final static String SPOTIFY_TRACKS_URL = "https://api.spotify.com/v1/tracks/?ids=";
 
-    final static String PARAM_QUERY = "q";
-    final static String PARAM_TYPE = "type";
+    private final static String PARAM_QUERY = "q";
+    private final static String PARAM_TYPE = "type";
 
     /**
-     * @param id
      * @return builds a URL to fetch artsits popular tracks
      */
-    public static URL buildAristsPopularTracksURL(String id) {
+    static URL buildAristsPopularTracksURL(String id) {
         URL url = null;
         try {
             url = new URL("https://api.spotify.com/v1/artists/" + id + "/top-tracks?country=SE");
@@ -70,10 +64,9 @@ public class NetworkUtils {
         return url;
     }
     /**
-     * @param id
      * @return builds a URL to fetch an artists albums
      */
-    public static URL buildArtistAlbumsURL(String id) {
+    static URL buildArtistAlbumsURL(String id) {
         URL url = null;
         try {
             url = new URL("https://api.spotify.com/v1/artists/" + id + "/albums");
@@ -83,10 +76,9 @@ public class NetworkUtils {
         return url;
     }
     /**
-     * @param album
      * @return builds a URL to fetch an albums tracks
      */
-    public static URL buildAlbumTracksURL(String album) {
+    static URL buildAlbumTracksURL(String album) {
         URL url = null;
         try {
             url = new URL("https://api.spotify.com/v1/albums/" + album + "/tracks");
@@ -97,12 +89,9 @@ public class NetworkUtils {
     }
 
     /**
-     *
-     * @param type
-     * @param limit
      * @return builds a URL which is randomly generated to provide a base playlist
      */
-    public static URL buildRandom(String type, int limit) {
+    static URL buildRandom(String type, int limit) {
         String[] randomArray = new String[]{"%25a%25", "a%25", "%25e%25", "e%25", "%25i%25", "i%25", "%25o%25", "o%25"};
 
         Random rand = new Random();
@@ -124,26 +113,21 @@ public class NetworkUtils {
     }
 
     /**
-     * @param tracks
      * @return builds a URL to fetch tracks
      */
-    public static JSONObject getTracks(String tracks) {
+    static JSONObject getTracks(String tracks) {
         try {
             URL url = new URL(SPOTIFY_TRACKS_URL + tracks);
             return NetworkUtils.getResponseFromHttpUrl(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
     /**
-     * @param spotifySearchQuery
-     * @param type
      * @return builds a URL which is used when searching
      */
-    public static URL buildUrlSearch(String spotifySearchQuery, String type) {
+    static URL buildUrlSearch(String spotifySearchQuery, String type) {
         Uri builtUri = Uri.parse(SPOTIFY_BASE_URL).buildUpon()
                 .appendQueryParameter(PARAM_QUERY, spotifySearchQuery)
                 .appendQueryParameter(PARAM_TYPE, type).build();
@@ -161,7 +145,7 @@ public class NetworkUtils {
      *
      * @return builds a URL to fetch the users recently played tracks
      */
-    public static URL buildUrlHistory() {
+    static URL buildUrlHistory() {
         try {
             return new URL(SPOTIFY_HISTORY_URL);
         } catch (MalformedURLException e) {
@@ -171,11 +155,10 @@ public class NetworkUtils {
     }
 
     /**
-     * @param userid
      * @return builds a URL to create a new playlist on the users spotify account
      */
-    public static URL buildUrlCreatePlaylist(String userid) {
-        if(userid != null && userid != "") {
+    static URL buildUrlCreatePlaylist(String userid) {
+        if(userid != null && !Objects.equals(userid, "")) {
             Uri builtUri = Uri.parse(SPOTIFY_CREATE_PLAYLIST_URL).buildUpon().appendPath(userid).appendPath("playlists").build();
             System.out.println(builtUri.toString());
             try {
@@ -188,13 +171,10 @@ public class NetworkUtils {
     }
 
     /**
-     * @param userID
-     * @param playlistID
-     * @param track
      * @return builds a URL to remove a certain song from the playlist
      */
-    public static URL buildUrlRemoveFromPlaylist(String userID, String playlistID, String track) {
-        if(userID != null && userID != "") {
+    static URL buildUrlRemoveFromPlaylist(String userID, String playlistID) {
+        if(userID != null && !Objects.equals(userID, "")) {
             Uri builtUri = Uri.parse(SPOTIFY_CREATE_PLAYLIST_URL).buildUpon().appendPath(userID).appendPath("playlists").appendPath(playlistID).appendPath("tracks").build();
             System.out.println(builtUri.toString());
             try {
@@ -207,17 +187,14 @@ public class NetworkUtils {
     }
 
     /**
-     * @param userID
-     * @param playlistID
-     * @param tracks
      * @return builds a URL to add track(s) to the playlist
      */
-    public static URL buildUrlAddTracksToPlaylist(String userID, String playlistID, ArrayList<Song> tracks) {
+    static URL buildUrlAddTracksToPlaylist(String userID, String playlistID, ArrayList<Song> tracks) {
         if(userID != null && playlistID != null && tracks != null) {
             StringBuilder sb = new StringBuilder();
 
             for(int i = 0; i<tracks.size(); i++) {
-                sb.append("spotify:track:"+tracks.get(i).getId());
+                sb.append("spotify:track:").append(tracks.get(i).getId());
                 if(i != tracks.size() -1)
                     sb.append(",");
             }
@@ -231,26 +208,11 @@ public class NetworkUtils {
         }
         return null;
     }
-    /**
-     * @param artistId
-     * @return builds a URL to get information about an artist
-     */
-    public static URL buildUrlArtist(String artistId) {
-        Uri builtUri = Uri.parse(SPOTIFY_ARTIST_URL).buildUpon().appendPath(artistId).build();
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return url;
-    }
 
     /**
      * @return builds a URL to get information about the users spotify profile
      */
-    public static URL buildUrlGetSpotifyProfile() {
+    static URL buildUrlGetSpotifyProfile() {
         try {
             return new URL(SPOTIFY_GET_USER_URL);
 
@@ -260,19 +222,14 @@ public class NetworkUtils {
         return null;
     }
 
-    public static JSONObject getResponseFromHttpUrl(URL url) throws IOException {
+    static JSONObject getResponseFromHttpUrl(URL url) throws IOException {
         return getResponseFromHttpUrl(url, null);
     }
 
     /**
-     *
-     * @param url
-     * @param token
-     * @param tracks
      * @return a JSONObject containing the result from adding tracks to the playlist
-     * @throws IOException
      */
-    public static JSONObject getResponseFromAddToPlaylist(URL url, String token, ArrayList<Song> tracks) throws IOException {
+    static JSONObject getResponseFromAddToPlaylist(URL url, String token) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");
 
@@ -307,24 +264,17 @@ public class NetworkUtils {
     }
 
     /**
-     *
-     * @param url
-     * @param token
-     * @param track
      * @return a JSONObject containing the result from deleting a track from the playlist
-     * @throws IOException
      */
-    public static JSONObject getResponseFromDeleteFromPlaylist(URL url, String token, String track) throws IOException {
+    static JSONObject getResponseFromDeleteFromPlaylist(URL url, String token, String track) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("DELETE");
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("{ \"tracks\": [{ \"uri\": ");
-        sb.append("\"");
-        sb.append(track);
-        sb.append("\"");
-        sb.append("}]}");
-        String data = sb.toString();
+        String data = "{ \"tracks\": [{ \"uri\": " +
+                "\"" +
+                track +
+                "\"" +
+                "}]}";
         System.out.println(data);
 
         if(token != null) {
@@ -365,13 +315,9 @@ public class NetworkUtils {
     }
 
     /**
-     *
-     * @param url
-     * @param token
      * @return a JSONObject containing information from creating the playlist
-     * @throws IOException
      */
-    public static JSONObject getResponseFromPostHttpUrl(URL url, String token) throws IOException {
+    static JSONObject getResponseFromPostHttpUrl(URL url, String token) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");
 
@@ -418,17 +364,13 @@ public class NetworkUtils {
      * @return The contents of the HTTP response.
      * @throws IOException Related to network and stream reading
      */
-    public static JSONObject getResponseFromHttpUrl(URL url, String token) throws IOException {
+    static JSONObject getResponseFromHttpUrl(URL url, String token) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
         if(token != null)
            urlConnection.setRequestProperty("Authorization", "Bearer " + token);
         try {
             InputStream in;
-            if(urlConnection.getResponseCode() == 401) {
-                //in = urlConnection.getErrorStream();
-            }
-            //else
             in = urlConnection.getInputStream();
 
             Scanner scanner = new Scanner(in);
@@ -454,11 +396,9 @@ public class NetworkUtils {
     }
 
     /**
-     *
-     * @param url
      * @return The bitmap of the url's image
      */
-    public static Bitmap getBitmapFromUrl(String url) {
+    static Bitmap getBitmapFromUrl(String url) {
         Bitmap image = null;
         try {
             URL u = new URL(url);

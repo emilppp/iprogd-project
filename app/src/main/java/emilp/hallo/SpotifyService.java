@@ -3,11 +3,9 @@ package emilp.hallo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -15,12 +13,10 @@ import com.spotify.sdk.android.authentication.AuthenticationResponse;
 import com.spotify.sdk.android.player.Config;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Error;
-import com.spotify.sdk.android.player.Metadata;
 import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,7 +63,6 @@ public class SpotifyService extends Activity implements
 
     /**
      * Authorizes the user (logs it in to spotify)
-     * @param activity
      */
     public void authSpotify(Activity activity) {
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
@@ -154,29 +149,6 @@ public class SpotifyService extends Activity implements
         mPlayer.resume(mOperationCallback);
     }
 
-    public void stop() {
-        mPlayer.destroy();
-    }
-
-    public Metadata.Track getCurrentTrack() {
-        return mPlayer.getMetadata().currentTrack;
-    }
-
-    public void logOut() {
-        AuthenticationClient.clearCookies(this);
-        this.clearPlayerState();
-        accessToken = null;
-    }
-    private void clearPlayerState() {
-        if(mPlayer != null) {
-            mPlayer.pause(mOperationCallback);
-            mPlayer.logout();
-        }
-
-        mPlayer = null;
-    }
-
-
     @Override
     public void onLoggedIn() {
 
@@ -206,7 +178,6 @@ public class SpotifyService extends Activity implements
     /**
      * Gets the users client id (spotify id)
      * WARNING: This will halt execution
-     * @param global
      */
     public void getClientId(final GlobalApplication global) {
 
@@ -227,8 +198,6 @@ public class SpotifyService extends Activity implements
 
     /**
      * Parses the JSONObject recieved from the profile get request and stores its info
-     * @param res
-     * @param global
      */
     public static void parseProfileJSON(JSONObject res, GlobalApplication global) {
         // TODO fixa.
@@ -245,8 +214,6 @@ public class SpotifyService extends Activity implements
 
     /**
      * Parses the JSONObject recieved from creating the playlist and stores its info
-     * @param res
-     * @param global
      */
     public static void parsePlaylistJSON(JSONObject res, GlobalApplication global) {
         try {
@@ -288,21 +255,14 @@ public class SpotifyService extends Activity implements
         }
     }
 
-
-    public void postPlaylist(final GlobalApplication global) {
-        postPlaylist(global, global.getSongsToBeAdded());
-    }
-
     /**
      * Updates the playlist in spotify
-     * @param global
-     * @param content
      */
     public void postPlaylist(final GlobalApplication global, ArrayList<Song> content) {
         String userID = global.getClientID();
         String playlistID = global.getPlaylistID();
         URL url = NetworkUtils.buildUrlAddTracksToPlaylist(userID, playlistID, content);
-        new SpotifyQueryTask(this, getAccessToken(), global.getSongsToBeAdded()) {
+        new SpotifyQueryTask(getAccessToken()) {
             @Override
             protected void onPostExecute(JSONObject res) {
                 if(res!=null) {
@@ -315,14 +275,12 @@ public class SpotifyService extends Activity implements
 
     /**
      * Removes a track from the playlist in spotify
-     * @param global
-     * @param track
      */
     public void removeTrackFromPlaylist(final GlobalApplication global, String track) {
         String userID = global.getClientID();
         String playlistID = global.getPlaylistID();
-        URL url = NetworkUtils.buildUrlRemoveFromPlaylist(userID, playlistID, track);
-        new SpotifyQueryTask(this, getAccessToken(), "delete", track) {
+        URL url = NetworkUtils.buildUrlRemoveFromPlaylist(userID, playlistID);
+        new SpotifyQueryTask(getAccessToken(), "delete", track) {
             @Override
             protected void onPostExecute(JSONObject res) {
                 if(res!=null) {
@@ -331,5 +289,4 @@ public class SpotifyService extends Activity implements
             }
         }.execute(url);
     }
-
 }

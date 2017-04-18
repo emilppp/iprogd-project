@@ -21,8 +21,6 @@ public class SearchResultsActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_search_results);
 
-        ((GlobalApplication) getApplication()).clearResList();
-
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
@@ -47,7 +45,6 @@ public class SearchResultsActivity extends Activity {
 
     /**
      * Searches songs based on the given query
-     * @param query
      */
     private void searchSongs(String query) {
         ContentList contentList = new ContentList(SearchResultsActivity.this, R.id.search_results_songs, LinearLayoutManager.VERTICAL) {
@@ -71,7 +68,6 @@ public class SearchResultsActivity extends Activity {
 
     /**
      * Searches artists based on the given query
-     * @param query
      */
     private void searchArtists(String query) {
         ContentList contentList = getContentList(R.id.search_results_artists, LinearLayoutManager.HORIZONTAL, ArtistPage.class);
@@ -81,7 +77,6 @@ public class SearchResultsActivity extends Activity {
 
     /**
      * Searches albums based on the given query
-     * @param query
      */
     private void searchAlbums(String query) {
         ContentList contentList = getContentList(R.id.search_results_albums, LinearLayoutManager.HORIZONTAL, AlbumPage.class);

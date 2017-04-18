@@ -9,6 +9,6 @@
         android:layout_height="wrap_content"
         style="@style/text"
         android:textColor="@color/colorPrimaryDark"
-        android:text="TODO: Spotify broadcast notification" />
+        android:text="@string/placeholder_notification" />
 
 </RelativeLayout>

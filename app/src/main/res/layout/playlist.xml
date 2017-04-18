@@ -9,20 +9,15 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <include
                 android:id="@+id/playlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 layout="@layout/list_horizontal"/>
-
         </LinearLayout>
-
-
     </ScrollView>
 
 </LinearLayout>

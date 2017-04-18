@@ -15,19 +15,10 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import org.json.JSONObject;
-
-import java.net.URL;
-
 import emilp.hallo.view.ContentList;
-
-/**
- * Created by kenneth on 4/7/17.
- */
 
 public class AlbumPage extends AppCompatActivity {
 
-    String testId = "0OdUWJ0sBjDrqHygGUXeCF";
     Album currentAlbum;
 
     @Override
@@ -45,13 +36,24 @@ public class AlbumPage extends AppCompatActivity {
         if (actionBar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            if(myToolbar != null)
+                myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     finish();
                 }
             });
         }
+
+        TextView tvAlbumName = (TextView) findViewById(R.id.album_name);
+        ImageView ivAlbumCover = (ImageView) findViewById(R.id.album_cover);
+
+        if(tvAlbumName != null)
+            tvAlbumName.setText(currentAlbum.getName());
+        if (currentAlbum.getImage() != null && ivAlbumCover != null)
+            ivAlbumCover.setImageBitmap(currentAlbum.getImage());
+        else if(ivAlbumCover != null)
+            ivAlbumCover.setImageResource(currentAlbum.fallbackImage());
 
         ContentList c = new ContentList(this, R.id.album_songs, LinearLayoutManager.VERTICAL) {
             @Override
@@ -73,20 +75,6 @@ public class AlbumPage extends AppCompatActivity {
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-        URL url = NetworkUtils.buildUrlArtist(testId);
-        new SpotifyQueryTask(this) {
-            @Override
-            protected void onPostExecute(JSONObject spotifySearchresults) {
-                TextView tvAlbumName = (TextView) findViewById(R.id.album_name);
-                ImageView ivAlbumCover = (ImageView) findViewById(R.id.album_cover);
-
-                tvAlbumName.setText(currentAlbum.getName());
-                if (currentAlbum.getImage() != null)
-                    ivAlbumCover.setImageBitmap(currentAlbum.getImage());
-                else
-                    ivAlbumCover.setImageResource(currentAlbum.fallbackImage());
-            }
-        }.execute(url);
         return true;
     }
 }

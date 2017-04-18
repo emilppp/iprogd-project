@@ -9,28 +9,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
 import emilp.hallo.SQL.FeedReaderContract;
 import emilp.hallo.view.ContentList;
 import emilp.hallo.view.CurrentlyPlaying;
-import emilp.hallo.view.Notification;
-
-import static java.security.AccessController.getContext;
-
-/**
- * Created by jonas on 2017-03-23.
- */
 
 public class GlobalApplication extends Application {
 
-    private ArrayList<Content> artist = new ArrayList<>();
-    private ArrayList<Content> searchRes = new ArrayList<>();
-    private ArrayList<Content> songHistory = new ArrayList<>();
     private ArrayList<Song> songsToBeAdded = new ArrayList<>();
-    private ContentList historyAdapter;
     private String playlistID;
     private String clientID;
     private String displayName;
@@ -44,7 +32,6 @@ public class GlobalApplication extends Application {
     private String imageUrl;
     private Bitmap image;
 
-    private static String SHARED_PREFERENCES = "spotgenprefs";
     private static String SHARED_PREFERENCES_PLAYLIST_ID = "playlistId";
 
     @Override
@@ -52,6 +39,8 @@ public class GlobalApplication extends Application {
         super.onCreate();
 
         mDbHelper = new FeedReaderContract.FeedReaderDbHelper( getApplicationContext() );
+
+        String SHARED_PREFERENCES = "spotgenprefs";
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
 
         playlistID = getSavedPlaylistId();
@@ -74,7 +63,7 @@ public class GlobalApplication extends Application {
             removeSavedPlaylistId();
         SharedPreferences.Editor e = sharedPreferences.edit();
         e.putString(SHARED_PREFERENCES_PLAYLIST_ID, id); // add or overwrite someValue
-        e.commit(); // this saves to disk and notifies observers
+        e.apply(); // this saves to disk and notifies observers
     }
 
     private void removeSavedPlaylistId() {
@@ -92,13 +81,9 @@ public class GlobalApplication extends Application {
         mDbHelper.onUpgrade(db, 0, 0);
     }
 
-    // Add an array of songs to the database
-    public void addSongToDatabase(ArrayList<Song> songs) {
-        for(Song s : songs)
-            addSongToDatabase( s );
-    }
-
-    // Add a single song to the database
+    /**
+     * Add a single song to the database
+     */
     public void addSongToDatabase(Song song) {
         if(song != null)
            putData(mDbHelper, song.getId());
@@ -120,10 +105,7 @@ public class GlobalApplication extends Application {
 
         // Define 'where' part of query.
         String selection = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE + " LIKE ?";
-        // Specify arguments in placeholder order.
-        String[] selectionArgs = ids;
-        // Issue SQL statement.
-        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME, selection, selectionArgs);
+        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME, selection, ids);
     }
 
     public ArrayList<String> getPlaylistFromDb() {
@@ -175,65 +157,15 @@ public class GlobalApplication extends Application {
         return spotifyService;
     }
 
-    // Gets the last played tracks from the users spotify account
+    /**
+     * Gets the last played tracks from the users spotify account
+     */
     public void getSongHistory(ContentList contentList) {
         new ApiSongHistory(contentList, this);
     }
 
-
-    public void addSongHistory(Song song) {
-        songHistory.add(song);
-        historyAdapter.notifyDataSetChanged();
-    }
-
-
     public void getRecommendedArtists(ContentList contentList) {
         new ApiGetArtists(contentList);
-    }
-
-
-    public void addArtist(Artist artist) {
-        this.artist.add(artist);
-    }
-
-    public boolean containsArtist(String id) {
-        return getArtistFromId(id) != null;
-    }
-
-    // Gets the artist object based on the artist ID
-    public Artist getArtistFromId(String id) {
-        for(Content c : artist) {
-            Artist a = (Artist) c;
-            if(a.getSpotifyID().equals(id))
-                return a;
-        }
-        return null;
-    }
-
-    public ArrayList<Content> getSearchRes() {
-        return searchRes;
-    }
-
-    public void clearResList() {
-        this.searchRes.clear();
-    }
-
-    public void addSearchRes(Artist artist) {
-        if(!searchContainsArtist(artist.getSpotifyID()))
-            this.searchRes.add(artist);
-    }
-
-    public boolean searchContainsArtist(String id) {
-        return getSearchArtistFromId(id) != null;
-    }
-
-    public Artist getSearchArtistFromId(String id) {
-        for(Content c : searchRes) {
-            Artist a = (Artist) c;
-            if(a.getSpotifyID().equals(id))
-                return a;
-        }
-        return null;
     }
 
     public Content getCurrentContent() {
@@ -278,10 +210,6 @@ public class GlobalApplication extends Application {
         return image == null ? null : Bitmap.createScaledBitmap(this.image, 250, 250, false);
     }
 
-    public int fallbackImage() {
-        return R.drawable.blank_profile;
-    }
-
     public void createPlaylist() {
         spotifyService.createPlaylist(this);
     }
@@ -297,12 +225,6 @@ public class GlobalApplication extends Application {
 
     public ArrayList<Song> getSongsToBeAdded() {
         return songsToBeAdded;
-    }
-
-    public void setSongsToBeAdded(ArrayList<Song> songsToBeAdded) {
-        this.songsToBeAdded = songsToBeAdded;
-        resetDataBase();
-        addSongToDatabase(this.songsToBeAdded);
     }
 
     public ArrayList<Content> getSongsToBeAddedAsContent() {
@@ -331,14 +253,13 @@ public class GlobalApplication extends Application {
     /**
      * Will add the content to the playlist an update both the local database as well as
      * the Spotify playlist.
-     * @param content
      */
     public void addToPlaylist(Song content) {
         if(content != null) {
             if(!isInPlaylist(content)) {
                 songsToBeAdded.add(content);
                 addSongToDatabase(content);
-                ArrayList<Song> a = new ArrayList<Song>();
+                ArrayList<Song> a = new ArrayList<>();
                 a.add(content);
                 spotifyService.postPlaylist(this, a);
             }
@@ -347,7 +268,6 @@ public class GlobalApplication extends Application {
 
     /**
      * Will only add the content to the playlist and won't update the database nor Spotify.
-     * @param content
      */
     public void addToPlaylistPure(Song content) {
         if(content != null)
@@ -368,7 +288,6 @@ public class GlobalApplication extends Application {
 
     /**
      * Looks for a track in the local playlist and tries to remove it.
-     * @param track
      */
     public void removeFromLocalPlaylist(Song track) {
         for(Iterator<Song> it = songsToBeAdded.iterator(); it.hasNext();) {
@@ -378,15 +297,8 @@ public class GlobalApplication extends Application {
         }
     }
 
-    public void printPlaylist() {
-        for(Song i : songsToBeAdded)
-            System.out.println(i.getId());
-    }
-
     /**
      * Checks if the given song is in the playlist
-     * @param song
-     * @return
      */
     public boolean isInPlaylist(Song song) {
         for(int i=0; i<songsToBeAdded.size(); i++) {
@@ -397,17 +309,6 @@ public class GlobalApplication extends Application {
                 return true;
         }
         return false;
-    }
-
-    /**
-     * Removes the song from the playlist
-     * @param track
-     */
-    public void removeTrackFromPlaylist(Song track) {
-        removeSongFromPlaylistDb(track.getId());
-        String removeSong = "spotify:track:" + track.getId();
-        spotifyService.removeTrackFromPlaylist(this, removeSong);
-        removeFromLocalPlaylist(track);
     }
 
     /**
@@ -424,10 +325,6 @@ public class GlobalApplication extends Application {
 
     public void initPlayer(Activity activity) {
         currentlyPlayingPlayer = new CurrentlyPlaying(activity);
-    }
-
-    public void showNotification() {
-        new Notification().show(this);
     }
 
     public void showCurrentlyPlayingBroadcastedSong(Song song, int progress) {
@@ -447,10 +344,5 @@ public class GlobalApplication extends Application {
 
     public CurrentlyPlaying getCurrentlyPlayingPlayer() {
         return currentlyPlayingPlayer;
-    }
-
-    public void logOut() {
-        spotifyService.logOut();
-        spotifyService = new SpotifyService();
     }
 }

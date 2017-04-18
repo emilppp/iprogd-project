@@ -9,7 +9,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/fallback_album"
-        android:id="@+id/current_cover" />
+        android:id="@+id/current_cover"
+        android:contentDescription="@string/album_cover" />
 
     <LinearLayout
         android:orientation="vertical"

@@ -5,17 +5,13 @@ import android.os.AsyncTask;
 
 import java.util.ArrayList;
 
-/**
- * Created by jonas on 2017-04-13.
- */
+class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
 
-public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
-
-    public static final int AMOUNT_OF_SONGS_FOR_INITIAL_PLAYLIST = 25;
+    private static final int AMOUNT_OF_SONGS_FOR_INITIAL_PLAYLIST = 25;
 
     private Activity activity;
 
-    public PlaylistGenerator(Activity activity) {
+    PlaylistGenerator(Activity activity) {
         this.activity = activity;
     }
 
@@ -44,7 +40,7 @@ public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
 
             boolean hej = false;
             for(String id : ids) {
-                builder.append(id+",");
+                builder.append(id).append(",");
                 hej = true;
             }
 
@@ -68,7 +64,7 @@ public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
                         }
                     }
                     if(!dupe) {
-                        builder.append(ids.get(i)+",");
+                        builder.append(ids.get(i)).append(",");
                         hej = true;
                     }
                 }
@@ -77,7 +73,7 @@ public class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
             if(hej)
                 builder.deleteCharAt(builder.length()-1);
 
-            System.out.println("Playlist exsists, fetching: " + builder.toString());
+            System.out.println("Playlist exists, fetching: " + builder.toString());
 
             ApiGetSongs api = new ApiGetSongs( builder.toString() );
             for (Content c : api.getSongs())

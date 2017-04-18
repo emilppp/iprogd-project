@@ -2,8 +2,6 @@ package emilp.hallo;
 
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +13,7 @@ import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
 
-public class ApiGetAlbums {
+class ApiGetAlbums {
 
     private ContentList contentList;
     private ArrayList<Content> songs = new ArrayList<>();
@@ -23,21 +21,9 @@ public class ApiGetAlbums {
     private int limit = 3;
 
     /**
-     * Using this constructor, random results will be returned
-     * @param contentList
-     */
-    public ApiGetAlbums(ContentList contentList) {
-        this.contentList = contentList;
-
-        contentList.init(songs);
-        getSongHistory();
-    }
-
-    /**
      * Using this constructor, <code>limit</code> random results will be returned
-     * @param contentList
      */
-    public ApiGetAlbums(ContentList contentList, int limit) {
+    ApiGetAlbums(ContentList contentList, int limit) {
         this.contentList = contentList;
         this.limit = limit;
 
@@ -47,9 +33,8 @@ public class ApiGetAlbums {
 
     /**
      * Using this constructor, results will be based on the query
-     * @param contentList
      */
-    public ApiGetAlbums(ContentList contentList, String query) {
+    ApiGetAlbums(ContentList contentList, String query) {
         this.contentList = contentList;
         this.query = query;
 
@@ -57,7 +42,7 @@ public class ApiGetAlbums {
         getSongHistory();
     }
 
-    public ApiGetAlbums(ContentList contentList, Artist artist) {
+    ApiGetAlbums(ContentList contentList, Artist artist) {
         this.contentList = contentList;
 
         contentList.init(songs);

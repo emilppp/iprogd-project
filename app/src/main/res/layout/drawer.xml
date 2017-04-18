@@ -29,7 +29,8 @@
         android:adjustViewBounds="true"
         android:cropToPadding="false"
         android:scaleType="fitXY"
-        android:src="@drawable/blank_profile">
+        android:src="@drawable/blank_profile"
+        android:contentDescription="@string/content_desc_profile_image">
     </ImageView>
 
     <TextView

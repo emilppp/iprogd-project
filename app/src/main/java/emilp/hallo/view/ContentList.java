@@ -1,12 +1,9 @@
 package emilp.hallo.view;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,14 +12,9 @@ import emilp.hallo.Content;
 import emilp.hallo.MenuAdapter;
 import emilp.hallo.R;
 
-/**
- * Created by jonas on 2017-04-04.
- */
-
 public class ContentList {
 
     private RecyclerView recyclerView;
-    private Activity activity;
     private MenuAdapter adapter;
     private View view;
     private int layout;
@@ -50,7 +42,6 @@ public class ContentList {
     }
 
     private void constructorHelp(Activity activity, int container, final int direction) {
-        this.activity = activity;
         spinner = R.id.progress_bar;
         this.view = activity.findViewById(container);
         recyclerView = (RecyclerView) view.findViewById(R.id.song_history_list);
@@ -65,7 +56,7 @@ public class ContentList {
 
     public void init(ArrayList<Content> data) {
 
-        adapter = new MenuAdapter(activity, layout, data) {
+        adapter = new MenuAdapter(layout, data) {
             @Override
             public void onClickListener(View view, Content content) {
                 super.onClickListener(view, content);
@@ -104,9 +95,4 @@ public class ContentList {
     public View getSpinner(){
         return view.findViewById(spinner);
     }
-
-    public void setSpinner(int spinner){
-        this.spinner = spinner;
-    }
-
 }

@@ -1,10 +1,10 @@
 package emilp.hallo;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.solver.Goal;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,20 +15,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import org.json.JSONObject;
-
-import java.net.URL;
-import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
 
-/**
- * Created by kenneth on 4/5/17.
- */
-
 public class ArtistPage extends AppCompatActivity {
 
-    String testId = "0OdUWJ0sBjDrqHygGUXeCF";
     Artist currentArtist;
 
     @Override
@@ -47,14 +38,13 @@ public class ArtistPage extends AppCompatActivity {
         {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            if(myToolbar != null)
+                myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     finish();
                 }
             });
-            //getSupportActionBar().setDisplayShowTitleEnabled(true);
-            //getSupportActionBar().setLogo(R.drawable.icon_naked2);
         }
         ContentList c = new ContentList(this, R.id.popular_songs, LinearLayoutManager.VERTICAL){
             @Override
@@ -63,6 +53,17 @@ public class ArtistPage extends AppCompatActivity {
                 global.getSpotifyService().playSong(global, (Song) content);
             }
         };
+
+        TextView tvArtistName = (TextView) findViewById(R.id.artist_name);
+        ImageView ivArtistBanner = (ImageView) findViewById(R.id.artist_banner);
+
+        if(tvArtistName != null)
+            tvArtistName.setText(currentArtist.getName());
+        if(currentArtist.getImage() != null && ivArtistBanner != null)
+            ivArtistBanner.setImageBitmap(currentArtist.getImage());
+        else if(ivArtistBanner != null)
+            ivArtistBanner.setImageResource(currentArtist.fallbackImage());
+
         new ApiGetSongs(c, currentArtist);
         c.setTitle(R.string.popular_songs);
 
@@ -81,28 +82,12 @@ public class ArtistPage extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-        URL url =  NetworkUtils.buildUrlArtist(testId);
-        new SpotifyQueryTask(this){
-            @Override
-            protected void onPostExecute(JSONObject githubSearchResults) {
-                TextView tvArtistName = (TextView) findViewById(R.id.artist_name);
-                ImageView ivArtistBanner = (ImageView) findViewById(R.id.artist_banner);
-
-                tvArtistName.setText(currentArtist.getName());
-                if(currentArtist.getImage() != null)
-                    ivArtistBanner.setImageBitmap(currentArtist.getImage());
-                else
-                    ivArtistBanner.setImageResource(currentArtist.fallbackImage());
-            }
-        }.execute(url);
+        searchView.setIconifiedByDefault(false);
         return true;
     }
 }

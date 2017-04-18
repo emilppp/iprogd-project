@@ -16,10 +16,6 @@ import android.widget.SearchView;
 import emilp.hallo.view.ContentList;
 import emilp.hallo.view.MoreOptions;
 
-/**
- * Created by jonas on 2017-04-04.
- */
-
 public class PlayList extends AppCompatActivity {
 
     @Override
@@ -36,12 +32,14 @@ public class PlayList extends AppCompatActivity {
         {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                }
-            });
+            if (myToolbar != null) {
+                myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                    }
+                });
+            }
         }
 
         ContentList contentList = new ContentList(this, R.id.playlist, LinearLayoutManager.VERTICAL) {

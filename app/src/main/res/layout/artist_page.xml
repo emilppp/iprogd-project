@@ -34,10 +34,10 @@
                 android:layout_gravity="start"/>
 
             <include layout="@layout/list_horizontal"
-                android:id="@+id/popular_songs"></include>
+                android:id="@+id/popular_songs"/>
 
             <include layout="@layout/list_horizontal"
-                android:id="@+id/album_list"></include>
+                android:id="@+id/album_list"/>
 
         </LinearLayout>
     </ScrollView>

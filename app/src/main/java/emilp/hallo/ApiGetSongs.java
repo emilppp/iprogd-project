@@ -2,8 +2,6 @@ package emilp.hallo;
 
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +13,7 @@ import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
 
-public class ApiGetSongs {
+class ApiGetSongs {
 
     private ContentList contentList;
     private ArrayList<Content> songs = new ArrayList<>();
@@ -23,22 +21,10 @@ public class ApiGetSongs {
     private int limit = 3;
 
     /**
-     * This constructor will generate 3 random results
-     * @param contentList
-     */
-    public ApiGetSongs(ContentList contentList) {
-        this.contentList = contentList;
-
-        contentList.init(songs);
-        getSongHistory();
-    }
-
-    /**
      * This constructor will generate <code>limit</code> random results
-     * @param contentList
-     * @param limit
+     * @param limit The amount of results returned
      */
-    public ApiGetSongs(ContentList contentList, int limit) {
+    ApiGetSongs(ContentList contentList, int limit) {
         this.contentList = contentList;
         this.limit = limit;
 
@@ -50,9 +36,9 @@ public class ApiGetSongs {
      * WARNING! This will not be thread-safe and will halt execution.
      * This constructor will generate <code>limit</code> random results.
      * The results can then be fetched with the <code>getSongs()</code> method.
-     * @param limit
+     * @param limit The amount of results returned
      */
-    public ApiGetSongs(int limit) {
+    ApiGetSongs(int limit) {
         this.limit = limit;
         getSongHistoryUnsafe();
     }
@@ -64,16 +50,14 @@ public class ApiGetSongs {
      * @param ids
      *      Should be of the form "id1,id2,...,idn". All ids must be separated by a comma.
      */
-    public ApiGetSongs(String ids) {
-        this.limit = limit;
+    ApiGetSongs(String ids) {
         getSongHistoryIdsUnsafe(ids);
     }
 
     /**
      * Using this constructor, results will be based on the query
-     * @param contentList
      */
-    public ApiGetSongs(ContentList contentList, String query) {
+    ApiGetSongs(ContentList contentList, String query) {
         this.contentList = contentList;
         this.query = query;
 
@@ -81,7 +65,7 @@ public class ApiGetSongs {
         getSongHistory();
     }
 
-    public ApiGetSongs(ContentList contentList, Album album) {
+    ApiGetSongs(ContentList contentList, Album album) {
         this.contentList = contentList;
 
         contentList.init(songs);
@@ -90,10 +74,8 @@ public class ApiGetSongs {
 
     /**
      * Get's the most popular songs from the supplied artist
-     * @param contentList
-     * @param artist
      */
-    public ApiGetSongs(ContentList contentList, Artist artist) {
+    ApiGetSongs(ContentList contentList, Artist artist) {
         this.contentList = contentList;
 
         contentList.init(songs);
@@ -108,7 +90,7 @@ public class ApiGetSongs {
                 URL searchUrl = urls[0];
                 try {
                     JSONObject res = NetworkUtils.getResponseFromHttpUrl(searchUrl);
-                    parseAristsTracksJSON(res, artist);
+                    parseArtistsTracksJSON(res);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -135,16 +117,11 @@ public class ApiGetSongs {
             @Override
             protected void onPostExecute(Void aVoid) {
                 contentList.notifyDataSetChanged();
-                ApiGetSongs.this.onPostExcecute();
             }
         }.execute(url);
     }
 
-    protected void onPostExcecute() {
-
-    }
-
-    protected void addSongToResult(Song song) {
+    private void addSongToResult(Song song) {
         songs.add(song);
     }
 
@@ -194,7 +171,7 @@ public class ApiGetSongs {
         }.execute(url);
     }
 
-    private void parseAristsTracksJSON(JSONObject obj, Artist artist) {
+    private void parseArtistsTracksJSON(JSONObject obj) {
         try {
             JSONArray arr = obj.getJSONArray("tracks");
             for(int i=0; i<arr.length(); i++) {
@@ -297,16 +274,16 @@ public class ApiGetSongs {
         return new Album(aName, aId, aUrl);
     }
 
-    public ArrayList<Content> getSongs() {
+    ArrayList<Content> getSongs() {
         return songs;
     }
 
-    public void addSongs(int amount){
+    void addSongs(int amount){
         this.limit = amount;
         getSongHistory();
     }
 
-    public int getSize(){
+    int getSize(){
         return songs.size();
     }
 }

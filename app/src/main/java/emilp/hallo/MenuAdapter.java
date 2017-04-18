@@ -1,7 +1,6 @@
 package emilp.hallo;
 
 import emilp.hallo.MenuAdapter.ViewHolder;
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +13,10 @@ import java.util.ArrayList;
 
 public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private Activity activity;
     private int layout;
     private ArrayList<Content> data;
 
-    public MenuAdapter(Activity activity, int layout, ArrayList<Content> data) {
-        this.activity = activity;
+    protected MenuAdapter(int layout, ArrayList<Content> data) {
         this.layout = layout;
         this.data = data;
     }
@@ -76,31 +73,31 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout item;
-        public ViewHolder(LinearLayout v) {
+        LinearLayout item;
+        ViewHolder(LinearLayout v) {
             super(v);
             item = v;
         }
 
-        public boolean hasSecondClick() {
+        boolean hasSecondClick() {
             return item.findViewById(R.id.item_more_options) != null;
         }
 
-        public View getSecondClick() {
+        View getSecondClick() {
             return item.findViewById(R.id.item_more_options);
         }
 
-        public View getMainClick() {
+        View getMainClick() {
             return item.findViewById(R.id.main_click);
         }
 
-        public TextView getArtistTextView() {
+        TextView getArtistTextView() {
             return (TextView) item.findViewById(R.id.history_item_artist);
         }
-        public TextView getTitleTextView() {
+        TextView getTitleTextView() {
             return (TextView) item.findViewById(R.id.history_item_title);
         }
-        public ImageView getCoverImageView() {
+        ImageView getCoverImageView() {
             return (ImageView) item.findViewById(R.id.history_item_cover);
         }
     }

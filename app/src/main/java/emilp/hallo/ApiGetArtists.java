@@ -2,8 +2,6 @@ package emilp.hallo;
 
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +13,7 @@ import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
 
-public class ApiGetArtists {
+class ApiGetArtists {
 
     private ContentList contentList;
     private ArrayList<Content> songs = new ArrayList<>();
@@ -23,9 +21,8 @@ public class ApiGetArtists {
 
     /**
      * Using this constructor, random results will be returned
-     * @param contentList
      */
-    public ApiGetArtists(ContentList contentList) {
+    ApiGetArtists(ContentList contentList) {
         this.contentList = contentList;
 
         contentList.init(songs);
@@ -34,9 +31,8 @@ public class ApiGetArtists {
 
     /**
      * Using this constructor, results will be based on the query
-     * @param contentList
      */
-    public ApiGetArtists(ContentList contentList, String query) {
+    ApiGetArtists(ContentList contentList, String query) {
         this.contentList = contentList;
         this.query = query;
 
@@ -73,7 +69,6 @@ public class ApiGetArtists {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                //contentList.notifyDataSetChanged();
                 contentList.getSpinner().setVisibility(View.GONE);
             }
         }.execute(url);

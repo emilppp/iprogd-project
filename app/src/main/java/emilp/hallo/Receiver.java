@@ -10,7 +10,7 @@ public class Receiver extends BroadcastReceiver {
     private AsyncTask<Void, Song, Song> bgTask;
     private static Song curSong;
 
-    static final class BroadcastTypes {
+    private static final class BroadcastTypes {
         static final String SPOTIFY_PACKAGE = "com.spotify.music";
         static final String PLAYBACK_STATE_CHANGED = SPOTIFY_PACKAGE + ".playbackstatechanged";
         static final String METADATA_CHANGED = SPOTIFY_PACKAGE + ".metadatachanged";
@@ -23,7 +23,6 @@ public class Receiver extends BroadcastReceiver {
 
         if(global.getCurrentlyPlayingPlayer() == null) return;
 
-        //long timeSentInMs = intent.getLongExtra("timeSent", 0L);
         String action = intent.getAction();
 
         System.out.println("Received broadcast message.");
@@ -31,11 +30,6 @@ public class Receiver extends BroadcastReceiver {
         boolean playing = intent.getBooleanExtra("playing", false);
         final String trackId = intent.getStringExtra("id").substring(14);
         final int positionInMs = intent.getIntExtra("playbackPosition", 0);
-
-        //String artistName = intent.getStringExtra("artist");
-        //String albumName = intent.getStringExtra("album");
-        //String trackName = intent.getStringExtra("track");
-        //int trackLengthInSec = intent.getIntExtra("length", 0);
 
         if (action.equals(BroadcastTypes.METADATA_CHANGED)) {
 

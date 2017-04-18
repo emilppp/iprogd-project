@@ -2,33 +2,12 @@ package emilp.hallo;
 
 import android.graphics.Bitmap;
 
-/**
- * Created by emil on 2017-03-28.
- */
-
 public class Artist implements Content {
 
     private String name;
-    private String[] genres;
     private String imageUrl;
     private Bitmap image;
     private String spotifyID;
-    private int popularity;
-
-    public Artist(String name, String[] genres, String spotifyID, int popularity) {
-        this.name = name;
-        this.genres = genres;
-        this.spotifyID = spotifyID;
-        this.popularity = popularity;
-    }
-
-    public Artist(String name, String[] genres, String spotifyID, int popularity, String imageUrl) {
-        this.name = name;
-        this.genres = genres;
-        this.spotifyID = spotifyID;
-        this.popularity = popularity;
-        this.imageUrl = imageUrl;
-    }
 
     public Artist(String name, String id, String url) {
         this.name = name;
@@ -49,19 +28,7 @@ public class Artist implements Content {
         this.name = name;
     }
 
-    public void setGenres(String[] genres) {
-        this.genres = genres;
-    }
-
-    public String[] getGenres() {
-        return this.genres;
-    }
-
-    public void setSpotifyID(String id) {
-        spotifyID = id;
-    }
-
-    public String getSpotifyID() {
+    String getSpotifyID() {
         return spotifyID;
     }
 

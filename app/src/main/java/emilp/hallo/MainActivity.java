@@ -1,6 +1,5 @@
 package emilp.hallo;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -31,23 +30,17 @@ import emilp.hallo.view.CurrentlyPlaying;
 import emilp.hallo.view.Loader;
 import emilp.hallo.view.MoreOptions;
 
-
 public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle mDrawerToggle;
 
-    private Activity activity;
     ApiGetSongs songRec;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        activity = this;
 
         final GlobalApplication global = (GlobalApplication) getApplication();
-
-        System.out.println("Playlist ID: " + global.getPlaylistID());
-
 
         // initActionbar();
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -75,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
             mDrawerToggle.setDrawerIndicatorEnabled(true);
-            drawerLayout.addDrawerListener(mDrawerToggle);
+            if(drawerLayout != null)
+                drawerLayout.addDrawerListener(mDrawerToggle);
             setDrawerInfo();
             mDrawerToggle.syncState();
         }
@@ -85,72 +79,73 @@ public class MainActivity extends AppCompatActivity {
         loadRecommended();
 
         Button btnSignOut = (Button) findViewById(R.id.btn_sign_out);
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (btnSignOut != null) {
+            btnSignOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                // It does not appear as if it's possible to sign out unless using the
-                // webservice to sign in, which we are not using.
-                // So this will do Donkey, this will do.
-                System.exit(0);
+                    // It does not appear as if it's possible to sign out unless using the
+                    // webservice to sign in, which we are not using.
+                    // So this will do Donkey, this will do.
+                    System.exit(0);
 
-                /*global.logOut();
-                Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-                startActivity(intent);
-                MainActivity.this.finish();*/
-            }
-        });
+                    /*global.logOut();
+                    Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                    startActivity(intent);
+                    MainActivity.this.finish();*/
+                }
+            });
+        }
 
         Button btnCreatePlaylist = (Button) findViewById(R.id.btn_create_playlist);
-        if(global.getPlaylistID() != null) {
+        if(global.getPlaylistID() != null && btnCreatePlaylist != null) {
             btnCreatePlaylist.setText(R.string.view_playlist);
         }
-        btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Loader loader = new Loader(MainActivity.this);
-                new PlaylistGenerator(MainActivity.this) {
-                    @Override
-                    protected void onPostExecute(Void aVoid) {
-                        loader.hide();
-                        Intent intent = new Intent(getApplicationContext(), PlayList.class);
-                        startActivity(intent);
-                    }
-                }.execute();
-            }
-        });
+        if (btnCreatePlaylist != null) {
+            btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Loader loader = new Loader(MainActivity.this);
+                    new PlaylistGenerator(MainActivity.this) {
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            loader.hide();
+                            Intent intent = new Intent(getApplicationContext(), PlayList.class);
+                            startActivity(intent);
+                        }
+                    }.execute();
+                }
+            });
+        }
 
         new CurrentlyPlaying(this);
 
         final ScrollView scrollView = (ScrollView) findViewById(R.id.main_scroll);
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-
-            @Override
-            public void onScrollChanged() {
-                if (scrollView != null) {
+        if (scrollView != null) {
+            scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                @Override
+                public void onScrollChanged() {
                     if (scrollView.getChildAt(0).getBottom() <= (scrollView.getHeight() + scrollView.getScrollY())) {
                         if(songRec.getSize() < 50) {
                             songRec.addSongs(5);
-                        } else {
-                            //TODO: update list button or something
                         }
-                    } else {
-                        //scroll view is not at bottom
                     }
                 }
-            }
-        });
+            });
+        }
 
         final SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
-            @Override
-            public void onRefresh(){
-                  srl.setRefreshing(true);
-                  loadRecommended();
-                  srl.setRefreshing(false);
-            }
-        });
+        if (srl != null) {
+            srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+                @Override
+                public void onRefresh(){
+                      srl.setRefreshing(true);
+                      loadRecommended();
+                      srl.setRefreshing(false);
+                }
+            });
+        }
         global.initPlayer(this);
     }
 
@@ -253,17 +248,17 @@ public class MainActivity extends AppCompatActivity {
         TextView mDrawerUserName = (TextView) findViewById(R.id.user_name);
         TextView mDrawerRealName = (TextView) findViewById(R.id.real_name);
         ImageView mDrawerProfilePic = (ImageView) findViewById(R.id.profile_pic);
-        if(userName != null) {
+        if(userName != null && mDrawerUserName != null) {
             mDrawerUserName.setText(userName);
-        } else {
+        } else if(mDrawerUserName != null) {
             mDrawerUserName.setVisibility(View.GONE);
         }
-        if(realName != null) {
+        if(realName != null && mDrawerRealName != null) {
             mDrawerRealName.setText(realName);
-        } else {
+        } else if(mDrawerRealName != null) {
             mDrawerRealName.setVisibility(View.GONE);
         }
-        if(pic != null) {
+        if(pic != null && mDrawerProfilePic != null) {
             mDrawerProfilePic.setImageBitmap(pic);
         }
     }
@@ -285,8 +280,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Might be unnecessary but we had to override this and the function above to use androids search service
-     * @param item
-     * @return
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -299,10 +292,8 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_search) {
             return true;
         }
-        if(id == R.id.logo) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+        return id == R.id.logo || super.onOptionsItemSelected(item);
+
     }
 }

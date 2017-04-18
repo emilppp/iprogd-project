@@ -1,10 +1,7 @@
 package emilp.hallo;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,19 +12,16 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import emilp.hallo.view.ContentList;
-import emilp.hallo.view.Loader;
 
-public class ApiSongHistory {
+class ApiSongHistory {
 
     private ContentList contentList;
     private GlobalApplication global;
     private ArrayList<Content> songs = new ArrayList<>();
-    private Loader spinner;
 
-    public ApiSongHistory(ContentList contentList, GlobalApplication global) {
+    ApiSongHistory(ContentList contentList, GlobalApplication global) {
         this.contentList = contentList;
         this.global = global;
-        //this.spinner = new Loader(new Activity());
 
         contentList.init(songs);
         getSongHistory();
@@ -35,8 +29,6 @@ public class ApiSongHistory {
 
     private void addSongToResult(Song song) {
         songs.add(song);
-        // Has to be done on main thread, lol
-        //contentList.notifyDataSetChanged();
     }
 
     private void getSongHistory() {
@@ -50,9 +42,8 @@ public class ApiSongHistory {
             @Override
             protected Void doInBackground(URL... params) {
                 URL searchUrl = params[0];
-                JSONObject res = null;
                 try {
-                    res = NetworkUtils.getResponseFromHttpUrl(searchUrl, token);
+                    JSONObject res = NetworkUtils.getResponseFromHttpUrl(searchUrl, token);
                     if(res != null) {
                         String tracks = parseHistoryJSON(res);
                         res = NetworkUtils.getTracks(tracks);
@@ -113,9 +104,7 @@ public class ApiSongHistory {
             JSONArray arr = res.getJSONArray("items");
             for(int i=0; i<arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i).getJSONObject("track");
-                String name = obj.getString("name");
                 String id = obj.getString("id");
-                long duration = obj.getLong("duration_ms");
 
                 if(i < arr.length()-1)
                     songUrl += id + ",";

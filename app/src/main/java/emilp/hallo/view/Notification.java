@@ -9,21 +9,10 @@ import emilp.hallo.R;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
-/**
- * Created by jonas on 2017-04-16.
- */
-
 public class Notification {
-
-    public Notification() {
-
-    }
-
+    
     public void show(Context context) {
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification);
- //       contentView.setImageViewResource(R.id.image, R.mipmap.ic_launcher);
- //       contentView.setTextViewText(R.id.title, "Custom notification");
-//        contentView.setTextViewText(R.id.text, "This is a custom layout");
 
         NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.icon_naked)

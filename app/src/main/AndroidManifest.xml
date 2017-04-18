@@ -14,13 +14,11 @@
             android:name=".Receiver"
             android:enabled="true"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="com.spotify.music.playbackstatechanged"/>
                 <action android:name="com.spotify.music.metadatachanged"/>
                 <action android:name="com.spotify.music.queuechanged"/>
             </intent-filter>
-
         </receiver>
 
         <activity
@@ -29,7 +27,6 @@
             android:theme="@style/WelcomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -56,15 +53,12 @@
         <activity
             android:name=".ArtistPage"
             android:theme="@style/AppTheme">
-
         </activity>
 
         <activity
             android:name=".AlbumPage"
             android:theme="@style/AppTheme">
-
         </activity>
-
 
         <activity
             android:name=".PlayList"
@@ -75,13 +69,8 @@
                 android:value=".SearchResultsActivity" />
         </activity>
 
-        <!-- Needed for LoginActivity to work -->
         <activity
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-
-
     </application>
-
 </manifest>

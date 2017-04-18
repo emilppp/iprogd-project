@@ -6,12 +6,8 @@ import android.view.Window;
 
 import emilp.hallo.R;
 
-/**
- * Created by jonas on 2017-04-13.
- */
-
 public class Loader {
-    final Dialog dialog;
+    private final Dialog dialog;
 
     public Loader(Activity activity) {
         dialog = new Dialog(activity);

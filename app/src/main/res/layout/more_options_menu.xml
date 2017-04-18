@@ -16,7 +16,8 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:id="@+id/cover"
-            android:src="@drawable/fallback_album" />
+            android:src="@drawable/fallback_album"
+            android:contentDescription="@string/album_cover" />
 
         <TextView
             android:layout_width="wrap_content"

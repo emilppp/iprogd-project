@@ -7,39 +7,15 @@ import java.util.ArrayList;
 
 public class Song implements Content {
     private String title;
-    private Artist artist;
     private Album album;
     private ArrayList<Artist> artists = new ArrayList<>();
-    private int duration;
     private long duration_ms;
     private String id;
-
-    public Song(String title, Album album, Artist artist, Artist[] artists, int duration) {
-        this.title = title;
-        this.artist = artist;
-        this.artists.add(artist);
-        this.duration = duration;
-        this.album = album;
-    }
-
-    public Song(String title, String id, int duration) {
-        this.title = title;
-        this.id = id;
-        this.duration = duration;
-    }
 
     public Song(String title, String id, long duration_ms) {
         this.title = title;
         this.id = id;
         this.duration_ms = duration_ms;
-    }
-
-    public Artist getArtist() {
-        return artist;
-    }
-
-    public void setArtist(Artist art) {
-        artist = art;
     }
 
     @Override
@@ -68,29 +44,21 @@ public class Song implements Content {
             getAlbum().downloadImage();
     }
 
-    public void setTitle(String tit) {
-        title = tit;
-    }
-
     public ArrayList<Artist> getArtists() {
         return artists;
     }
 
-    public void addArtist(Artist artists) {
+    void addArtist(Artist artists) {
         this.artists.add(artists);
     }
 
-    public void setDuration(int d) {
-        duration = d;
-    }
-
-    public int getDuration() {
+    private int getDuration() {
         return (int) (duration_ms / 1000);
     }
 
     public long getDurationMs() { return duration_ms; }
 
-    public String getDurationString() {
+    private String getDurationString() {
         int h = 0, m = 0, s = getDuration();
         while(s > 59) {
             m++;
@@ -118,15 +86,15 @@ public class Song implements Content {
         return res;
     }
 
-    public void setAlbum(Album alb) {
+    void setAlbum(Album alb) {
         album = alb;
     }
 
-    public Album getAlbum() {
+    private Album getAlbum() {
         return album;
     }
 
-    public String getInformation() {
+    private String getInformation() {
         return getArtistsName() + " - " + getAlbum().getName() + " " + Html.fromHtml("&#8226;").toString() + " " + getDurationString();
     }
 
