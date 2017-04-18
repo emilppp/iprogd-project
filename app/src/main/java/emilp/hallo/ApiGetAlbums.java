@@ -105,8 +105,7 @@ public class ApiGetAlbums {
         new AsyncTask<URL, Void, Void>(){
             @Override
             protected void onPreExecute(){
-                LinearLayout spinner = contentList.getSpinner();
-                spinner.setVisibility(View.VISIBLE);
+                contentList.getSpinner().setVisibility(View.VISIBLE);
             }
             @Override
             protected Void doInBackground(URL... params) {
@@ -123,8 +122,7 @@ public class ApiGetAlbums {
             @Override
             protected void onPostExecute(Void aVoid) {
                 contentList.notifyDataSetChanged();
-                LinearLayout spinner = contentList.getSpinner();
-                spinner.setVisibility(View.GONE);
+                contentList.getSpinner().setVisibility(View.GONE);
             }
         }.execute(url);
     }

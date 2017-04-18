@@ -12,19 +12,14 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         style="@style/text_big"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+    <ProgressBar
         android:id="@+id/progress_bar"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@android:style/Widget.ProgressBar" />
-
-    </LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        style="@android:style/Widget.ProgressBar" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
