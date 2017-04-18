@@ -60,7 +60,7 @@ public class MoreOptions {
         queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                global.getSpotifyService().queueSong("spotify:track:"+((Song) content).getId());
+                global.getSpotifyService().queueSong("spotify:track:"+((Song) content).getId(), activity);
                 Toast.makeText(activity, "Queued song " + content.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });

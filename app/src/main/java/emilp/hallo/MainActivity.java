@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         activity = this;
 
         final GlobalApplication global = (GlobalApplication) getApplication();
-        global.fetchClientID();
 
         System.out.println("Playlist ID: " + global.getPlaylistID());
 
@@ -110,10 +109,7 @@ public class MainActivity extends AppCompatActivity {
         btnCreatePlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Show loading here.
-
                 final Loader loader = new Loader(MainActivity.this);
-
                 new PlaylistGenerator(MainActivity.this) {
                     @Override
                     protected void onPostExecute(Void aVoid) {
@@ -138,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
                             songRec.addSongs(5);
                         } else {
                             //TODO: update list button or something
-
                         }
                     } else {
                         //scroll view is not at bottom

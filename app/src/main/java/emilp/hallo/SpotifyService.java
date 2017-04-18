@@ -1,7 +1,9 @@
 package emilp.hallo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -135,10 +137,9 @@ public class SpotifyService extends Activity implements
         mPlayer.playUri(mOperationCallback, spotifyUri, 0, 0);
     }
 
-    public void queueSong(String spotifyUri) {
+    public void queueSong(String spotifyUri, Context context) {
         mPlayer.queue(mOperationCallback, spotifyUri);
-        Toast toast = Toast.makeText(this, "Queued track", Toast.LENGTH_SHORT);
-        toast.show();
+        Toast.makeText(context, "Queued track", Toast.LENGTH_SHORT).show();
     }
 
     public void pauseSong() {
@@ -179,7 +180,7 @@ public class SpotifyService extends Activity implements
     @Override
     public void onLoggedIn() {
 
-   }
+    }
 
     @Override
     public void onLoggedOut() {
@@ -204,23 +205,24 @@ public class SpotifyService extends Activity implements
 
     /**
      * Gets the users client id (spotify id)
+     * WARNING: This will halt execution
      * @param global
      */
     public void getClientId(final GlobalApplication global) {
 
         URL url = NetworkUtils.buildUrlGetSpotifyProfile();
-        new SpotifyQueryTask(this, getAccessToken()) {
-            @Override
-            protected void onPostExecute(JSONObject res) {
-                if(res != null) {
-                    parseProfileJSON(res, global);
+        try {
+            JSONObject res = NetworkUtils.getResponseFromHttpUrl(url, getAccessToken());
+            parseProfileJSON(res, global);
 
-                    System.out.println(global.getClientID());
-                    System.out.println(global.getDisplayName());
-                    global.downloadImage();
-                }
-            }
-        }.execute(url);
+            System.out.println(global.getClientID());
+            System.out.println(global.getDisplayName());
+
+            global.downloadImage();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -233,7 +235,8 @@ public class SpotifyService extends Activity implements
         try {
             global.setClientID(res.getString("id"));
             global.setDisplayName(res.getString("display_name"));
-            global.setImageUrl(res.getJSONObject("images").getString("url"));
+                if(res.getJSONArray("images").length() > 0)
+                global.setImageUrl(res.getJSONArray("images").getJSONObject(0).getString("url"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

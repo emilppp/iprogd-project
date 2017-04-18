@@ -3,6 +3,7 @@ package emilp.hallo;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -68,7 +69,20 @@ public class WelcomeActivity extends Activity implements ConnectionStateCallback
 
     @Override
     public void onLoggedIn() {
-        startMainActivityAndReturn();
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                ((GlobalApplication) getApplication()).fetchClientID();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                startMainActivityAndReturn();
+            }
+        }.execute();
     }
 
     @Override
