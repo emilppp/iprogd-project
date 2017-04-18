@@ -20,13 +20,17 @@
 
     <ImageView
         android:id="@+id/profile_pic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_height="150dp"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
         android:scaleType="fitXY"
-        android:src="@drawable/blank_profile"/>
+        android:src="@drawable/blank_profile">
+    </ImageView>
 
     <TextView
         android:id="@+id/user_name"
@@ -36,7 +40,7 @@
         android:text="@string/user_name_placeholder"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/profile_pic"
-        android:textStyle="bold"
+        style="@style/text_big"
         android:layout_marginStart="@dimen/activity_vertical_margin"
         />
 
@@ -48,7 +52,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/real_name_placeholder"
         android:layout_below="@+id/user_name"
-        android:textStyle="bold"
+        style="@style/text"
         />
 
 

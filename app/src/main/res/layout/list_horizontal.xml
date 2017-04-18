@@ -13,11 +13,12 @@
         style="@style/text_big"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:orientation="vertical"
         android:id="@+id/progress_bar"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin">
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
 
         <ProgressBar
             android:layout_width="match_parent"

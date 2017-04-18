@@ -101,8 +101,8 @@ public class ContentList {
         textView.setVisibility(View.GONE);
     }
 
-    public LinearLayout getSpinner(){
-        return (LinearLayout) view.findViewById(spinner);
+    public View getSpinner(){
+        return view.findViewById(spinner);
     }
 
     public void setSpinner(int spinner){
