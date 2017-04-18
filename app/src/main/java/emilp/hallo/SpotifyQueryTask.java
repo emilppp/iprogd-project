@@ -38,7 +38,7 @@ public class SpotifyQueryTask extends AsyncTask<URL, Void, JSONObject> {
     }
 
 
-    // superful lösning med POST ist för GET
+
     @Override
     protected JSONObject doInBackground(URL... params) {
         URL searchUrl = params[0];

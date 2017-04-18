@@ -56,6 +56,10 @@ public class NetworkUtils {
     final static String PARAM_QUERY = "q";
     final static String PARAM_TYPE = "type";
 
+    /**
+     * @param id
+     * @return builds a URL to fetch artsits popular tracks
+     */
     public static URL buildAristsPopularTracksURL(String id) {
         URL url = null;
         try {
@@ -65,7 +69,10 @@ public class NetworkUtils {
         }
         return url;
     }
-
+    /**
+     * @param id
+     * @return builds a URL to fetch an artists albums
+     */
     public static URL buildArtistAlbumsURL(String id) {
         URL url = null;
         try {
@@ -75,7 +82,10 @@ public class NetworkUtils {
         }
         return url;
     }
-
+    /**
+     * @param album
+     * @return builds a URL to fetch an albums tracks
+     */
     public static URL buildAlbumTracksURL(String album) {
         URL url = null;
         try {
@@ -86,6 +96,12 @@ public class NetworkUtils {
         return url;
     }
 
+    /**
+     *
+     * @param type
+     * @param limit
+     * @return builds a URL which is randomly generated to provide a base playlist
+     */
     public static URL buildRandom(String type, int limit) {
         String[] randomArray = new String[]{"%25a%25", "a%25", "%25e%25", "e%25", "%25i%25", "i%25", "%25o%25", "o%25"};
 
@@ -107,6 +123,10 @@ public class NetworkUtils {
         return url;
     }
 
+    /**
+     * @param tracks
+     * @return builds a URL to fetch tracks
+     */
     public static JSONObject getTracks(String tracks) {
         try {
             URL url = new URL(SPOTIFY_TRACKS_URL + tracks);
@@ -118,7 +138,11 @@ public class NetworkUtils {
         }
         return null;
     }
-
+    /**
+     * @param spotifySearchQuery
+     * @param type
+     * @return builds a URL which is used when searching
+     */
     public static URL buildUrlSearch(String spotifySearchQuery, String type) {
         Uri builtUri = Uri.parse(SPOTIFY_BASE_URL).buildUpon()
                 .appendQueryParameter(PARAM_QUERY, spotifySearchQuery)
@@ -133,7 +157,10 @@ public class NetworkUtils {
 
         return url;
     }
-
+    /**
+     *
+     * @return builds a URL to fetch the users recently played tracks
+     */
     public static URL buildUrlHistory() {
         try {
             return new URL(SPOTIFY_HISTORY_URL);
@@ -143,6 +170,10 @@ public class NetworkUtils {
         return null;
     }
 
+    /**
+     * @param userid
+     * @return builds a URL to create a new playlist on the users spotify account
+     */
     public static URL buildUrlCreatePlaylist(String userid) {
         if(userid != null && userid != "") {
             Uri builtUri = Uri.parse(SPOTIFY_CREATE_PLAYLIST_URL).buildUpon().appendPath(userid).appendPath("playlists").build();
@@ -156,6 +187,12 @@ public class NetworkUtils {
         return null;
     }
 
+    /**
+     * @param userID
+     * @param playlistID
+     * @param track
+     * @return builds a URL to remove a certain song from the playlist
+     */
     public static URL buildUrlRemoveFromPlaylist(String userID, String playlistID, String track) {
         if(userID != null && userID != "") {
             Uri builtUri = Uri.parse(SPOTIFY_CREATE_PLAYLIST_URL).buildUpon().appendPath(userID).appendPath("playlists").appendPath(playlistID).appendPath("tracks").build();
@@ -169,7 +206,12 @@ public class NetworkUtils {
         return null;
     }
 
-
+    /**
+     * @param userID
+     * @param playlistID
+     * @param tracks
+     * @return builds a URL to add track(s) to the playlist
+     */
     public static URL buildUrlAddTracksToPlaylist(String userID, String playlistID, ArrayList<Song> tracks) {
         if(userID != null && playlistID != null && tracks != null) {
             StringBuilder sb = new StringBuilder();
@@ -189,7 +231,10 @@ public class NetworkUtils {
         }
         return null;
     }
-
+    /**
+     * @param artistId
+     * @return builds a URL to get information about an artist
+     */
     public static URL buildUrlArtist(String artistId) {
         Uri builtUri = Uri.parse(SPOTIFY_ARTIST_URL).buildUpon().appendPath(artistId).build();
         URL url = null;
@@ -202,7 +247,9 @@ public class NetworkUtils {
         return url;
     }
 
-
+    /**
+     * @return builds a URL to get information about the users spotify profile
+     */
     public static URL buildUrlGetSpotifyProfile() {
         try {
             return new URL(SPOTIFY_GET_USER_URL);
@@ -217,7 +264,14 @@ public class NetworkUtils {
         return getResponseFromHttpUrl(url, null);
     }
 
-
+    /**
+     *
+     * @param url
+     * @param token
+     * @param tracks
+     * @return a JSONObject containing the result from adding tracks to the playlist
+     * @throws IOException
+     */
     public static JSONObject getResponseFromAddToPlaylist(URL url, String token, ArrayList<Song> tracks) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");
@@ -252,6 +306,14 @@ public class NetworkUtils {
         return null;
     }
 
+    /**
+     *
+     * @param url
+     * @param token
+     * @param track
+     * @return a JSONObject containing the result from deleting a track from the playlist
+     * @throws IOException
+     */
     public static JSONObject getResponseFromDeleteFromPlaylist(URL url, String token, String track) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("DELETE");
@@ -302,7 +364,13 @@ public class NetworkUtils {
         return null;
     }
 
-
+    /**
+     *
+     * @param url
+     * @param token
+     * @return a JSONObject containing information from creating the playlist
+     * @throws IOException
+     */
     public static JSONObject getResponseFromPostHttpUrl(URL url, String token) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");

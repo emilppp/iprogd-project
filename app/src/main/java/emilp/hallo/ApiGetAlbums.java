@@ -64,6 +64,9 @@ public class ApiGetAlbums {
         getAlbumsFromArtist(artist);
     }
 
+    /**
+     * Get albums from a given artist
+     */
     private void getAlbumsFromArtist(final Artist artist) {
         URL url = NetworkUtils.buildArtistAlbumsURL(artist.getSpotifyID());
         new AsyncTask<URL, Void, Void>() {
@@ -90,6 +93,9 @@ public class ApiGetAlbums {
         songs.add(song);
     }
 
+    /**
+     * get the users song history
+     */
     private void getSongHistory() {
         URL url;
         if(query == null)

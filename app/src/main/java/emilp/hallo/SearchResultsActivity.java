@@ -11,6 +11,9 @@ import android.view.View;
 import emilp.hallo.view.ContentList;
 import emilp.hallo.view.MoreOptions;
 
+/**
+ * This activity displays the search results
+ */
 public class SearchResultsActivity extends Activity {
 
     @Override
@@ -42,6 +45,10 @@ public class SearchResultsActivity extends Activity {
         };
     }
 
+    /**
+     * Searches songs based on the given query
+     * @param query
+     */
     private void searchSongs(String query) {
         ContentList contentList = new ContentList(SearchResultsActivity.this, R.id.search_results_songs, LinearLayoutManager.VERTICAL) {
             @Override
@@ -62,12 +69,20 @@ public class SearchResultsActivity extends Activity {
         new ApiGetSongs(contentList, query);
     }
 
+    /**
+     * Searches artists based on the given query
+     * @param query
+     */
     private void searchArtists(String query) {
         ContentList contentList = getContentList(R.id.search_results_artists, LinearLayoutManager.HORIZONTAL, ArtistPage.class);
         contentList.setTitle(R.string.artists);
         new ApiGetArtists(contentList, query);
     }
 
+    /**
+     * Searches albums based on the given query
+     * @param query
+     */
     private void searchAlbums(String query) {
         ContentList contentList = getContentList(R.id.search_results_albums, LinearLayoutManager.HORIZONTAL, AlbumPage.class);
         contentList.setTitle(R.string.albums);

@@ -159,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
         global.initPlayer(this);
     }
 
+    /**
+     * Loads all the recommended views with data
+     */
     private void loadRecommended() {
         loadRecommendedArtists();
         loadRecommendedAlbums();
@@ -177,6 +180,9 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    /**
+     * Loads recommended songs
+     */
     private void loadRecommendedSongs() {
         final GlobalApplication global = (GlobalApplication) getApplication();
         final ContentList contentList = new ContentList(this, R.id.song_recommendations, LinearLayoutManager.VERTICAL) {
@@ -195,6 +201,9 @@ public class MainActivity extends AppCompatActivity {
         contentList.setTitle(R.string.recommendations_songs);
     }
 
+    /**
+     * Loads recommended artists
+     */
     private void loadRecommendedArtists() {
         ContentList contentList = new ContentList(this, R.id.recommended_artists_list, LinearLayoutManager.VERTICAL, R.layout.list_item_big) {
             @Override
@@ -208,6 +217,9 @@ public class MainActivity extends AppCompatActivity {
         contentList.setTitle(R.string.recommendations_artists);
     }
 
+    /**
+     * Loads recommended albums
+     */
     private void loadRecommendedAlbums() {
         ContentList contentList = new ContentList(this, R.id.album_recommendations, LinearLayoutManager.HORIZONTAL) {
             @Override
@@ -221,6 +233,9 @@ public class MainActivity extends AppCompatActivity {
         new ApiGetAlbums(contentList, 10);
     }
 
+    /**
+     * Loads the last played track from the users spotify account
+     */
     private void loadSongHistory() {
         ContentList contentList = new ContentList(this, R.id.song_history, LinearLayoutManager.HORIZONTAL) {
             @Override
@@ -232,6 +247,10 @@ public class MainActivity extends AppCompatActivity {
         contentList.setTitle(R.string.song_history);
     }
 
+    /**
+     * Set up the drawer which appears when you click the hamburger icon in the top left
+     * It contains information about the currently logged in user.
+     */
     private void setDrawerInfo() {
         String userName = ((GlobalApplication) getApplication()).getDisplayName();
         String realName = ((GlobalApplication) getApplication()).getClientID();
@@ -269,6 +288,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Might be unnecessary but we had to override this and the function above to use androids search service
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

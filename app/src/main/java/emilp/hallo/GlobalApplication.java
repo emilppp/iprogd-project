@@ -92,11 +92,13 @@ public class GlobalApplication extends Application {
         mDbHelper.onUpgrade(db, 0, 0);
     }
 
+    // Add an array of songs to the database
     public void addSongToDatabase(ArrayList<Song> songs) {
         for(Song s : songs)
             addSongToDatabase( s );
     }
 
+    // Add a single song to the database
     public void addSongToDatabase(Song song) {
         if(song != null)
            putData(mDbHelper, song.getId());
@@ -107,10 +109,12 @@ public class GlobalApplication extends Application {
         System.out.println(java.util.Arrays.toString(itemIds.toArray()));
     }
 
+    // Remove a single song from the database
     private void removeSongFromPlaylistDb(String id) {
         removeSongFromPlaylistDb( new String[]{ id } );
     }
 
+    // Remove multiple songs from the database
     public void removeSongFromPlaylistDb(String[] ids) {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
@@ -171,6 +175,7 @@ public class GlobalApplication extends Application {
         return spotifyService;
     }
 
+    // Gets the last played tracks from the users spotify account
     public void getSongHistory(ContentList contentList) {
         new ApiSongHistory(contentList, this);
     }
@@ -195,6 +200,7 @@ public class GlobalApplication extends Application {
         return getArtistFromId(id) != null;
     }
 
+    // Gets the artist object based on the artist ID
     public Artist getArtistFromId(String id) {
         for(Content c : artist) {
             Artist a = (Artist) c;
@@ -238,6 +244,7 @@ public class GlobalApplication extends Application {
         this.currentContent = currentArtist;
     }
 
+    // Gets the current users ID if they're properly logged in
     public void fetchClientID() {
         if(clientID == null && displayName == null) {
             spotifyService.getClientId(this);
@@ -292,10 +299,6 @@ public class GlobalApplication extends Application {
         return songsToBeAdded;
     }
 
-    public void clearSongsToBeAdded() {
-        this.songsToBeAdded.clear();
-    }
-
     public void setSongsToBeAdded(ArrayList<Song> songsToBeAdded) {
         this.songsToBeAdded = songsToBeAdded;
         resetDataBase();
@@ -309,10 +312,16 @@ public class GlobalApplication extends Application {
         return res;
     }
 
+    /**
+     *     Clears the 'local' playlist
+     */
     public void clearPlaylist() {
         songsToBeAdded.clear();
     }
 
+    /**
+     * Reset the playlist locally & in the database
+     */
     public void resetPlaylist() {
         clearPlaylist();
         resetDataBase();
@@ -357,6 +366,10 @@ public class GlobalApplication extends Application {
         spotifyService.postPlaylist(this, songs);
     }
 
+    /**
+     * Looks for a track in the local playlist and tries to remove it.
+     * @param track
+     */
     public void removeFromLocalPlaylist(Song track) {
         for(Iterator<Song> it = songsToBeAdded.iterator(); it.hasNext();) {
             Song c = it.next();
@@ -370,6 +383,11 @@ public class GlobalApplication extends Application {
             System.out.println(i.getId());
     }
 
+    /**
+     * Checks if the given song is in the playlist
+     * @param song
+     * @return
+     */
     public boolean isInPlaylist(Song song) {
         for(int i=0; i<songsToBeAdded.size(); i++) {
             System.out.println("Is " + song.getId() + " == ");
@@ -381,6 +399,10 @@ public class GlobalApplication extends Application {
         return false;
     }
 
+    /**
+     * Removes the song from the playlist
+     * @param track
+     */
     public void removeTrackFromPlaylist(Song track) {
         removeSongFromPlaylistDb(track.getId());
         String removeSong = "spotify:track:" + track.getId();
@@ -388,6 +410,9 @@ public class GlobalApplication extends Application {
         removeFromLocalPlaylist(track);
     }
 
+    /**
+     * @return the currently playing song
+     */
     public Song getCurrentlyPlayingSong() {
         return currentlyPlayingSong;
     }

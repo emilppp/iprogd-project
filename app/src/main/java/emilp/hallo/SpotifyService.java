@@ -63,6 +63,10 @@ public class SpotifyService extends Activity implements
         setContentView(R.layout.activity_main);
     }
 
+    /**
+     * Authorizes the user (logs it in to spotify)
+     * @param activity
+     */
     public void authSpotify(Activity activity) {
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
         builder.setScopes(new String[]{"user-read-private", "streaming", "user-read-recently-played", "playlist-modify-private"});
@@ -172,8 +176,6 @@ public class SpotifyService extends Activity implements
     }
 
 
-
-
     @Override
     public void onLoggedIn() {
 
@@ -200,6 +202,10 @@ public class SpotifyService extends Activity implements
         Log.d("MainActivity", "Received connection message: " + message);
     }
 
+    /**
+     * Gets the users client id (spotify id)
+     * @param global
+     */
     public void getClientId(final GlobalApplication global) {
 
         URL url = NetworkUtils.buildUrlGetSpotifyProfile();
@@ -217,6 +223,11 @@ public class SpotifyService extends Activity implements
         }.execute(url);
     }
 
+    /**
+     * Parses the JSONObject recieved from the profile get request and stores its info
+     * @param res
+     * @param global
+     */
     public static void parseProfileJSON(JSONObject res, GlobalApplication global) {
         // TODO fixa.
         try {
@@ -229,6 +240,11 @@ public class SpotifyService extends Activity implements
 
     }
 
+    /**
+     * Parses the JSONObject recieved from creating the playlist and stores its info
+     * @param res
+     * @param global
+     */
     public static void parsePlaylistJSON(JSONObject res, GlobalApplication global) {
         try {
 
@@ -254,6 +270,9 @@ public class SpotifyService extends Activity implements
     /**
      * WARNING! This function is NOT thread-safe and will halt execution until it completes.
      * @param global
+     *
+     * This build the create playlist URL and make the HTTP request & parses the results via the
+     * parsePlaylistJSON function
      */
     public void createPlaylist(final GlobalApplication global) {
         String userID = global.getClientID();
@@ -271,6 +290,11 @@ public class SpotifyService extends Activity implements
         postPlaylist(global, global.getSongsToBeAdded());
     }
 
+    /**
+     * Updates the playlist in spotify
+     * @param global
+     * @param content
+     */
     public void postPlaylist(final GlobalApplication global, ArrayList<Song> content) {
         String userID = global.getClientID();
         String playlistID = global.getPlaylistID();
@@ -286,6 +310,11 @@ public class SpotifyService extends Activity implements
         }.execute(url);
     }
 
+    /**
+     * Removes a track from the playlist in spotify
+     * @param global
+     * @param track
+     */
     public void removeTrackFromPlaylist(final GlobalApplication global, String track) {
         String userID = global.getClientID();
         String playlistID = global.getPlaylistID();
