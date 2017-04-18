@@ -8,16 +8,4 @@
         android:id="@+id/recommended_artists_list"
         layout="@layout/list_horizontal" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:id="@+id/show_more"
-        android:textColor="@color/colorLogo"
-        android:layout_margin="@dimen/activity_vertical_margin_half"
-        style="@style/text_big"
-        android:text="@string/show_more"
-        android:gravity="end"
-        android:padding="5dp"/>
-
 </LinearLayout>

@@ -187,6 +187,7 @@ class ApiGetSongs {
                 Album album = extractAlbumInformation(obj);
                 addArtists(obj, song);
                 song.setAlbum(album);
+                album.downloadImage();
 
                 addSongToResult(song);
             }
@@ -202,7 +203,11 @@ class ApiGetSongs {
             for(int i=0; i<arr.length(); i++) {
                 obj = arr.getJSONObject(i);
 
-                Song song = extractSongInformation(obj);
+                long duration = (obj.getLong("duration_ms"));
+                String songName = obj.getString("name");
+                String songId = obj.getString("id");
+
+                Song song = new Song(songName, songId, duration, false);
                 addArtists(obj, song);
                 song.setAlbum(album);
 
@@ -244,6 +249,7 @@ class ApiGetSongs {
 
                 song.setAlbum(album);
                 album.downloadImage();
+
                 addSongToResult(song);
             }
 
@@ -263,7 +269,9 @@ class ApiGetSongs {
                 addArtists(obj, song);
 
                 song.setAlbum(album);
+
                 album.downloadImage();
+
                 addSongToResult(song);
             }
 

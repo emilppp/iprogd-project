@@ -17,6 +17,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import emilp.hallo.view.ContentList;
+import emilp.hallo.view.MoreOptions;
 
 public class ArtistPage extends AppCompatActivity {
 
@@ -52,8 +53,12 @@ public class ArtistPage extends AppCompatActivity {
                 super.onItemClick(view, content);
                 global.getSpotifyService().playSong(global, (Song) content);
             }
+            @Override
+            protected void onSecondItemClick(View view, Content content) {
+                Song song = (Song) content;
+                new MoreOptions(ArtistPage.this, song);
+            }
         };
-
         TextView tvArtistName = (TextView) findViewById(R.id.artist_name);
         ImageView ivArtistBanner = (ImageView) findViewById(R.id.artist_banner);
 

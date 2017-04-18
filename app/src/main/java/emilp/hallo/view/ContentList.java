@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import emilp.hallo.Content;
 import emilp.hallo.MenuAdapter;
 import emilp.hallo.R;
 
-public class ContentList {
+public class  ContentList {
 
     private RecyclerView recyclerView;
     private MenuAdapter adapter;
@@ -44,6 +45,7 @@ public class ContentList {
     private void constructorHelp(Activity activity, int container, final int direction) {
         spinner = R.id.progress_bar;
         this.view = activity.findViewById(container);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.song_history_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity, direction, false) {
             @Override

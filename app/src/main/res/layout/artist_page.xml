@@ -23,15 +23,16 @@
 
             <emilp.hallo.view.AspectRatioImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:adjustViewBounds="true"
-                android:cropToPadding="false"
-                android:scaleType="centerCrop"
+                android:cropToPadding="true"
+                android:scaleType="fitCenter"
                 android:id="@+id/artist_banner"
                 android:src="@drawable/fallback_album"
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/artist_banner"
-                android:layout_gravity="start"/>
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/activity_vertical_margin"/>
 
             <include layout="@layout/list_horizontal"
                 android:id="@+id/popular_songs"/>

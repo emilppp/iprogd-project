@@ -31,8 +31,10 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
         final Content content = data.get(position);
 
         if(holder.getArtistTextView() != null) {
-            if(content.getBread() == null) {
+            if(content.getBread() == null && holder.getArtistTextView() != null) {
                 holder.getArtistTextView().setVisibility(View.GONE);
+            } else if(holder.getArtistTextView() == null){
+                //do nothing
             } else {
                 holder.getArtistTextView().setText(content.getBread());
             }
@@ -40,8 +42,11 @@ public class MenuAdapter extends RecyclerView.Adapter<ViewHolder> {
         if(holder.getTitleTextView() != null) {
             holder.getTitleTextView().setText(content.getTitle());
         }
-        if(content.getImage() != null) {
+        if(content.getImage() != null && holder.getCoverImageView() != null) {
             holder.getCoverImageView().setImageBitmap(content.getImage());
+        }
+        else if(holder.getCoverImageView() == null){
+            //do nothing
         }
         else
             holder.getCoverImageView().setImageResource(content.fallbackImage());

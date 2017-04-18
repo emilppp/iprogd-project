@@ -11,11 +11,19 @@ public class Song implements Content {
     private ArrayList<Artist> artists = new ArrayList<>();
     private long duration_ms;
     private String id;
+    boolean hasAlbumInfo = true;
 
     public Song(String title, String id, long duration_ms) {
         this.title = title;
         this.id = id;
         this.duration_ms = duration_ms;
+    }
+
+    public Song(String title, String id, long duration_ms, boolean hasAlbumInfo) {
+        this.title = title;
+        this.id = id;
+        this.duration_ms = duration_ms;
+        this.hasAlbumInfo = hasAlbumInfo;
     }
 
     @Override
@@ -25,7 +33,7 @@ public class Song implements Content {
 
     @Override
     public String getBread() {
-        return getInformation();
+        return getInformation(this.hasAlbumInfo);
     }
 
     @Override
@@ -94,8 +102,12 @@ public class Song implements Content {
         return album;
     }
 
-    private String getInformation() {
-        return getArtistsName() + " - " + getAlbum().getName() + " " + Html.fromHtml("&#8226;").toString() + " " + getDurationString();
+    private String getInformation(boolean hasAlbumInfo) {
+        if(hasAlbumInfo) {
+            return getArtistsName() + " - " + getAlbum().getName() + " " + Html.fromHtml("&#8226;").toString() + " " + getDurationString();
+        } else {
+            return getArtistsName() + " - " + Html.fromHtml("&#8226;").toString() + " " + getDurationString();
+        }
     }
 
     public String getId() {

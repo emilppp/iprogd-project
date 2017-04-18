@@ -16,6 +16,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import emilp.hallo.view.ContentList;
+import emilp.hallo.view.MoreOptions;
 
 public class AlbumPage extends AppCompatActivity {
 
@@ -55,10 +56,15 @@ public class AlbumPage extends AppCompatActivity {
         else if(ivAlbumCover != null)
             ivAlbumCover.setImageResource(currentAlbum.fallbackImage());
 
-        ContentList c = new ContentList(this, R.id.album_songs, LinearLayoutManager.VERTICAL) {
+        ContentList c = new ContentList(this, R.id.album_songs, LinearLayoutManager.VERTICAL, R.layout.album_song_item) {
             @Override
             protected void onItemClick(View view, Content content) {
                 global.getSpotifyService().playSong(global, (Song) content);
+            }
+            @Override
+            protected void onSecondItemClick(View view, Content content) {
+                Song song = (Song) content;
+                new MoreOptions(AlbumPage.this, song);
             }
         };
         c.hideTitle();
