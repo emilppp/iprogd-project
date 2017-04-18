@@ -43,4 +43,6 @@
     <string name="user_name">User name:</string>
     <string name="content_desc_profile_image">Spotify profile image</string>
     <string name="placeholder_notification">TODO: Spotify broadcast notification</string>
+    <string name="remove_from_playlist">Remove from playlist</string>
+    <string name="finalize_playlist">Finalize playlist</string>
 </resources>

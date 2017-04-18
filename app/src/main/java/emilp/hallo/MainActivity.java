@@ -149,6 +149,16 @@ public class MainActivity extends AppCompatActivity {
         global.initPlayer(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Button btnCreatePlaylist = (Button) findViewById(R.id.btn_create_playlist);
+        if(((GlobalApplication) getApplication()).getPlaylistID() != null && btnCreatePlaylist != null)
+            btnCreatePlaylist.setText(R.string.view_playlist);
+        else if(btnCreatePlaylist != null)
+            btnCreatePlaylist.setText(R.string.create_playlist);
+    }
+
     /**
      * Loads all the recommended views with data
      */

@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
@@ -43,7 +44,18 @@ public class PlayList extends AppCompatActivity {
             }
         }
 
-        ContentList contentList = new ContentList(this, R.id.playlist, LinearLayoutManager.VERTICAL) {
+        Button finalizePlaylist = (Button) findViewById(R.id.btn_finalize_playlist);
+        if(finalizePlaylist != null) {
+            finalizePlaylist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    global.resetPlaylist();
+                    PlayList.this.finish();
+                }
+            });
+        }
+
+        final ContentList contentList = new ContentList(this, R.id.playlist, LinearLayoutManager.VERTICAL) {
             @Override
             protected void onItemClick(View view, Content content) {
                 super.onItemClick(view, content);
@@ -53,12 +65,17 @@ public class PlayList extends AppCompatActivity {
             @Override
             protected void onSecondItemClick(View view, Content content) {
                 super.onSecondItemClick(view, content);
-                new MoreOptions(PlayList.this, content);
+                new MoreOptions(PlayList.this, content) {
+                    @Override
+                    protected void onRemovedFromPlaylist() {
+                        notifyDataSetChanged();
+                    }
+                };
             }
         };
         LinearLayout spinner = (LinearLayout) contentList.getSpinner();
         spinner.setVisibility(View.GONE);
-        contentList.init(global.getSongsToBeAddedAsContent());
+        contentList.init(global.getSongsToBeAdded());
         contentList.hideTitle();
     }
 

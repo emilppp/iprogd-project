@@ -48,14 +48,35 @@ public class MoreOptions {
                 Toast.makeText(activity, "Dislike", Toast.LENGTH_SHORT).show();
             }
         });
-        addToPlaylist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                global.addToPlaylist((Song) content);
-                Toast.makeText(activity, "Added " + content.getTitle() + " to playlist.", Toast.LENGTH_SHORT).show();
+        like.setVisibility(View.GONE);
+        dislike.setVisibility(View.GONE);
+        final Song song = (Song) content;
 
-            }
-        });
+        if(global.isInPlaylist(song)) {
+            addToPlaylist.setText(R.string.remove_from_playlist);
+            addToPlaylist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    global.removeFromPlaylist(song);
+                    Toast.makeText(activity, "Removed " + content.getTitle() + " from playlist.", Toast.LENGTH_SHORT).show();
+                    onRemovedFromPlaylist();
+                    dialog.dismiss();
+                }
+            });
+        }
+        else {
+            addToPlaylist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    global.addToPlaylist(song);
+                    Toast.makeText(activity, "Added " + content.getTitle() + " to playlist.", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+        }
         dialog.show();
+    }
+
+    protected void onRemovedFromPlaylist() {
     }
 }
