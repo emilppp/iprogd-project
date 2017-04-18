@@ -32,9 +32,9 @@ public class  ContentList {
      */
     public ContentList(Activity activity, int container, int direction) {
         constructorHelp(activity, container, direction);
-        layout = R.layout.list_item_song;
+        layout = R.layout.list_item_vertical;
         if(direction == LinearLayoutManager.HORIZONTAL)
-            layout = R.layout.song_history_item;
+            layout = R.layout.list_item_horizontal;
     }
 
     public ContentList(Activity activity, int container, int direction, int customLayout) {

@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
      * Loads recommended artists
      */
     private void loadRecommendedArtists() {
-        ContentList contentList = new ContentList(this, R.id.recommended_artists_list, LinearLayoutManager.VERTICAL, R.layout.list_item_big) {
+        ContentList contentList = new ContentList(this, R.id.recommended_artists_list, LinearLayoutManager.VERTICAL, R.layout.list_item_vertical_big) {
             @Override
             protected void onItemClick(View view, Content content) {
                 ((GlobalApplication) getApplication()).setCurrentContent(content);
