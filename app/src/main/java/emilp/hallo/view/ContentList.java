@@ -40,7 +40,6 @@ public class ContentList {
     public ContentList(Activity activity, int container, int direction) {
         constructorHelp(activity, container, direction);
         layout = R.layout.list_item_song;
-        spinner = R.id.progress_bar;
         if(direction == LinearLayoutManager.HORIZONTAL)
             layout = R.layout.song_history_item;
     }
@@ -52,6 +51,7 @@ public class ContentList {
 
     private void constructorHelp(Activity activity, int container, final int direction) {
         this.activity = activity;
+        spinner = R.id.progress_bar;
         this.view = activity.findViewById(container);
         recyclerView = (RecyclerView) view.findViewById(R.id.song_history_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity, direction, false) {
