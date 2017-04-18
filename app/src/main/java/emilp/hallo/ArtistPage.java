@@ -67,7 +67,7 @@ public class ArtistPage extends AppCompatActivity {
         new ApiGetSongs(c, currentArtist);
         c.setTitle(R.string.popular_songs);
 
-        ContentList c2 = new ContentList(this, R.id.album_list, LinearLayoutManager.VERTICAL, R.layout.list_item_album){
+        ContentList c2 = new ContentList(this, R.id.album_list, LinearLayoutManager.VERTICAL, R.layout.list_item_vertical_album){
             @Override
             protected void onItemClick(View view, Content content) {
                 super.onItemClick(view, content);
