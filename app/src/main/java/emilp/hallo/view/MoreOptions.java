@@ -52,7 +52,10 @@ public class MoreOptions {
         dislike.setVisibility(View.GONE);
         final Song song = (Song) content;
 
-        if(global.isInPlaylist(song)) {
+        if(global.getPlaylistID() == null) {
+            addToPlaylist.setVisibility(View.GONE);
+        }
+        else if(global.isInPlaylist(song)) {
             addToPlaylist.setText(R.string.remove_from_playlist);
             addToPlaylist.setOnClickListener(new View.OnClickListener() {
                 @Override
