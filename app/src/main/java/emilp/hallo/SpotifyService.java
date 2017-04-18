@@ -1,7 +1,6 @@
 package emilp.hallo;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -130,11 +129,6 @@ public class SpotifyService extends Activity implements
 
     private void playSong(String spotifyUri) {
         mPlayer.playUri(mOperationCallback, spotifyUri, 0, 0);
-    }
-
-    public void queueSong(String spotifyUri, Context context) {
-        mPlayer.queue(mOperationCallback, spotifyUri);
-        Toast.makeText(context, "Queued track", Toast.LENGTH_SHORT).show();
     }
 
     public void pauseSong() {

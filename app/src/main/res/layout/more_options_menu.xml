@@ -78,15 +78,6 @@
             android:padding="@dimen/activity_vertical_margin"
             style="@style/text_big"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="@dimen/activity_vertical_margin"
-            android:id="@+id/queue_song"
-            android:text="@string/queue_song"
-            style="@style/text_big"/>
-
     </LinearLayout>
 
 </ScrollView>

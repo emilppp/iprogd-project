@@ -36,7 +36,6 @@ public class MoreOptions {
         TextView like = (TextView) dialog.findViewById(R.id.like);
         TextView dislike = (TextView) dialog.findViewById(R.id.dislike);
         TextView addToPlaylist = (TextView) dialog.findViewById(R.id.add_to_playlist);
-        TextView queue = (TextView) dialog.findViewById(R.id.queue_song);
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,14 +56,6 @@ public class MoreOptions {
 
             }
         });
-        queue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                global.getSpotifyService().queueSong("spotify:track:"+((Song) content).getId(), activity);
-                Toast.makeText(activity, "Queued song " + content.getTitle(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
         dialog.show();
     }
 }
