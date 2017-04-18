@@ -85,6 +85,8 @@ public class ApiGetAlbums {
             @Override
             protected void onPostExecute(Void aVoid) {
                 contentList.notifyDataSetChanged();
+                LinearLayout spinner = contentList.getSpinner();
+                spinner.setVisibility(View.GONE);
             }
         }.execute(url);
     }

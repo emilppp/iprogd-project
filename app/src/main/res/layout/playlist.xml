@@ -5,6 +5,14 @@
 
     <include android:id="@+id/playlist_page_toolbar"
         layout="@layout/toolbar" />
+    <TextView android:id="@+id/playlist_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/colorWhiteish"
+        android:text="@string/playlist"
+        android:gravity="center">
+    </TextView>
 
     <ScrollView
         android:layout_width="match_parent"

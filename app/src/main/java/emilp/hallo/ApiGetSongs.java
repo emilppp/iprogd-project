@@ -114,6 +114,12 @@ public class ApiGetSongs {
                 }
                 return null;
             }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                LinearLayout spinner = contentList.getSpinner();
+                spinner.setVisibility(View.GONE);
+            }
         }.execute(url);
     }
 
@@ -136,6 +142,8 @@ public class ApiGetSongs {
             protected void onPostExecute(Void aVoid) {
                 contentList.notifyDataSetChanged();
                 ApiGetSongs.this.onPostExcecute();
+                LinearLayout spinner = contentList.getSpinner();
+                spinner.setVisibility(View.GONE);
             }
         }.execute(url);
     }
