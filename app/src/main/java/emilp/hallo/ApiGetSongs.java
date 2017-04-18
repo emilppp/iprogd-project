@@ -96,6 +96,11 @@ class ApiGetSongs {
                 }
                 return null;
             }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                contentList.getSpinner().setVisibility(View.GONE);
+            }
         }.execute(url);
     }
 
@@ -117,6 +122,7 @@ class ApiGetSongs {
             @Override
             protected void onPostExecute(Void aVoid) {
                 contentList.notifyDataSetChanged();
+                contentList.getSpinner().setVisibility(View.GONE);
             }
         }.execute(url);
     }

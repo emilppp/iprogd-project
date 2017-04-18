@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import emilp.hallo.view.ContentList;
@@ -55,8 +56,10 @@ public class PlayList extends AppCompatActivity {
                 new MoreOptions(PlayList.this, content);
             }
         };
-        contentList.setTitle(R.string.playlist);
+        LinearLayout spinner = (LinearLayout) contentList.getSpinner();
+        spinner.setVisibility(View.GONE);
         contentList.init(global.getSongsToBeAddedAsContent());
+        contentList.hideTitle();
     }
 
     @Override

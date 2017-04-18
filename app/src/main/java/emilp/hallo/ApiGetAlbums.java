@@ -70,6 +70,7 @@ class ApiGetAlbums {
             @Override
             protected void onPostExecute(Void aVoid) {
                 contentList.notifyDataSetChanged();
+                contentList.getSpinner().setVisibility(View.GONE);
             }
         }.execute(url);
     }
