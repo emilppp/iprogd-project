@@ -35,7 +35,6 @@
     <string name="minus">&#8722;</string>
     <string name="plus">&#43;</string>
     <string name="add_to_playlist">Add to playlist</string>
-    <string name="queue_song">Queue</string>
     <string name="songs">Songs</string>
     <string name="user_name_placeholder">John_Doe_1337</string>
     <string name="real_name_placeholder">John Doe</string>
@@ -44,4 +43,6 @@
     <string name="user_name">User name:</string>
     <string name="content_desc_profile_image">Spotify profile image</string>
     <string name="placeholder_notification">TODO: Spotify broadcast notification</string>
+    <string name="remove_from_playlist">Remove from playlist</string>
+    <string name="finalize_playlist">Finalize playlist</string>
 </resources>

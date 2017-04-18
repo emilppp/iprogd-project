@@ -20,6 +20,9 @@ class PlaylistGenerator extends AsyncTask<Void, Void, Void> {
         GlobalApplication global = (GlobalApplication) activity.getApplication();
         global.clearPlaylist();
 
+        System.out.println(global.getPlaylistID());
+        System.out.println(global.getPlaylistFromDb().size());
+
         if(global.getPlaylistID() == null) {
 
             global.resetPlaylist();

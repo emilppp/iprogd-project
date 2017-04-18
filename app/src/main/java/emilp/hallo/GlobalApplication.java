@@ -18,7 +18,7 @@ import emilp.hallo.view.CurrentlyPlaying;
 
 public class GlobalApplication extends Application {
 
-    private ArrayList<Song> songsToBeAdded = new ArrayList<>();
+    private ArrayList<Content> songsToBeAdded = new ArrayList<>();
     private String playlistID;
     private String clientID;
     private String displayName;
@@ -223,14 +223,14 @@ public class GlobalApplication extends Application {
         this.playlistID = playlistID;
     }
 
-    public ArrayList<Song> getSongsToBeAdded() {
+    public ArrayList<Content> getSongsToBeAdded() {
         return songsToBeAdded;
     }
 
-    public ArrayList<Content> getSongsToBeAddedAsContent() {
-        ArrayList<Content> res = new ArrayList<>();
-        for(Song song : getSongsToBeAdded())
-            res.add(song);
+    public ArrayList<Song> getSongsToBeAddedAsSongs() {
+        ArrayList<Song> res = new ArrayList<>();
+        for(Content content : getSongsToBeAdded())
+            res.add((Song) content);
         return res;
     }
 
@@ -247,6 +247,7 @@ public class GlobalApplication extends Application {
     public void resetPlaylist() {
         clearPlaylist();
         resetDataBase();
+        this.playlistID = null;
         removeSavedPlaylistId();
     }
 
@@ -275,12 +276,20 @@ public class GlobalApplication extends Application {
                 songsToBeAdded.add(content);
     }
 
+    public void removeFromPlaylist(Song song) {
+        if(song != null && isInPlaylist(song)) {
+            removeSongFromPlaylistDb(song.getId());
+            removeFromLocalPlaylist(song);
+            spotifyService.removeTrackFromPlaylist(this, "spotify:track:" + song.getId());
+        }
+    }
+
     /**
      * Will post all contents in the playlist to both the database as well as Spotify.
      * This can cause duplicates.
      */
     public void postPlaylist() {
-        ArrayList<Song> songs = getSongsToBeAdded();
+        ArrayList<Song> songs = getSongsToBeAddedAsSongs();
         for(Song s : songs)
             addSongToDatabase(s);
         spotifyService.postPlaylist(this, songs);
@@ -290,8 +299,8 @@ public class GlobalApplication extends Application {
      * Looks for a track in the local playlist and tries to remove it.
      */
     public void removeFromLocalPlaylist(Song track) {
-        for(Iterator<Song> it = songsToBeAdded.iterator(); it.hasNext();) {
-            Song c = it.next();
+        for(Iterator<Content> it = songsToBeAdded.iterator(); it.hasNext();) {
+            Song c = (Song) it.next();
             if(c.getId().equals(track.getId()))
                 it.remove();
         }
@@ -302,10 +311,7 @@ public class GlobalApplication extends Application {
      */
     public boolean isInPlaylist(Song song) {
         for(int i=0; i<songsToBeAdded.size(); i++) {
-            System.out.println("Is " + song.getId() + " == ");
-
-
-            if (Objects.equals(songsToBeAdded.get(i).getId(), song.getId()))
+            if (Objects.equals(((Song) songsToBeAdded.get(i)).getId(), song.getId()))
                 return true;
         }
         return false;

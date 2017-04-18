@@ -36,7 +36,6 @@ public class MoreOptions {
         TextView like = (TextView) dialog.findViewById(R.id.like);
         TextView dislike = (TextView) dialog.findViewById(R.id.dislike);
         TextView addToPlaylist = (TextView) dialog.findViewById(R.id.add_to_playlist);
-        TextView queue = (TextView) dialog.findViewById(R.id.queue_song);
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,22 +48,38 @@ public class MoreOptions {
                 Toast.makeText(activity, "Dislike", Toast.LENGTH_SHORT).show();
             }
         });
-        addToPlaylist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                global.addToPlaylist((Song) content);
-                Toast.makeText(activity, "Added " + content.getTitle() + " to playlist.", Toast.LENGTH_SHORT).show();
+        like.setVisibility(View.GONE);
+        dislike.setVisibility(View.GONE);
+        final Song song = (Song) content;
 
-            }
-        });
-        queue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                global.getSpotifyService().queueSong("spotify:track:"+((Song) content).getId(), activity);
-                Toast.makeText(activity, "Queued song " + content.getTitle(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        if(global.getPlaylistID() == null) {
+            addToPlaylist.setVisibility(View.GONE);
+        }
+        else if(global.isInPlaylist(song)) {
+            addToPlaylist.setText(R.string.remove_from_playlist);
+            addToPlaylist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    global.removeFromPlaylist(song);
+                    Toast.makeText(activity, "Removed " + content.getTitle() + " from playlist.", Toast.LENGTH_SHORT).show();
+                    onRemovedFromPlaylist();
+                    dialog.dismiss();
+                }
+            });
+        }
+        else {
+            addToPlaylist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    global.addToPlaylist(song);
+                    Toast.makeText(activity, "Added " + content.getTitle() + " to playlist.", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+        }
         dialog.show();
+    }
+
+    protected void onRemovedFromPlaylist() {
     }
 }
