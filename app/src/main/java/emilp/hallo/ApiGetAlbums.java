@@ -131,7 +131,7 @@ class ApiGetAlbums {
                 obj = arr.getJSONObject(i);
                 String aName = obj.getString("name");
                 String aId = obj.getString("id");
-                String aUrl = obj.getJSONArray("images").getJSONObject(0).getString("url");
+                String aUrl = obj.getJSONArray("images").getJSONObject(obj.getJSONArray("images").length()-1).getString("url");
                 Album album = new Album(aName, aId, aUrl);
                 album.downloadImage();
 
@@ -152,7 +152,7 @@ class ApiGetAlbums {
                 obj = arr.getJSONObject(i);
                 String aName = obj.getString("name");
                 String aId = obj.getString("id");
-                String aUrl = obj.getJSONArray("images").getJSONObject(0).getString("url");
+                String aUrl = obj.getJSONArray("images").getJSONObject(obj.getJSONArray("images").length()-1).getString("url");
                 Album album = new Album(aName, aId, aUrl);
                 album.downloadImage();
 

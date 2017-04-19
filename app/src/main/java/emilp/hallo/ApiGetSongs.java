@@ -284,7 +284,8 @@ class ApiGetSongs {
         JSONObject a = obj.getJSONObject("album");
         String aName = a.getString("name");
         String aId = a.getString("id");
-        String aUrl = a.getJSONArray("images").getJSONObject(0).getString("url");
+        //String aUrl = a.getJSONArray("images").getJSONObject(0).getString("url");
+        String aUrl = a.getJSONArray("images").getJSONObject(a.getJSONArray("images").length()-1).getString("url");
         return new Album(aName, aId, aUrl);
     }
 

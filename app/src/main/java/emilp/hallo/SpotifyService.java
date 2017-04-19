@@ -198,8 +198,8 @@ public class SpotifyService extends Activity implements
         try {
             global.setClientID(res.getString("id"));
             global.setDisplayName(res.getString("display_name"));
-                if(res.getJSONArray("images").length() > 0)
-                global.setImageUrl(res.getJSONArray("images").getJSONObject(0).getString("url"));
+            if(res.getJSONArray("images").length() > 0)
+                global.setImageUrl(res.getJSONArray("images").getJSONObject(res.getJSONArray("images").length()-1).getString("url"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
