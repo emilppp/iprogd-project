@@ -1,9 +1,7 @@
 How to install
 ==============
 
-<ul>
-  <li>Clone the project into a folder</li>
-  <li>Open the project in Android Studio</li>
-  <li>Create an emulator with APK version SOMETHING</li>
-  <li></li>
-</ul>
+1. Clone the project into a folder
+2. Open the project in Android Studio
+3. Create an emulator with min APK version 21
+4. Run the app on the emulator (shift+f10 (Win/Ubuntu), control+r (Mac))
