@@ -33,9 +33,6 @@ public class CurrentlyPlaying {
 
         activity.findViewById(R.id.currentlyplaying).setVisibility(View.GONE);
 
-        progressBar.setMax(100);
-        progressBar.setProgress(50);
-
         final GlobalApplication global = ((GlobalApplication) activity.getApplication());
         final Player player = global.getSpotifyService().getmPlayer();
 
@@ -74,7 +71,7 @@ public class CurrentlyPlaying {
                 if(playerEvent.equals(PlayerEvent.kSpPlaybackNotifyMetadataChanged)) {
                     activity.findViewById(R.id.currentlyplaying).setVisibility(View.VISIBLE);
 
-                    progressBar.setMax(duration);
+                    progressBar.setMax(duration*4);
                     progressBar.setProgress(0);
                     Song song = global.getCurrentlyPlayingSong();
 
@@ -92,6 +89,9 @@ public class CurrentlyPlaying {
                         @Override
                         public void run() {
                             progressBar.setProgress(progressBar.getProgress() + 1);
+                            if(progressBar.getMax() == progressBar.getProgress()) {
+                                hideBroadcasted();
+                            }
                         }
                     }, 0, 1);
                 }
@@ -128,7 +128,7 @@ public class CurrentlyPlaying {
         progressBar.setProgressTintList(ColorStateList.valueOf(ResourcesCompat.getColor(activity.getResources(), R.color.colorWhiteish, null)));
     }
 
-    public void showBroadcasted(int progress) {
+    public void showBroadcasted(final int progress) {
         GlobalApplication global = (GlobalApplication) activity.getApplication();
         activity.findViewById(R.id.currentlyplaying).setVisibility(View.VISIBLE);
 
@@ -140,7 +140,7 @@ public class CurrentlyPlaying {
 
         pausePlay.setVisibility(View.GONE);
 
-        progressBar.setMax(duration);
+        progressBar.setMax(duration*4);
         progressBar.setProgress(progress);
         Song song = global.getCurrentlyPlayingSong();
 
@@ -158,6 +158,9 @@ public class CurrentlyPlaying {
             @Override
             public void run() {
                 progressBar.setProgress(progressBar.getProgress() + 1);
+                if(progressBar.getMax() == progressBar.getProgress()) {
+                    hideBroadcasted();
+                }
             }
         }, 0, 1);
     }

@@ -106,7 +106,7 @@ public class Song implements Content {
         if(hasAlbumInfo) {
             return getArtistsName() + " - " + getAlbum().getName() + " " + Html.fromHtml("&#8226;").toString() + " " + getDurationString();
         } else {
-            return getArtistsName() + " - " + Html.fromHtml("&#8226;").toString() + " " + getDurationString();
+            return getArtistsName() +  " " + Html.fromHtml("&#8226;").toString() + " " + getDurationString();
         }
     }
 

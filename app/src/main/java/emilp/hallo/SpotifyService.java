@@ -110,7 +110,7 @@ public class SpotifyService extends Activity implements
                         mPlayer = spotifyPlayer;
                         mPlayer.addConnectionStateCallback(activity);
                         mPlayer.addNotificationCallback(SpotifyService.this);
-                        Toast.makeText(activity.getApplicationContext(), "Initiated everything and we're logged in(?)", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity.getApplicationContext(), "Logged in", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
